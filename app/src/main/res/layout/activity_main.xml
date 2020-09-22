@@ -22,20 +22,7 @@
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.21" />
-
-    <TextView
-        android:id="@+id/login_buildingIcon"
-        android:layout_width="148dp"
-        android:layout_height="122dp"
-        android:drawableBottom="@drawable/ic_capitol_building"
-        android:fontFamily="@font/assistant_semibold"
-        app:layout_constraintBottom_toTopOf="@+id/login_usernameEntry"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/login_welcome"
-        app:layout_constraintVertical_bias="0.607" />
+        app:layout_constraintVertical_bias="0.186" />
 
     <Button
         android:id="@+id/login_button"
@@ -50,7 +37,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.718" />
+        app:layout_constraintVertical_bias="0.742" />
 
     <EditText
         android:id="@+id/login_usernameEntry"
@@ -79,7 +66,7 @@
         android:ems="10"
         android:gravity="center"
         android:hint="Password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,6 +85,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" />
+        app:layout_constraintTop_toBottomOf="@+id/login_button"
+        app:layout_constraintVertical_bias="0.766" />
+
+    <ImageView
+        android:id="@+id/building_icon"
+        android:layout_width="115dp"
+        android:layout_height="82dp"
+        app:layout_constraintBottom_toTopOf="@+id/login_usernameEntry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/login_welcome"
+        app:layout_constraintVertical_bias="0.711"
+        app:srcCompat="@drawable/ic_capitol_building"
+        android:contentDescription="TODO" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

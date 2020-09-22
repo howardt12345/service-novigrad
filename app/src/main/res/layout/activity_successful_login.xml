@@ -4,59 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_green"
     tools:context=".Successful_login">
 
     <TextView
-        android:id="@+id/header"
-        android:layout_width="412dp"
-        android:layout_height="101dp"
-        android:background="@color/potencialMainTheme1"
-        android:textColor="@color/potencialMainTheme1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
         android:id="@+id/successful_login"
-        android:layout_width="326dp"
-        android:layout_height="139dp"
+        android:layout_width="364dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="60dp"
         android:fontFamily="@font/assistant_bold"
-        android:text="Successful Login"
-        android:textColor="#403D3D"
+        android:text="Successful Login!"
+        android:textColor="@color/transparentColor"
         android:textSize="52sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/login_info"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/login_info"
         android:layout_width="315dp"
         android:layout_height="294dp"
+        android:layout_marginBottom="32dp"
         android:fontFamily="@font/assistant_semibold"
         android:text="Summary of Login Detail Will be Stored in values/strings folder Later By Backend Team"
-        android:textColor="#322E2E"
+        android:textColor="@color/transparentColor"
         app:layout_constraintBottom_toTopOf="@+id/continue_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header"
-        app:layout_constraintVertical_bias="0.864" />
+        app:layout_constraintHorizontal_bias="0.437"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/continue_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
         android:background="@color/potencialMainTheme1"
         android:text="Continue"
-        android:textColor="#322E2E"
+        android:textColor="@color/transparentColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header"
-        app:layout_constraintVertical_bias="0.926" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
