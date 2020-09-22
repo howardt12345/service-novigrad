@@ -2,17 +2,102 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:id="@+id/login_welcome"
+        android:layout_width="348dp"
+        android:layout_height="100dp"
+        android:fontFamily="@font/assistant_semibold"
+        android:text="Welcome!"
+        android:textAlignment="center"
+        android:textColor="@color/potencialMainTheme1"
+        android:textSize="64sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.21" />
+
+    <TextView
+        android:id="@+id/login_buildingIcon"
+        android:layout_width="148dp"
+        android:layout_height="122dp"
+        android:drawableBottom="@drawable/ic_capitol_building"
+        android:fontFamily="@font/assistant_semibold"
+        app:layout_constraintBottom_toTopOf="@+id/login_usernameEntry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/login_welcome"
+        app:layout_constraintVertical_bias="0.607" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="122dp"
+        android:layout_height="62dp"
+        android:background="@drawable/rounded_edges"
+        android:backgroundTint="@color/potencialMainTheme1"
+        android:fontFamily="@font/assistant_bold"
+        android:text="Sign In"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.718" />
+
+    <EditText
+        android:id="@+id/login_usernameEntry"
+        android:layout_width="275dp"
+        android:layout_height="65dp"
+        android:background="@drawable/rounded_edges"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_passwordEntry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_welcome"
+        app:layout_constraintVertical_bias="0.685" />
+
+    <EditText
+        android:id="@+id/login_passwordEntry"
+        android:layout_width="275dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="56dp"
+        android:background="@drawable/rounded_edges"
+        android:drawableLeft="@drawable/ic_baseline_lock_24"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Password"
+        android:inputType="textPersonName"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/login_welcome"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/login_createNewAccount"
+        android:layout_width="181dp"
+        android:layout_height="34dp"
+        android:background="@drawable/rounded_edges"
+        android:gravity="center"
+        android:text="Create A New Account"
+        android:textColor="@color/potencialMainTheme1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
