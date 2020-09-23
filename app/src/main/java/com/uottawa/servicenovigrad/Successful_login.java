@@ -10,5 +10,6 @@ public class Successful_login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_successful_login);
+
     }
 }

@@ -109,9 +109,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="143dp"
-        android:layout_height="186dp"
-        app:srcCompat="@drawable/ic_capitol_building"
-        tools:layout_editor_absoluteX="134dp"
-        tools:layout_editor_absoluteY="38dp" />
+        android:layout_width="100dp"
+        android:layout_height="111dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.071"
+        app:srcCompat="@drawable/ic_capitol_building" />
 </androidx.constraintlayout.widget.ConstraintLayout>

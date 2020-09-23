@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
                 //Get values of username and password variables
                 String username = (login_usernameEntry.getText().toString());
                 String password = (login_passwordEntry.getText().toString());
-            }
+                }
         });
     }
 }

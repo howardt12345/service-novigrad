@@ -17,10 +17,11 @@
         android:textColor="@color/transparentColor"
         android:textSize="52sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/login_info"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.071" />
 
     <TextView
         android:id="@+id/login_info"
@@ -30,22 +31,24 @@
         android:fontFamily="@font/assistant_semibold"
         android:text="Summary of Login Detail Will be Stored in values/strings folder Later By Backend Team"
         android:textColor="@color/transparentColor"
-        app:layout_constraintBottom_toTopOf="@+id/continue_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.437"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.7" />
 
     <Button
         android:id="@+id/continue_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
-        android:background="@color/potencialMainTheme1"
+        android:background="#459868"
         android:text="Continue"
         android:textColor="@color/transparentColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.908" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
