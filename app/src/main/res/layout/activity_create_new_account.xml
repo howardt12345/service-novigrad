@@ -7,7 +7,7 @@
     android:layout_marginTop="12dp"
     android:layout_marginBottom="12dp"
     android:background="@color/transparentColor"
-    tools:context=".Create_New_Account">
+    tools:context=".CreateNewAccountActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/info_card"
