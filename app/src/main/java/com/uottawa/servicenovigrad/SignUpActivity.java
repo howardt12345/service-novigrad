@@ -43,16 +43,18 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //stores the editText from sign up page in variables
+                final EditText signUpNameEntry = (EditText) findViewById(R.id.signUp_emailEntry);
                 final EditText signUpEmailEntry = (EditText) findViewById(R.id.signUp_emailEntry);
                 final EditText signUpPasswordEntry = (EditText) findViewById(R.id.signUp_passwordEntry);
                 final EditText signUpPasswordConfirm = (EditText) findViewById(R.id.signUp_passwordConfirm);
                 //Get values of email and password variables
+                String name = signUpNameEntry.getText().toString();
                 String email = signUpEmailEntry.getText().toString();
                 String password = signUpPasswordEntry.getText().toString();
                 String passwordConfirm = signUpPasswordConfirm.getText().toString();
 
                 //Validates input and gets error message
-                final SignUpError signUpError = validateInput(email, password, passwordConfirm);
+                final SignUpError signUpError = validateInput(name, email, password, passwordConfirm);
 
                 //If there is an error
                 if(signUpError != SignUpError.None) {
@@ -96,14 +98,15 @@ public class SignUpActivity extends AppCompatActivity {
 
     /**
      * Validates the inputs of the sign up page
+     * @param name the name to validate
      * @param email the email to validate
      * @param password the password to validate
      * @param passwordConfirm the password confirmation
      * @return the SignUpError value for the given inputs.
      */
-    private SignUpError validateInput(String email, String password, String passwordConfirm) {
+    private SignUpError validateInput(String name, String email, String password, String passwordConfirm) {
         //Checks if any field is empty
-        if(email.isEmpty() || password.isEmpty() || passwordConfirm.isEmpty()) {
+        if(name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordConfirm.isEmpty()) {
             return SignUpError.FieldsEmpty;
         }
         //Validates Email

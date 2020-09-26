@@ -19,10 +19,9 @@
         android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.151" />
+        app:layout_constraintVertical_bias="0.087" />
 
     <ImageView
         android:id="@+id/building_icon"
@@ -30,16 +29,36 @@
         android:layout_height="82dp"
         android:contentDescription="TODO"
         android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/signUp_emailEntry2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUp_welcome"
+        app:srcCompat="@drawable/ic_capital_building" />
+
+    <EditText
+        android:id="@+id/signUp_nameEntry"
+        android:layout_width="275dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_edges"
+        android:drawableLeft="@drawable/ic_baseline_account_circle_24"
+        android:drawablePadding="10dp"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:hint="Name"
+        android:inputType="textEmailAddress"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/signUp_emailEntry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_welcome"
-        app:srcCompat="@drawable/ic_capital_building" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/signUp_emailEntry"
         android:layout_width="275dp"
-        android:layout_height="52dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_edges"
         android:drawableLeft="@drawable/ic_baseline_email_24"
@@ -58,7 +77,7 @@
     <EditText
         android:id="@+id/signUp_passwordEntry"
         android:layout_width="275dp"
-        android:layout_height="52dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_edges"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
@@ -77,7 +96,7 @@
     <EditText
         android:id="@+id/signUp_passwordConfirm"
         android:layout_width="275dp"
-        android:layout_height="52dp"
+        android:layout_height="48dp"
         android:background="@drawable/rounded_edges"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:drawablePadding="10dp"
@@ -92,7 +111,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.661" />
+        app:layout_constraintVertical_bias="0.685" />
 
     <Button
         android:id="@+id/signUp_button"
