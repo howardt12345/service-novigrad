@@ -24,20 +24,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.151" />
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="122dp"
-        android:layout_height="48dp"
-        android:background="@drawable/rounded_edges"
-        android:backgroundTint="@color/potentialMainTheme1"
-        android:fontFamily="@font/assistant_bold"
-        android:text="Sign In"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/building_icon"
+        android:layout_width="115dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="TODO"
+        app:layout_constraintBottom_toTopOf="@+id/login_emailEntry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.808" />
+        app:layout_constraintTop_toBottomOf="@+id/login_welcome"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_capitol_building" />
 
     <EditText
         android:id="@+id/login_emailEntry"
@@ -95,18 +94,19 @@
         app:layout_constraintTop_toBottomOf="@+id/login_button"
         app:layout_constraintVertical_bias="0.766" />
 
-    <ImageView
-        android:id="@+id/building_icon"
-        android:layout_width="115dp"
-        android:layout_height="82dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="TODO"
-        app:layout_constraintBottom_toTopOf="@+id/login_emailEntry"
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="122dp"
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_edges"
+        android:backgroundTint="@color/potentialMainTheme1"
+        android:fontFamily="@font/assistant_bold"
+        android:text="Sign In"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_welcome"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_capitol_building" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.808" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
