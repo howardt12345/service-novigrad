@@ -52,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String passwordConfirm = signUpPasswordConfirm.getText().toString();
 
                 //Validates input and gets error message
-                SignUpError signUpError = validateInput(email, password, passwordConfirm);
+                final SignUpError signUpError = validateInput(email, password, passwordConfirm);
 
                 //If there is an error
                 if(signUpError != SignUpError.None) {
@@ -68,9 +68,18 @@ public class SignUpActivity extends AppCompatActivity {
                     mySnackbar.addCallback(new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar snackbar, int event) {
-                        signUpEmailEntry.getText().clear();
-                        signUpPasswordEntry.getText().clear();
-                        signUpPasswordConfirm.getText().clear();
+                        switch(signUpError) {
+                            case FieldsEmpty:
+                                break;
+                            case InvalidEmail:
+                                signUpEmailEntry.getText().clear();
+                                break;
+                            case PasswordTooShort:
+                            case PasswordsNoMatch:
+                                signUpPasswordEntry.getText().clear();
+                                signUpPasswordConfirm.getText().clear();
+                                break;
+                        }
                         }
                     });
                     //Show snackbar

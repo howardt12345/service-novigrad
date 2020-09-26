@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 //Validates input and gets error message
-                LoginError loginError = validateInput(email, password);
+                final LoginError loginError = validateInput(email, password);
 
                 //If there is an error
                 if(loginError != LoginError.None) {
@@ -67,8 +67,16 @@ public class LoginActivity extends AppCompatActivity {
                     mySnackbar.addCallback(new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar snackbar, int event) {
-                        login_emailEntry.getText().clear();
-                        login_passwordEntry.getText().clear();
+                        switch(loginError) {
+                            case FieldsEmpty:
+                                break;
+                            case EmailInvalid:
+                                login_emailEntry.getText().clear();
+                                break;
+                            case PasswordTooShort:
+                                login_passwordEntry.getText().clear();
+                                break;
+                        }
                         }
                     });
                     //Show snackbar
