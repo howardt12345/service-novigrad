@@ -41,7 +41,7 @@
         android:id="@+id/login_emailEntry"
         android:layout_width="275dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_edges"
         android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="10dp"
