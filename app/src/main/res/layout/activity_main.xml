@@ -2,103 +2,53 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/login_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/gradient_green"
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/login_welcome"
-        android:layout_width="348dp"
-        android:layout_height="100dp"
-        android:fontFamily="@font/assistant_semibold"
-        android:text="Welcome!"
-        android:textAlignment="center"
-        android:textColor="@color/potencialMainTheme1"
-        android:textSize="64sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.096" />
-
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="122dp"
-        android:layout_height="62dp"
-        android:background="@drawable/rounded_edges"
-        android:backgroundTint="@color/potencialMainTheme1"
+        android:id="@+id/successful_login"
+        android:layout_width="364dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="60dp"
         android:fontFamily="@font/assistant_bold"
-        android:text="Sign In"
+        android:text="Successful Login!"
+        android:textColor="@color/transparentColor"
+        android:textSize="52sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.808" />
+        app:layout_constraintVertical_bias="0.071" />
 
-    <EditText
-        android:id="@+id/login_usernameEntry"
-        android:layout_width="275dp"
-        android:layout_height="65dp"
-        android:background="@drawable/rounded_edges"
-        android:drawableLeft="@drawable/ic_baseline_email_24"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Username"
-        android:inputType="textPersonName"
-        android:padding="8dp"
-        android:textSize="22sp"
+    <TextView
+        android:id="@+id/login_info"
+        android:layout_width="315dp"
+        android:layout_height="294dp"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/assistant_semibold"
+        android:text="Summary of Login Detail Will be Stored in values/strings folder Later By Backend Team"
+        android:textColor="@color/transparentColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/login_passwordEntry"
-        android:layout_width="275dp"
-        android:layout_height="65dp"
-        android:background="@drawable/rounded_edges"
-        android:drawableLeft="@drawable/ic_baseline_lock_24"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:padding="8dp"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.652" />
+        app:layout_constraintVertical_bias="0.7" />
 
     <Button
-        android:id="@+id/login_createNewAccount"
-        android:layout_width="181dp"
-        android:layout_height="34dp"
-        android:background="@drawable/rounded_edges"
-        android:gravity="center"
-        android:text="Create A New Account"
-        android:textColor="@color/potencialMainTheme1"
+        android:id="@+id/continue_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#459868"
+        android:text="Continue"
+        android:textColor="@color/transparentColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button"
-        app:layout_constraintVertical_bias="0.766" />
-
-    <ImageView
-        android:id="@+id/building_icon"
-        android:layout_width="115dp"
-        android:layout_height="82dp"
-        android:contentDescription="TODO"
-        app:layout_constraintBottom_toTopOf="@+id/login_usernameEntry"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.83"
-        app:srcCompat="@drawable/ic_capitol_building" />
+        app:layout_constraintVertical_bias="0.908" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

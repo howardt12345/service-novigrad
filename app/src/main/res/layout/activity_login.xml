@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/login_welcome"
+        android:layout_width="349dp"
+        android:layout_height="80dp"
+        android:fontFamily="@font/assistant_semibold"
+        android:text="Welcome!"
+        android:textAlignment="center"
+        android:textColor="@color/potentialMainTheme1"
+        android:textSize="64sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.151" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="122dp"
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_edges"
+        android:backgroundTint="@color/potentialMainTheme1"
+        android:fontFamily="@font/assistant_bold"
+        android:text="Sign In"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.808" />
+
+    <EditText
+        android:id="@+id/login_usernameEntry"
+        android:layout_width="275dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/rounded_edges"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        android:padding="8dp"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_passwordEntry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/login_passwordEntry"
+        android:layout_width="275dp"
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_edges"
+        android:drawableLeft="@drawable/ic_baseline_lock_24"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:padding="8dp"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.603" />
+
+    <Button
+        android:id="@+id/login_createNewAccount"
+        android:layout_width="181dp"
+        android:layout_height="34dp"
+        android:background="@drawable/rounded_edges"
+        android:gravity="center"
+        android:text="Create A New Account"
+        android:textColor="@color/potentialMainTheme1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_button"
+        app:layout_constraintVertical_bias="0.766" />
+
+    <ImageView
+        android:id="@+id/building_icon"
+        android:layout_width="115dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="47dp"
+        android:contentDescription="TODO"
+        app:layout_constraintBottom_toTopOf="@+id/login_usernameEntry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_welcome"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_capitol_building" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
