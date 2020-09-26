@@ -4,51 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_green"
+    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/successful_login"
-        android:layout_width="364dp"
-        android:layout_height="160dp"
+        android:layout_width="308dp"
+        android:layout_height="162dp"
         android:layout_marginBottom="60dp"
         android:fontFamily="@font/assistant_bold"
-        android:text="Successful Login!"
-        android:textColor="@color/transparentColor"
-        android:textSize="52sp"
+        android:text="Welcome [firstname]!"
+        android:textColor="@color/potentialMainTheme1"
+        android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.524"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.071" />
+        app:layout_constraintVertical_bias="0.257" />
 
     <TextView
         android:id="@+id/login_info"
-        android:layout_width="315dp"
-        android:layout_height="294dp"
+        android:layout_width="302dp"
+        android:layout_height="151dp"
         android:layout_marginBottom="32dp"
         android:fontFamily="@font/assistant_semibold"
-        android:text="Summary of Login Detail Will be Stored in values/strings folder Later By Backend Team"
-        android:textColor="@color/transparentColor"
+        android:text="You are logged in as a [role]"
+        android:textColor="@color/potentialMainTheme1"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintVertical_bias="0.62" />
 
     <Button
-        android:id="@+id/continue_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#459868"
-        android:text="Continue"
-        android:textColor="@color/transparentColor"
+        android:id="@+id/signOut_button"
+        android:layout_width="122dp"
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_edges"
+        android:backgroundTint="@color/potentialMainTheme1"
+        android:fontFamily="@font/assistant_bold"
+        android:text="Sign Out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.908" />
+        app:layout_constraintVertical_bias="0.808" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
