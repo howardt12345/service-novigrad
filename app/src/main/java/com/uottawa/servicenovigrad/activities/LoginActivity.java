@@ -61,74 +61,86 @@ public class LoginActivity extends AppCompatActivity {
                 final String email = (login_emailEntry.getText().toString());
                 final String password = (login_passwordEntry.getText().toString());
 
-                //Validates input and gets error message
-                final LoginError loginError = validateInput(email, password);
+                //Checks if user is trying to log in as admin
+                final boolean admin = email.compareTo("admin") == 0 && password.compareTo("admin") == 0;
+                //If logging in as admin
+                if(admin) {
+                    CurrentUser.addInfo("admin", "admin", "admin", "admin");
 
-                //If there is an error
-                if(loginError != LoginError.None) {
-                    //Show a snackbar with the error message
-                    Snackbar mySnackbar = Snackbar.make(findViewById(R.id.login_page), errorMessage(loginError), BaseTransientBottomBar.LENGTH_SHORT);
-                    //Add close button
-                    mySnackbar.setAction("CLOSE", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                        }
-                    });
-                    //Clear text when snackbar is closed
-                    mySnackbar.addCallback(new Snackbar.Callback() {
-                        @Override
-                        public void onDismissed(Snackbar snackbar, int event) {
-                        switch(loginError) {
-                            case FieldsEmpty:
-                                break;
-                            case EmailInvalid:
-                                login_emailEntry.getText().clear();
-                                break;
-                            case PasswordTooShort:
-                                login_passwordEntry.getText().clear();
-                                break;
-                        }
-                        }
-                    });
-                    //Show snackbar
-                    mySnackbar.show();
+                    Toast.makeText(LoginActivity.this, "Logging in as admin", Toast.LENGTH_SHORT).show();
+                    
+                    //Navigate to Main Activity
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
                 } else {
-                    //Sign into firebase
-                    auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                //Successful login
+                    //Validates input and gets error message
+                    final LoginError loginError = validateInput(email, password);
 
-                                //Retrieve user info from firestore
-                                firestore.collection("users").document(auth.getCurrentUser().getUid()).get()
-                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                    //If there is an error
+                    if(loginError != LoginError.None) {
+                        //Show a snackbar with the error message
+                        Snackbar mySnackbar = Snackbar.make(findViewById(R.id.login_page), errorMessage(loginError), BaseTransientBottomBar.LENGTH_SHORT);
+                        //Add close button
+                        mySnackbar.setAction("CLOSE", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                            }
+                        });
+                        //Clear text when snackbar is closed
+                        mySnackbar.addCallback(new Snackbar.Callback() {
+                            @Override
+                            public void onDismissed(Snackbar snackbar, int event) {
+                                switch(loginError) {
+                                    case FieldsEmpty:
+                                        break;
+                                    case EmailInvalid:
+                                        login_emailEntry.getText().clear();
+                                        break;
+                                    case PasswordTooShort:
+                                        login_passwordEntry.getText().clear();
+                                        break;
+                                }
+                            }
+                        });
+                        //Show snackbar
+                        mySnackbar.show();
+                    } else {
+                        //Sign into firebase
+                        auth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
-                                            DocumentSnapshot document = task.getResult();
-                                            String n = (String) document.getData().get("name");
-                                            String r = (String) document.getData().get("role");
-                                            CurrentUser.addInfo(n, email, r, auth.getCurrentUser().getUid());
+                                            //Successful login
 
-                                            //Navigate to Main Activity when successful
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                            startActivity(intent);
+                                            //Retrieve user info from firestore
+                                            firestore.collection("users").document(auth.getCurrentUser().getUid()).get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                DocumentSnapshot document = task.getResult();
+                                                                String n = (String) document.getData().get("name");
+                                                                String r = (String) document.getData().get("role");
+                                                                CurrentUser.addInfo(n, email, r, auth.getCurrentUser().getUid());
+
+                                                                //Navigate to Main Activity when successful
+                                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                                startActivity(intent);
+                                                            } else {
+                                                                //Show failed error
+                                                                Toast.makeText(LoginActivity.this, "Failed to get data from database", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
                                         } else {
                                             //Show failed error
-                                            Toast.makeText(LoginActivity.this, "Failed to get data from database",
-                                                    Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(LoginActivity.this, "Failed to log in.", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
-                            } else {
-                                //Show failed error
-                                Toast.makeText(LoginActivity.this, "Failed to log in.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                    }
                 }
             }
         });

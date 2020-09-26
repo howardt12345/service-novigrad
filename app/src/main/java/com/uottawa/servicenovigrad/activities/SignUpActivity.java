@@ -125,8 +125,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 startActivity(intent);
                             } else {
                                 //Show failed error
-                                Toast.makeText(SignUpActivity.this, "Failed to sign up.",
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this, "Failed to sign up.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
