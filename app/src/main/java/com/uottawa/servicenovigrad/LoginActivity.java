@@ -107,9 +107,9 @@ public class LoginActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             DocumentSnapshot document = task.getResult();
                                             String n = (String) document.getData().get("name");
-                                            String r = (String) document.getData().get("name");
+                                            String r = (String) document.getData().get("role");
                                             CurrentUser.addInfo(n, email, r, auth.getCurrentUser().getUid());
-                                            
+
                                             //Navigate to Main Activity when successful
                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                             startActivity(intent);
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                                 });
                             } else {
                                 //Show failed error
-                                Toast.makeText(LoginActivity.this, "Auth failed",
+                                Toast.makeText(LoginActivity.this, "Failed to log in.",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }

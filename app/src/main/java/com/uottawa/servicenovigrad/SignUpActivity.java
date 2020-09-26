@@ -55,7 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //stores the editText from sign up page in variables
-                final EditText signUpNameEntry = (EditText) findViewById(R.id.signUp_emailEntry);
+                final EditText signUpNameEntry = (EditText) findViewById(R.id.signUp_nameEntry);
                 final EditText signUpEmailEntry = (EditText) findViewById(R.id.signUp_emailEntry);
                 final EditText signUpPasswordEntry = (EditText) findViewById(R.id.signUp_passwordEntry);
                 final EditText signUpPasswordConfirm = (EditText) findViewById(R.id.signUp_passwordConfirm);
@@ -123,7 +123,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 startActivity(intent);
                             } else {
                                 //Show failed error
-                                Toast.makeText(SignUpActivity.this, "Auth failed",
+                                Toast.makeText(SignUpActivity.this, "Failed to sign up.",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
