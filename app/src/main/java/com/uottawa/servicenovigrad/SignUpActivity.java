@@ -16,7 +16,11 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.uottawa.servicenovigrad.utils.Utils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 enum SignUpError {
     None,
@@ -28,6 +32,7 @@ enum SignUpError {
 
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,8 @@ public class SignUpActivity extends AppCompatActivity {
                 final String email = signUpEmailEntry.getText().toString();
                 final String password = signUpPasswordEntry.getText().toString();
                 final String passwordConfirm = signUpPasswordConfirm.getText().toString();
+
+                final String role = "customer";
 
                 //Validates input and gets error message
                 final SignUpError signUpError = validateInput(name, email, password, passwordConfirm);
@@ -101,7 +108,16 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sucessful signup
-                                CurrentUser.addInfo(name, email, "customer");
+
+                                //Store user info to cloud firestore
+                                Map<String, Object> userInfo = new HashMap<>();
+                                userInfo.put("name", name);
+                                userInfo.put("email", email);
+                                userInfo.put("role", role);
+
+                                firestore.collection("users").document(auth.getCurrentUser().getUid()).set(userInfo);
+                                CurrentUser.addInfo(name, email, role, auth.getCurrentUser().getUid());
+
                                 //Navigate to Main Activity when successful
                                 Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                 startActivity(intent);
@@ -121,6 +137,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
     }
 
     /**
