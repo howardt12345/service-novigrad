@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                     CurrentUser.addInfo("admin", "admin", "admin", "admin");
 
                     Toast.makeText(LoginActivity.this, "Logging in as admin", Toast.LENGTH_SHORT).show();
-                    
+
                     //Navigate to Main Activity
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
