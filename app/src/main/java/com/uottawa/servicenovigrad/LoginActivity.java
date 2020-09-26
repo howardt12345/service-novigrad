@@ -19,6 +19,17 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
 
+
+        Button login_createNewAccount_button = (Button) findViewById(R.id.login_createNewAccount);
+        login_createNewAccount_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Navigate to Sign Up Activity
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Button login_button  = (Button) findViewById(R.id.login_button);
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
