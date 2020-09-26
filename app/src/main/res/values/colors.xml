@@ -3,8 +3,8 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="potencialMainTheme1">#88C9A3</color>
-    <color name="potencialMainTheme2">#7EA7DF</color>
+    <color name="potentialMainTheme1">#88C9A3</color>
+    <color name="potentialMainTheme2">#7EA7DF</color>
     <color name="transparentColor">#FFFFFF</color>
     <color name="grey">#FF403D3D</color>
     <color name="green2">#A5D6A7</color>

@@ -100,7 +100,7 @@
                 android:id="@+id/continue_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/potencialMainTheme1"
+                android:background="@color/potentialMainTheme1"
                 android:fontFamily="@font/assistant_bold"
                 android:text="Continue"
                 android:textColor="#FFFFFF" />
