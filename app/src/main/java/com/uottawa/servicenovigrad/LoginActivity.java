@@ -20,10 +20,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //stores the editText from login page in variables
-                EditText login_usernameEntry = (EditText) findViewById(R.id.login_usernameEntry);
+                EditText login_emailEntry = (EditText) findViewById(R.id.login_emailEntry);
                 EditText login_passwordEntry = (EditText) findViewById(R.id.login_passwordEntry);
                 //Get values of username and password variables
-                String username = (login_usernameEntry.getText().toString());
+                String username = (login_emailEntry.getText().toString());
                 String password = (login_passwordEntry.getText().toString());
             }
         });
