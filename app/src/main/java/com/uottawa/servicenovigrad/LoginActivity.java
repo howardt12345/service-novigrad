@@ -10,6 +10,14 @@ import android.widget.EditText;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.uottawa.servicenovigrad.utils.Utils;
+
+enum LoginError {
+    None,
+    FieldsEmpty,
+    EmailInvalid,
+    PasswordTooShort,
+}
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,35 +32,31 @@ public class LoginActivity extends AppCompatActivity {
         login_createNewAccount_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Navigate to Sign Up Activity
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
+            //Navigate to Sign Up Activity
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            startActivity(intent);
             }
         });
 
-        Button login_button  = (Button) findViewById(R.id.login_button);
+        Button login_button = (Button) findViewById(R.id.login_button);
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //stores the editText from login page in variables
                 final EditText login_emailEntry = (EditText) findViewById(R.id.login_emailEntry);
                 final EditText login_passwordEntry = (EditText) findViewById(R.id.login_passwordEntry);
-                //Get values of username and password variables
-                String username = (login_emailEntry.getText().toString());
+                //Get values of email and password variables
+                String email = (login_emailEntry.getText().toString());
                 String password = (login_passwordEntry.getText().toString());
 
-                String errorMessage = "";
 
-                //TODO: Check if input is valid, then sign into Firebase
-
-                if(username.compareTo("admin") == 0) {
-                    errorMessage = "no";
-                }
+                //Validates input and gets error message
+                LoginError loginError = validateInput(email, password);
 
                 //If there is an error
-                if(!errorMessage.isEmpty()) {
+                if(loginError != LoginError.None) {
                     //Show a snackbar with the error message
-                    Snackbar mySnackbar = Snackbar.make(findViewById(R.id.login_page), errorMessage, BaseTransientBottomBar.LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(findViewById(R.id.login_page), errorMessage(loginError), BaseTransientBottomBar.LENGTH_SHORT);
                     //Add close button
                     mySnackbar.setAction("CLOSE", new View.OnClickListener() {
                         @Override
@@ -63,18 +67,61 @@ public class LoginActivity extends AppCompatActivity {
                     mySnackbar.addCallback(new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar snackbar, int event) {
-                            login_emailEntry.getText().clear();
-                            login_passwordEntry.getText().clear();
+                        login_emailEntry.getText().clear();
+                        login_passwordEntry.getText().clear();
                         }
                     });
                     //Show snackbar
                     mySnackbar.show();
                 } else {
-                    //Navigate to Main Activity if login is valid
+                    //TODO: Attempt to Log into Firebase
+                    //Navigate to Main Activity when successful
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
             }
         });
+    }
+
+    /**
+     * Validates the inputs of login page
+     * @param email the email to validate
+     * @param password the password to validate
+     * @return the LoginError value for the given inputs.
+     */
+    private LoginError validateInput(String email, String password) {
+        //Checks if any field is empty
+        if(email.isEmpty() || password.isEmpty()) {
+            return LoginError.FieldsEmpty;
+        }
+        //Validates Email
+        boolean validEmail = Utils.isEmailValid(email);
+        if(!validEmail) {
+            return LoginError.EmailInvalid;
+        }
+        //Checks if password is long enough
+        if(password.length() < 6) {
+            return LoginError.PasswordTooShort;
+        }
+        //Returns no error message if inputs are valid.
+        return LoginError.None;
+    }
+
+    /**
+     * Returns a string representation of the login error
+     * @param error the login error
+     * @return the string representation of the login error.
+     */
+    private String errorMessage(LoginError error) {
+        switch(error) {
+            case FieldsEmpty:
+                return "One or more required fields are empty";
+            case EmailInvalid:
+                return "Email is invalid.";
+            case PasswordTooShort:
+                return "Password is too short.";
+            default:
+                return "";
+        }
     }
 }
