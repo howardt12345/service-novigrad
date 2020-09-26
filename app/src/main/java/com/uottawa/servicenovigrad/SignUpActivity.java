@@ -1,5 +1,6 @@
 package com.uottawa.servicenovigrad;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,9 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.uottawa.servicenovigrad.utils.Utils;
 
 enum SignUpError {
@@ -21,6 +27,7 @@ enum SignUpError {
 }
 
 public class SignUpActivity extends AppCompatActivity {
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +39,9 @@ public class SignUpActivity extends AppCompatActivity {
         signUp_login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //Navigate to Login Activity
-            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-            startActivity(intent);
+                //Navigate to Login Activity
+                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -57,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
                 final SignUpError signUpError = validateInput(name, email, password, passwordConfirm);
 
                 //If there is an error
-                if(signUpError != SignUpError.None) {
+                if (signUpError != SignUpError.None) {
                     //Show a snackbar with the error message
                     Snackbar mySnackbar = Snackbar.make(findViewById(R.id.signup_page), errorMessage(signUpError), BaseTransientBottomBar.LENGTH_SHORT);
                     //Add close button
@@ -70,31 +77,53 @@ public class SignUpActivity extends AppCompatActivity {
                     mySnackbar.addCallback(new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar snackbar, int event) {
-                        switch(signUpError) {
-                            case FieldsEmpty:
-                                break;
-                            case InvalidEmail:
-                                signUpEmailEntry.getText().clear();
-                                break;
-                            case PasswordTooShort:
-                            case PasswordsNoMatch:
-                                signUpPasswordEntry.getText().clear();
-                                signUpPasswordConfirm.getText().clear();
-                                break;
-                        }
+                            switch (signUpError) {
+                                case FieldsEmpty:
+                                    break;
+                                case InvalidEmail:
+                                    signUpEmailEntry.getText().clear();
+                                    break;
+                                case PasswordTooShort:
+                                case PasswordsNoMatch:
+                                    signUpPasswordEntry.getText().clear();
+                                    signUpPasswordConfirm.getText().clear();
+                                    break;
+                            }
                         }
                     });
                     //Show snackbar
                     mySnackbar.show();
                 } else {
-                    //TODO: Attempt to create an account on Firebase
-                    //Navigate to Main Activity when successful
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    // Create user on Firebase
+                    auth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sucessful signup
+                                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(SignUpActivity.this, "Auth failed",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                 }
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        auth = FirebaseAuth.getInstance();
+    }
+
+
+
+
 
     /**
      * Validates the inputs of the sign up page
