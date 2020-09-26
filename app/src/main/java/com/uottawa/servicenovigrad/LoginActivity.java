@@ -16,6 +16,8 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.uottawa.servicenovigrad.utils.Utils;
 
 enum LoginError {
@@ -27,6 +29,7 @@ enum LoginError {
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,22 +93,40 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     //Sign into firebase
                     auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sucessful signup
-                                    CurrentUser.addInfo("", email, "customer");
-                                    //Navigate to Main Activity when successful
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    //Show failed error
-                                    Toast.makeText(LoginActivity.this, "Auth failed",
-                                            Toast.LENGTH_SHORT).show();
-                                }
+                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                //Successful login
+
+                                //Retrieve user info from firestore
+                                firestore.collection("users").document(auth.getCurrentUser().getUid()).get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            String n = (String) document.getData().get("name");
+                                            String r = (String) document.getData().get("name");
+                                            CurrentUser.addInfo(n, email, r, auth.getCurrentUser().getUid());
+                                            
+                                            //Navigate to Main Activity when successful
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        } else {
+                                            //Show failed error
+                                            Toast.makeText(LoginActivity.this, "Failed to get data from database",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            } else {
+                                //Show failed error
+                                Toast.makeText(LoginActivity.this, "Auth failed",
+                                        Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        }
+                    });
                 }
             }
         });
@@ -115,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
     }
 
 
