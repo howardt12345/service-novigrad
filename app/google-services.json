@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "454905565566",
+    "firebase_url": "https://service-novigrad.firebaseio.com",
+    "project_id": "service-novigrad",
+    "storage_bucket": "service-novigrad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454905565566:android:5adf2ee991ff85b66a632f",
+        "android_client_info": {
+          "package_name": "com.uottawa.servicenovigrad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454905565566-5h8tf2qu4qhqt5jdk6b31vq0revmtp73.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uottawa.servicenovigrad",
+            "certificate_hash": "577142d77f68053979d84d767e3d2c9123af3281"
+          }
+        },
+        {
+          "client_id": "454905565566-8gm1e9md97jbs83smjbipbujomie7gpb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH3PKKClvg8nlP_p1kjxr15h8VEI8asho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454905565566-8gm1e9md97jbs83smjbipbujomie7gpb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

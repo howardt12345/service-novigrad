@@ -2,6 +2,7 @@ package com.uottawa.servicenovigrad;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,12 @@ public class LoginActivity extends AppCompatActivity {
                 //Get values of username and password variables
                 String username = (login_emailEntry.getText().toString());
                 String password = (login_passwordEntry.getText().toString());
+
+                //TODO: Check if input is valid
+
+                //Navigate to Main Activity if login is valid
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }
