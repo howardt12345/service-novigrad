@@ -55,10 +55,10 @@ public class SignUpActivity extends AppCompatActivity {
                 final EditText signUpPasswordEntry = (EditText) findViewById(R.id.signUp_passwordEntry);
                 final EditText signUpPasswordConfirm = (EditText) findViewById(R.id.signUp_passwordConfirm);
                 //Get values of email and password variables
-                String name = signUpNameEntry.getText().toString();
-                String email = signUpEmailEntry.getText().toString();
-                String password = signUpPasswordEntry.getText().toString();
-                String passwordConfirm = signUpPasswordConfirm.getText().toString();
+                final String name = signUpNameEntry.getText().toString();
+                final String email = signUpEmailEntry.getText().toString();
+                final String password = signUpPasswordEntry.getText().toString();
+                final String passwordConfirm = signUpPasswordConfirm.getText().toString();
 
                 //Validates input and gets error message
                 final SignUpError signUpError = validateInput(name, email, password, passwordConfirm);
@@ -101,9 +101,12 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sucessful signup
+                                CurrentUser.addInfo(name, email, "customer");
+                                //Navigate to Main Activity when successful
                                 Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                 startActivity(intent);
                             } else {
+                                //Show failed error
                                 Toast.makeText(SignUpActivity.this, "Auth failed",
                                         Toast.LENGTH_SHORT).show();
                             }

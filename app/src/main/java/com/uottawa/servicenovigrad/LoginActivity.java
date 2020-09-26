@@ -1,5 +1,6 @@
 package com.uottawa.servicenovigrad;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,9 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.uottawa.servicenovigrad.utils.Utils;
 
 enum LoginError {
@@ -20,6 +26,7 @@ enum LoginError {
 }
 
 public class LoginActivity extends AppCompatActivity {
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +53,8 @@ public class LoginActivity extends AppCompatActivity {
                 final EditText login_emailEntry = (EditText) findViewById(R.id.login_emailEntry);
                 final EditText login_passwordEntry = (EditText) findViewById(R.id.login_passwordEntry);
                 //Get values of email and password variables
-                String email = (login_emailEntry.getText().toString());
-                String password = (login_passwordEntry.getText().toString());
-
+                final String email = (login_emailEntry.getText().toString());
+                final String password = (login_passwordEntry.getText().toString());
 
                 //Validates input and gets error message
                 final LoginError loginError = validateInput(email, password);
@@ -82,14 +88,35 @@ public class LoginActivity extends AppCompatActivity {
                     //Show snackbar
                     mySnackbar.show();
                 } else {
-                    //TODO: Attempt to Log into Firebase
-                    //Navigate to Main Activity when successful
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    //Sign into firebase
+                    auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sucessful signup
+                                    CurrentUser.addInfo("", email, "customer");
+                                    //Navigate to Main Activity when successful
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    //Show failed error
+                                    Toast.makeText(LoginActivity.this, "Auth failed",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
                 }
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth = FirebaseAuth.getInstance();
+    }
+
 
     /**
      * Validates the inputs of login page
