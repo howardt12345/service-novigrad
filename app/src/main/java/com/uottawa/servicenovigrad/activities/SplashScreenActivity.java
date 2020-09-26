@@ -1,9 +1,11 @@
-package com.uottawa.servicenovigrad;
+package com.uottawa.servicenovigrad.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.uottawa.servicenovigrad.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

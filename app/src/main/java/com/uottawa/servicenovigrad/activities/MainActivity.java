@@ -1,4 +1,4 @@
-package com.uottawa.servicenovigrad;
+package com.uottawa.servicenovigrad.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import com.uottawa.servicenovigrad.CurrentUser;
+import com.uottawa.servicenovigrad.R;
 
 public class MainActivity extends AppCompatActivity {
 

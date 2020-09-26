@@ -1,4 +1,4 @@
-package com.uottawa.servicenovigrad;
+package com.uottawa.servicenovigrad.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +18,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.uottawa.servicenovigrad.CurrentUser;
+import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.utils.Utils;
 
 enum LoginError {
