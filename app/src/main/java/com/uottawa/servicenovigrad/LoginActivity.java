@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
                 String username = (login_emailEntry.getText().toString());
                 String password = (login_passwordEntry.getText().toString());
 
-                //TODO: Check if input is valid
+                //TODO: Check if input is valid, then sign into Firebase
 
                 //Navigate to Main Activity if login is valid
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
