@@ -3,3 +3,4 @@ This is the repository of the Service Novigrad android project, made by SEG 2105
 
 # Group Members
 Howard Hao En Tseng (300108234)
+Feyi Adesanya (300120992)
