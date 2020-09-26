@@ -47,8 +47,8 @@
         android:drawablePadding="10dp"
         android:ems="10"
         android:gravity="center_vertical"
-        android:hint="Username"
-        android:inputType="textPersonName"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:textSize="20sp"
@@ -79,6 +79,21 @@
         app:layout_constraintVertical_bias="0.603" />
 
     <Button
+        android:id="@+id/login_button"
+        android:layout_width="122dp"
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_edges"
+        android:backgroundTint="@color/potentialMainTheme1"
+        android:fontFamily="@font/assistant_bold"
+        android:text="Login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.808" />
+
+    <Button
         android:id="@+id/login_createNewAccount"
         android:layout_width="200dp"
         android:layout_height="36dp"
@@ -92,20 +107,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button"
         app:layout_constraintVertical_bias="0.766" />
-
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="122dp"
-        android:layout_height="48dp"
-        android:background="@drawable/rounded_edges"
-        android:backgroundTint="@color/potentialMainTheme1"
-        android:fontFamily="@font/assistant_bold"
-        android:text="Sign In"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.808" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
