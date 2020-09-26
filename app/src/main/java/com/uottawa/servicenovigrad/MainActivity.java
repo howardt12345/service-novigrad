@@ -17,5 +17,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
+
+        Button signOut_button = (Button) findViewById(R.id.signOut_button);
+        signOut_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //TODO: Sign out of Firebase
+
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
