@@ -1,2 +1,5 @@
-# seg2105f20-project_gr-1
-seg2105f20-project-project_gr-1 created by GitHub Classroom
+# Service Novigrad Android Project
+This is the repository of the Service Novigrad android project, made by SEG 2105 Project Group 1. 
+
+# Group Members
+Howard Hao En Tseng (300108234)
