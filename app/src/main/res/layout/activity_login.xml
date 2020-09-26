@@ -36,7 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_welcome"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_capitol_building" />
+        app:srcCompat="@drawable/ic_capital_building" />
 
     <EditText
         android:id="@+id/login_emailEntry"

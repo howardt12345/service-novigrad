@@ -116,5 +116,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.071"
-        app:srcCompat="@drawable/ic_capitol_building" />
+        app:srcCompat="@drawable/ic_capital_building" />
 </androidx.constraintlayout.widget.ConstraintLayout>
