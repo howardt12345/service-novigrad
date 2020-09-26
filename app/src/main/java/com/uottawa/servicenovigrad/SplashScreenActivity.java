@@ -11,8 +11,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        getSupportActionBar().hide();
 
-        boolean signedIn = true;
+        boolean signedIn = false;
 
         if(signedIn) {
             Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);

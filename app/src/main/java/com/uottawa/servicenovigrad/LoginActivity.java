@@ -13,6 +13,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
 
         Button login_button  = (Button) findViewById(R.id.login_button);
         login_button.setOnClickListener(new View.OnClickListener() {
