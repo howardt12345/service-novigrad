@@ -130,13 +130,35 @@ public class LoginActivity extends AppCompatActivity {
                                                                 startActivity(intent);
                                                             } else {
                                                                 //Show failed error
-                                                                Toast.makeText(LoginActivity.this, "Failed to get data from database", Toast.LENGTH_SHORT).show();
+                                                                Snackbar snackbar = Snackbar.make(findViewById(R.id.login_page), "Failed to get user details from database!", BaseTransientBottomBar.LENGTH_SHORT);
+                                                                snackbar.setAction("CLOSE", new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {}
+                                                                });
+                                                                snackbar.addCallback(new Snackbar.Callback() {
+                                                                    @Override
+                                                                    public void onDismissed(Snackbar snackbar, int event) {
+                                                                        return;
+                                                                    }
+                                                                });
+                                                                snackbar.show();
                                                             }
                                                         }
                                                     });
                                         } else {
                                             //Show failed error
-                                            Toast.makeText(LoginActivity.this, "Failed to log in.", Toast.LENGTH_SHORT).show();
+                                            Snackbar snackbar = Snackbar.make(findViewById(R.id.signup_page), "Failed to login!", BaseTransientBottomBar.LENGTH_SHORT);
+                                            snackbar.setAction("CLOSE", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {}
+                                            });
+                                            snackbar.addCallback(new Snackbar.Callback() {
+                                                @Override
+                                                public void onDismissed(Snackbar snackbar, int event) {
+                                                    return;
+                                                }
+                                            });
+                                            snackbar.show();
                                         }
                                     }
                                 });

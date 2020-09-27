@@ -125,7 +125,18 @@ public class SignUpActivity extends AppCompatActivity {
                                 startActivity(intent);
                             } else {
                                 //Show failed error
-                                Toast.makeText(SignUpActivity.this, "Failed to sign up.", Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(R.id.signup_page), "Failed to create user!", BaseTransientBottomBar.LENGTH_SHORT);
+                                snackbar.setAction("CLOSE", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {}
+                                });
+                                snackbar.addCallback(new Snackbar.Callback() {
+                                   @Override
+                                   public void onDismissed(Snackbar snackbar, int event) {
+                                       return;
+                                   }
+                                });
+                                snackbar.show();
                             }
                         }
                     });
