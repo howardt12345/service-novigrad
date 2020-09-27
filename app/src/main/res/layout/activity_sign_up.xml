@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.358" />
+        app:layout_constraintVertical_bias="0.335" />
 
     <TextView
         android:id="@+id/signUp_welcome"
@@ -112,6 +112,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUp_passwordEntry" />
 
+    <Switch
+        android:id="@+id/signUp_asEmployee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Sign Up as Employee"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUp_passwordConfirm" />
+
     <Button
         android:id="@+id/signUp_button"
         android:layout_width="122dp"
@@ -122,9 +133,9 @@
         android:text="Sign Up"
         app:layout_constraintBottom_toTopOf="@+id/signUp_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUp_passwordConfirm" />
+        app:layout_constraintTop_toBottomOf="@+id/signUp_asEmployee" />
 
     <Button
         android:id="@+id/signUp_login"

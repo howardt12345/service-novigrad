@@ -3,11 +3,15 @@ package com.uottawa.servicenovigrad.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -52,6 +56,44 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+        final Switch signUp_asEmployee_switch = (Switch) findViewById(R.id.signUp_asEmployee);
+        //Add confirmation dialog to employee switch
+        signUp_asEmployee_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    //Create confirmation AlertDialog
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SignUpActivity.this);
+                    alertDialogBuilder
+                    .setTitle("Sign Up as Employee?")
+                    .setMessage("Are you sure you want to sign up as an employee? Make sure you have the permission to do so.")
+                    .setCancelable(true)
+                    .setPositiveButton(
+                        "YES",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }
+                    )
+                    .setNegativeButton(
+                        "NO",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                signUp_asEmployee_switch.toggle();
+                            }
+                        }
+                    );
+                    //Show AlertDialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
+            }
+        });
+
         Button signUp_button = (Button) findViewById(R.id.signUp_button);
         signUp_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +109,7 @@ public class SignUpActivity extends AppCompatActivity {
                 final String password = signUpPasswordEntry.getText().toString();
                 final String passwordConfirm = signUpPasswordConfirm.getText().toString();
 
-                final String role = "customer";
+                final String role = signUp_asEmployee_switch.isChecked() ? "employee" : "customer";
 
                 //Validates input and gets error message
                 final SignUpError signUpError = validateInput(name, email, password, passwordConfirm);
