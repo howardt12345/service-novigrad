@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.uottawa.servicenovigrad.CurrentUser;
 import com.uottawa.servicenovigrad.R;
 
@@ -29,8 +30,11 @@ public class MainActivity extends AppCompatActivity {
         signOut_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //TODO: Sign out of Firebase
-
+            //Sign out of Firebase
+            FirebaseAuth.getInstance().signOut();
+            //Clears current user info
+            CurrentUser.clearInfo();
+            //Navigate back to Login Page
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             }
