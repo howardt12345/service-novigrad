@@ -175,6 +175,11 @@ public class LoginActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
     }
 
+    @Override
+    public void onBackPressed() {
+        //Prevent user from going back because it could go back to the splash page
+    }
+
 
     /**
      * Validates the inputs of login page
