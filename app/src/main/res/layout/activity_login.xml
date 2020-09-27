@@ -19,7 +19,7 @@
         android:textSize="64sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.151" />
@@ -52,16 +52,17 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/login_passwordEntry"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <EditText
         android:id="@+id/login_passwordEntry"
         android:layout_width="275dp"
         android:layout_height="52dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edges"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:drawablePadding="10dp"
@@ -72,11 +73,9 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.603" />
+        app:layout_constraintTop_toBottomOf="@+id/login_emailEntry" />
 
     <Button
         android:id="@+id/login_button"
