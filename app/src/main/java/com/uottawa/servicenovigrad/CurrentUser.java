@@ -27,4 +27,5 @@ public class CurrentUser {
     public static String getRole() {
         return role;
     }
+    public static String getUID() { return uid; }
 }
