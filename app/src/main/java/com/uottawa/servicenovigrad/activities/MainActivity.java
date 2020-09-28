@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         TextView info = (TextView) findViewById(R.id.login_info);
 
         title.setText("Welcome " + CurrentUser.getName() + "!");
-        info.setText("You are logged in as a " + CurrentUser.getRole());
+        info.setText("You are logged in as a " + CurrentUser.getRole() + "\nYour email is: " + CurrentUser.getEmail());
 
         Button signOut_button = (Button) findViewById(R.id.signOut_button);
         signOut_button.setOnClickListener(new View.OnClickListener() {
