@@ -213,7 +213,7 @@ public class LoginActivity extends AppCompatActivity {
     private String errorMessage(LoginError error) {
         switch(error) {
             case FieldsEmpty:
-                return "One or more required fields are empty";
+                return "One or more required fields are empty. ";
             case EmailInvalid:
                 return "Email is invalid.";
             case PasswordTooShort:

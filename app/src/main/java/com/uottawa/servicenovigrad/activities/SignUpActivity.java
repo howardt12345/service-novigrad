@@ -232,7 +232,7 @@ public class SignUpActivity extends AppCompatActivity {
     private String errorMessage(SignUpError error) {
         switch(error) {
             case FieldsEmpty:
-                return "One or more required fields are empty";
+                return "One or more required fields are empty. ";
             case InvalidEmail:
                 return "Email is invalid.";
             case PasswordTooShort:
