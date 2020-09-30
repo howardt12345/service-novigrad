@@ -93,60 +93,67 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        Button signUp_button = (Button) findViewById(R.id.signUp_button);
-        signUp_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //stores the editText from sign up page in variables
-                final EditText signUpNameEntry = (EditText) findViewById(R.id.signUp_nameEntry);
-                final EditText signUpEmailEntry = (EditText) findViewById(R.id.signUp_emailEntry);
-                final EditText signUpPasswordEntry = (EditText) findViewById(R.id.signUp_passwordEntry);
-                final EditText signUpPasswordConfirm = (EditText) findViewById(R.id.signUp_passwordConfirm);
-                //Get values of email and password variables
-                final String name = signUpNameEntry.getText().toString();
-                final String email = signUpEmailEntry.getText().toString();
-                final String password = signUpPasswordEntry.getText().toString();
-                final String passwordConfirm = signUpPasswordConfirm.getText().toString();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+    }
 
-                final String role = signUp_asEmployee_switch.isChecked() ? "employee" : "customer";
+    public void onSignUpButtonClicked(View v) {
+        //stores the editText from sign up page in variables
+        final EditText signUpNameEntry = (EditText) findViewById(R.id.signUp_nameEntry);
+        final EditText signUpEmailEntry = (EditText) findViewById(R.id.signUp_emailEntry);
+        final EditText signUpPasswordEntry = (EditText) findViewById(R.id.signUp_passwordEntry);
+        final EditText signUpPasswordConfirm = (EditText) findViewById(R.id.signUp_passwordConfirm);
+        //Get values of email and password variables
+        final String name = signUpNameEntry.getText().toString();
+        final String email = signUpEmailEntry.getText().toString();
+        final String password = signUpPasswordEntry.getText().toString();
+        final String passwordConfirm = signUpPasswordConfirm.getText().toString();
+        //Gets the employee toggle.
+        Switch signUp_asEmployee_switch = (Switch) findViewById(R.id.signUp_asEmployee);
 
-                //Validates input and gets error message
-                final SignUpError signUpError = validateInput(name, email, password, passwordConfirm);
+        final String role = signUp_asEmployee_switch.isChecked() ? "employee" : "customer";
 
-                //If there is an error
-                if (signUpError != SignUpError.None) {
-                    //Show a snackbar with the error message
-                    Snackbar mySnackbar = Snackbar.make(findViewById(R.id.signup_page), errorMessage(signUpError), BaseTransientBottomBar.LENGTH_SHORT);
-                    //Add close button
-                    mySnackbar.setAction("CLOSE", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                        }
-                    });
-                    //Clear text when snackbar is closed
-                    mySnackbar.addCallback(new Snackbar.Callback() {
-                        @Override
-                        public void onDismissed(Snackbar snackbar, int event) {
-                            switch (signUpError) {
-                                case FieldsEmpty:
-                                    break;
-                                case InvalidEmail:
-                                    signUpEmailEntry.getText().clear();
-                                    break;
-                                case PasswordTooShort:
-                                case PasswordsNoMatch:
-                                    signUpPasswordEntry.getText().clear();
-                                    signUpPasswordConfirm.getText().clear();
-                                    break;
-                            }
-                        }
-                    });
-                    //Show snackbar
-                    mySnackbar.show();
-                } else {
-                    // Create user on Firebase
-                    auth.createUserWithEmailAndPassword(email, password)
+        //Validates input and gets error message
+        final SignUpError signUpError = validateInput(name, email, password, passwordConfirm);
+
+        //If there is an error
+        if (signUpError != SignUpError.None) {
+            //Show a snackbar with the error message
+            Snackbar mySnackbar = Snackbar.make(findViewById(R.id.signup_page), errorMessage(signUpError), BaseTransientBottomBar.LENGTH_SHORT);
+            //Add close button
+            mySnackbar.setAction("CLOSE", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                }
+            });
+            //Clear text when snackbar is closed
+            mySnackbar.addCallback(new Snackbar.Callback() {
+                @Override
+                public void onDismissed(Snackbar snackbar, int event) {
+                    switch (signUpError) {
+                        case FieldsEmpty:
+                            break;
+                        case InvalidEmail:
+                            signUpEmailEntry.getText().clear();
+                            break;
+                        case PasswordTooShort:
+                        case PasswordsNoMatch:
+                            signUpPasswordEntry.getText().clear();
+                            signUpPasswordConfirm.getText().clear();
+                            break;
+                    }
+                }
+            });
+            //Show snackbar
+            mySnackbar.show();
+        } else {
+            // Create user on Firebase
+            auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -173,25 +180,16 @@ public class SignUpActivity extends AppCompatActivity {
                                     public void onClick(View v) {}
                                 });
                                 snackbar.addCallback(new Snackbar.Callback() {
-                                   @Override
-                                   public void onDismissed(Snackbar snackbar, int event) {
-                                       return;
-                                   }
+                                    @Override
+                                    public void onDismissed(Snackbar snackbar, int event) {
+                                        return;
+                                    }
                                 });
                                 snackbar.show();
                             }
                         }
                     });
-                }
-            }
-        });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        auth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
+        }
     }
 
     /**

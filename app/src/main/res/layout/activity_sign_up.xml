@@ -130,6 +130,7 @@
         android:background="@drawable/rounded_edges"
         android:backgroundTint="@color/potentialMainTheme1"
         android:fontFamily="@font/assistant_bold"
+        android:onClick="onSignUpButtonClicked"
         android:text="Sign Up"
         app:layout_constraintBottom_toTopOf="@+id/signUp_login"
         app:layout_constraintEnd_toEndOf="parent"
