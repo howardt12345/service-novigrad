@@ -61,6 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
         signUp_asEmployee_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //If the switch was just checked
                 if(isChecked) {
                     //Create confirmation AlertDialog
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SignUpActivity.this);
@@ -102,7 +103,11 @@ public class SignUpActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
     }
 
-    public void onSignUpButtonClicked(View v) {
+    /**
+     * The method that will be called when the sign up button is pressed.
+     * @param view The current view.
+     */
+    public void onSignUpButtonClicked(View view) {
         //stores the editText from sign up page in variables
         final EditText signUpNameEntry = (EditText) findViewById(R.id.signUp_nameEntry);
         final EditText signUpEmailEntry = (EditText) findViewById(R.id.signUp_emailEntry);
@@ -129,6 +134,7 @@ public class SignUpActivity extends AppCompatActivity {
             mySnackbar.setAction("CLOSE", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //Close button does nothing really
                 }
             });
             //Clear text when snackbar is closed
@@ -154,41 +160,42 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             // Create user on Firebase
             auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sucessful signup
+            .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sucessful signup
 
-                                //Store user info to cloud firestore
-                                Map<String, Object> userInfo = new HashMap<>();
-                                userInfo.put("name", name);
-                                userInfo.put("email", email);
-                                userInfo.put("role", role);
+                        //Create a map with the data to write to cloud firestore
+                        Map<String, Object> userInfo = new HashMap<>();
+                        userInfo.put("name", name);
+                        userInfo.put("email", email);
+                        userInfo.put("role", role);
 
-                                firestore.collection("users").document(auth.getCurrentUser().getUid()).set(userInfo);
-                                CurrentUser.addInfo(name, email, role, auth.getCurrentUser().getUid());
+                        //Writes the data to firestore
+                        firestore.collection("users").document(auth.getCurrentUser().getUid()).set(userInfo);
+                        CurrentUser.addInfo(name, email, role, auth.getCurrentUser().getUid());
 
-                                //Navigate to Main Activity when successful
-                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            } else {
-                                //Show failed error
-                                Snackbar snackbar = Snackbar.make(findViewById(R.id.signup_page), "Failed to create user!", BaseTransientBottomBar.LENGTH_SHORT);
-                                snackbar.setAction("CLOSE", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {}
-                                });
-                                snackbar.addCallback(new Snackbar.Callback() {
-                                    @Override
-                                    public void onDismissed(Snackbar snackbar, int event) {
-                                        return;
-                                    }
-                                });
-                                snackbar.show();
+                        //Navigate to Main Activity when successful
+                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        //Show failed error
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.signup_page), "Failed to create user!", BaseTransientBottomBar.LENGTH_SHORT);
+                        snackbar.setAction("CLOSE", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {}
+                        });
+                        snackbar.addCallback(new Snackbar.Callback() {
+                            @Override
+                            public void onDismissed(Snackbar snackbar, int event) {
+                                return;
                             }
-                        }
-                    });
+                        });
+                        snackbar.show();
+                    }
+                }
+            });
         }
     }
 
