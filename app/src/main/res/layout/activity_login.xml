@@ -84,6 +84,7 @@
         android:background="@drawable/rounded_edges"
         android:backgroundTint="@color/potentialMainTheme1"
         android:fontFamily="@font/assistant_bold"
+        android:onClick="onLoginButtonPressed"
         android:text="Login"
         app:layout_constraintBottom_toTopOf="@+id/login_createNewAccount"
         app:layout_constraintEnd_toEndOf="parent"

@@ -50,122 +50,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button login_button = (Button) findViewById(R.id.login_button);
-        login_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //stores the editText from login page in variables
-                final EditText login_emailEntry = (EditText) findViewById(R.id.login_emailEntry);
-                final EditText login_passwordEntry = (EditText) findViewById(R.id.login_passwordEntry);
-                //Get values of email and password variables
-                final String email = (login_emailEntry.getText().toString());
-                final String password = (login_passwordEntry.getText().toString());
-
-                //Checks if user is trying to log in as admin
-                final boolean admin = email.compareTo("admin") == 0 && password.compareTo("admin") == 0;
-                //If logging in as admin
-                if(admin) {
-                    CurrentUser.addInfo("admin", "admin", "admin", "admin");
-
-                    Toast.makeText(LoginActivity.this, "Logging in as admin", Toast.LENGTH_SHORT).show();
-
-                    //Navigate to Main Activity
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    //Validates input and gets error message
-                    final LoginError loginError = validateInput(email, password);
-
-
-                    //If there is an error
-                    if(loginError != LoginError.None) {
-                        //Show a snackbar with the error message
-                        Snackbar mySnackbar = Snackbar.make(findViewById(R.id.login_page), errorMessage(loginError), BaseTransientBottomBar.LENGTH_SHORT);
-                        //Add close button
-                        mySnackbar.setAction("CLOSE", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                            }
-                        });
-                        //Clear text when snackbar is closed
-                        mySnackbar.addCallback(new Snackbar.Callback() {
-                            @Override
-                            public void onDismissed(Snackbar snackbar, int event) {
-                                switch(loginError) {
-                                    case FieldsEmpty:
-                                        break;
-                                    case EmailInvalid:
-                                        login_emailEntry.getText().clear();
-                                        break;
-                                    case PasswordTooShort:
-                                        login_passwordEntry.getText().clear();
-                                        break;
-                                }
-                            }
-                        });
-                        //Show snackbar
-                        mySnackbar.show();
-                    } else {
-                        //Sign into firebase
-                        auth.signInWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (task.isSuccessful()) {
-                                            //Successful login
-
-                                            //Retrieve user info from firestore
-                                            firestore.collection("users").document(auth.getCurrentUser().getUid()).get()
-                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                            if (task.isSuccessful()) {
-                                                                DocumentSnapshot document = task.getResult();
-                                                                String n = (String) document.getData().get("name");
-                                                                String r = (String) document.getData().get("role");
-                                                                CurrentUser.addInfo(n, email, r, auth.getCurrentUser().getUid());
-
-                                                                //Navigate to Main Activity when successful
-                                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                                startActivity(intent);
-                                                            } else {
-                                                                //Show failed error
-                                                                Snackbar snackbar = Snackbar.make(findViewById(R.id.login_page), "Failed to get user details from database!", BaseTransientBottomBar.LENGTH_SHORT);
-                                                                snackbar.setAction("CLOSE", new View.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(View v) {}
-                                                                });
-                                                                snackbar.addCallback(new Snackbar.Callback() {
-                                                                    @Override
-                                                                    public void onDismissed(Snackbar snackbar, int event) {
-                                                                        return;
-                                                                    }
-                                                                });
-                                                                snackbar.show();
-                                                            }
-                                                        }
-                                                    });
-                                        } else {
-                                            //Show failed error
-                                            Snackbar snackbar = Snackbar.make(findViewById(R.id.signup_page), "Failed to login!", BaseTransientBottomBar.LENGTH_SHORT);
-                                            snackbar.setAction("CLOSE", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {}
-                                            });
-                                            snackbar.addCallback(new Snackbar.Callback() {
-                                                @Override
-                                                public void onDismissed(Snackbar snackbar, int event) {
-                                                    return;
-                                                }
-                                            });
-                                            snackbar.show();
-                                        }
-                                    }
-                                });
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -180,6 +64,121 @@ public class LoginActivity extends AppCompatActivity {
         //Prevent user from going back because it could go back to the splash page
     }
 
+    /**
+     * The method that will be called when the login button is pressed.
+     * @param view The current view.
+     */
+    public void onLoginButtonPressed(View view) {
+        //stores the editText from login page in variables
+        final EditText login_emailEntry = (EditText) findViewById(R.id.login_emailEntry);
+        final EditText login_passwordEntry = (EditText) findViewById(R.id.login_passwordEntry);
+        //Get values of email and password variables
+        final String email = (login_emailEntry.getText().toString());
+        final String password = (login_passwordEntry.getText().toString());
+
+        //Checks if user is trying to log in as admin
+        final boolean admin = email.compareTo("admin") == 0 && password.compareTo("admin") == 0;
+        //If logging in as admin
+        if(admin) {
+            //Stores information in the CurrentUser static object.
+            CurrentUser.addInfo("admin", "admin", "admin", "admin");
+            //Show message to user to notify that they are logging into the admin account.
+            Toast.makeText(LoginActivity.this, "Logging in as admin", Toast.LENGTH_SHORT).show();
+            //Navigate to Main Activity
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        } else {
+            //Validates input and gets error message
+            final LoginError loginError = validateInput(email, password);
+
+            //If there is an error
+            if(loginError != LoginError.None) {
+                //Show a snackbar with the error message
+                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.login_page), errorMessage(loginError), BaseTransientBottomBar.LENGTH_SHORT);
+                //Add close button
+                mySnackbar.setAction("CLOSE", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                    }
+                });
+                //Clear text when snackbar is closed
+                mySnackbar.addCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        switch(loginError) {
+                            case FieldsEmpty:
+                                break;
+                            case EmailInvalid:
+                                login_emailEntry.getText().clear();
+                                break;
+                            case PasswordTooShort:
+                                login_passwordEntry.getText().clear();
+                                break;
+                        }
+                    }
+                });
+                //Show snackbar
+                mySnackbar.show();
+            } else {
+                //Sign into firebase
+                auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    //Successful login
+
+                                    //Retrieve user info from firestore
+                                    firestore.collection("users").document(auth.getCurrentUser().getUid()).get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        DocumentSnapshot document = task.getResult();
+                                                        String n = (String) document.getData().get("name");
+                                                        String r = (String) document.getData().get("role");
+                                                        CurrentUser.addInfo(n, email, r, auth.getCurrentUser().getUid());
+
+                                                        //Navigate to Main Activity when successful
+                                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                        startActivity(intent);
+                                                    } else {
+                                                        //Show failed error
+                                                        Snackbar snackbar = Snackbar.make(findViewById(R.id.login_page), "Failed to get user details from database!", BaseTransientBottomBar.LENGTH_SHORT);
+                                                        snackbar.setAction("CLOSE", new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {}
+                                                        });
+                                                        snackbar.addCallback(new Snackbar.Callback() {
+                                                            @Override
+                                                            public void onDismissed(Snackbar snackbar, int event) {
+                                                                return;
+                                                            }
+                                                        });
+                                                        snackbar.show();
+                                                    }
+                                                }
+                                            });
+                                } else {
+                                    //Show failed error
+                                    Snackbar snackbar = Snackbar.make(findViewById(R.id.signup_page), "Failed to login!", BaseTransientBottomBar.LENGTH_SHORT);
+                                    snackbar.setAction("CLOSE", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {}
+                                    });
+                                    snackbar.addCallback(new Snackbar.Callback() {
+                                        @Override
+                                        public void onDismissed(Snackbar snackbar, int event) {
+                                            return;
+                                        }
+                                    });
+                                    snackbar.show();
+                                }
+                            }
+                        });
+            }
+        }
+    }
 
     /**
      * Validates the inputs of login page
