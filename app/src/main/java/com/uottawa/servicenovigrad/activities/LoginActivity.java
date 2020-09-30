@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * The method that will be called when the login button is pressed.
+     * The method that will be called when the login button is pressed. Logs user into the app.
      * @param view The current view.
      */
     public void onLoginButtonPressed(View view) {
@@ -138,8 +138,10 @@ public class LoginActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         //Gets the result of the firestore read
                                         DocumentSnapshot document = task.getResult();
+                                        //Gets the name and role from the data
                                         String n = (String) document.getData().get("name");
                                         String r = (String) document.getData().get("role");
+                                        //Add info to CurrentUser
                                         CurrentUser.addInfo(n, email, r, auth.getCurrentUser().getUid());
 
                                         //Navigate to Main Activity when successful

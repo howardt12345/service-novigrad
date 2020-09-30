@@ -65,7 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     /**
-     * The method that will be called when the sign up button is pressed.
+     * The method that will be called when the sign up button is pressed. Signs user up for the app with the given inputs.
      * @param view The current view.
      */
     public void onSignUpButtonClicked(View view) {
@@ -135,6 +135,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                         //Writes the data to firestore
                         firestore.collection("users").document(auth.getCurrentUser().getUid()).set(userInfo);
+                        //Add info to CurrentUser
                         CurrentUser.addInfo(name, email, role, auth.getCurrentUser().getUid());
 
                         //Navigate to Main Activity when successful
