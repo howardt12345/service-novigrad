@@ -47,6 +47,7 @@
         android:background="@drawable/rounded_edges"
         android:backgroundTint="@color/potentialMainTheme1"
         android:fontFamily="@font/assistant_bold"
+        android:onClick="signOut"
         android:text="Sign Out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -23,21 +23,22 @@ public class MainActivity extends AppCompatActivity {
         TextView title = (TextView) findViewById(R.id.successful_login);
         TextView info = (TextView) findViewById(R.id.login_info);
 
+        //Write the name, role, and email of the current user.
         title.setText("Welcome " + CurrentUser.getName() + "!");
         info.setText("You are logged in as a " + CurrentUser.getRole() + "\nYour email is: " + CurrentUser.getEmail());
+    }
 
-        Button signOut_button = (Button) findViewById(R.id.signOut_button);
-        signOut_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            //Sign out of Firebase
-            FirebaseAuth.getInstance().signOut();
-            //Clears current user info
-            CurrentUser.clearInfo();
-            //Navigate back to Login Page
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            }
-        });
+    /**
+     * Sign out of the app.
+     * @param view The current view.
+     */
+    public void signOut(View view) {
+        //Sign out of Firebase
+        FirebaseAuth.getInstance().signOut();
+        //Clears current user info
+        CurrentUser.clearInfo();
+        //Navigate back to Login Page
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 }
