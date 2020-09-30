@@ -55,45 +55,6 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        final Switch signUp_asEmployee_switch = (Switch) findViewById(R.id.signUp_asEmployee);
-        //Add confirmation dialog to employee switch
-        signUp_asEmployee_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //If the switch was just checked
-                if(isChecked) {
-                    //Create confirmation AlertDialog
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SignUpActivity.this);
-                    alertDialogBuilder
-                    .setTitle("Sign Up as Employee?")
-                    .setMessage("Are you sure you want to sign up as an employee? Make sure you have the permission to do so.")
-                    .setCancelable(true)
-                    .setPositiveButton(
-                        "YES",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        }
-                    )
-                    .setNegativeButton(
-                        "NO",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                                signUp_asEmployee_switch.toggle();
-                            }
-                        }
-                    );
-                    //Show AlertDialog
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
-            }
-        });
     }
 
     @Override
@@ -158,7 +119,7 @@ public class SignUpActivity extends AppCompatActivity {
             //Show snackbar
             mySnackbar.show();
         } else {
-            // Create user on Firebase
+            // Create user on Firebase auth
             auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -196,6 +157,46 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 }
             });
+        }
+    }
+
+    /**
+     * The method that will be called when the sign up as employee switch is toggled.
+     * @param view The current view.
+     */
+    public void onSignUpAsEmployeeToggleClicked(View view) {
+        final Switch signUp_asEmployee_switch = (Switch) findViewById(R.id.signUp_asEmployee);
+        //If the switch was toggled on
+        if(signUp_asEmployee_switch.isChecked()) {
+            //Create confirmation AlertDialog
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SignUpActivity.this);
+            alertDialogBuilder
+                .setTitle("Sign Up as Employee?")
+                .setMessage("Are you sure you want to sign up as an employee? Make sure you have the permission to do so.")
+                .setCancelable(true)
+                .setPositiveButton(
+                    "YES",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }
+                )
+                .setNegativeButton(
+                    "NO",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            //
+                            signUp_asEmployee_switch.toggle();
+                        }
+                    }
+                );
+            //Show AlertDialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         }
     }
 
