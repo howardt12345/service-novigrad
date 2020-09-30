@@ -44,9 +44,9 @@ public class LoginActivity extends AppCompatActivity {
         login_createNewAccount_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //Navigate to Sign Up Activity
-            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-            startActivity(intent);
+                //Navigate to Sign Up Activity
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -122,60 +122,63 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 //Sign into firebase
                 auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    //Successful login
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            //Successful login
 
-                                    //Retrieve user info from firestore
-                                    firestore.collection("users").document(auth.getCurrentUser().getUid()).get()
-                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        DocumentSnapshot document = task.getResult();
-                                                        String n = (String) document.getData().get("name");
-                                                        String r = (String) document.getData().get("role");
-                                                        CurrentUser.addInfo(n, email, r, auth.getCurrentUser().getUid());
+                            //Retrieve user info from firestore
+                            firestore.collection("users")
+                            .document(auth.getCurrentUser().getUid()) //Gets the document with the user UID, where the data should be stored.
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        //Gets the result of the firestore read
+                                        DocumentSnapshot document = task.getResult();
+                                        String n = (String) document.getData().get("name");
+                                        String r = (String) document.getData().get("role");
+                                        CurrentUser.addInfo(n, email, r, auth.getCurrentUser().getUid());
 
-                                                        //Navigate to Main Activity when successful
-                                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                        startActivity(intent);
-                                                    } else {
-                                                        //Show failed error
-                                                        Snackbar snackbar = Snackbar.make(findViewById(R.id.login_page), "Failed to get user details from database!", BaseTransientBottomBar.LENGTH_SHORT);
-                                                        snackbar.setAction("CLOSE", new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {}
-                                                        });
-                                                        snackbar.addCallback(new Snackbar.Callback() {
-                                                            @Override
-                                                            public void onDismissed(Snackbar snackbar, int event) {
-                                                                return;
-                                                            }
-                                                        });
-                                                        snackbar.show();
-                                                    }
-                                                }
-                                            });
-                                } else {
-                                    //Show failed error
-                                    Snackbar snackbar = Snackbar.make(findViewById(R.id.signup_page), "Failed to login!", BaseTransientBottomBar.LENGTH_SHORT);
-                                    snackbar.setAction("CLOSE", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {}
-                                    });
-                                    snackbar.addCallback(new Snackbar.Callback() {
-                                        @Override
-                                        public void onDismissed(Snackbar snackbar, int event) {
-                                            return;
-                                        }
-                                    });
-                                    snackbar.show();
+                                        //Navigate to Main Activity when successful
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        //Show failed error
+                                        Snackbar snackbar = Snackbar.make(findViewById(R.id.login_page), "Failed to get user details from database!", BaseTransientBottomBar.LENGTH_SHORT);
+                                        snackbar.setAction("CLOSE", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {}
+                                        });
+                                        snackbar.addCallback(new Snackbar.Callback() {
+                                            @Override
+                                            public void onDismissed(Snackbar snackbar, int event) {
+                                                return;
+                                            }
+                                        });
+                                        snackbar.show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        } else {
+                            //Show failed error
+                            Snackbar snackbar = Snackbar.make(findViewById(R.id.signup_page), "Failed to login!", BaseTransientBottomBar.LENGTH_SHORT);
+                            snackbar.setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {}
+                            });
+                            snackbar.addCallback(new Snackbar.Callback() {
+                                @Override
+                                public void onDismissed(Snackbar snackbar, int event) {
+                                    return;
+                                }
+                            });
+                            snackbar.show();
+                        }
+                    }
+                });
             }
         }
     }
