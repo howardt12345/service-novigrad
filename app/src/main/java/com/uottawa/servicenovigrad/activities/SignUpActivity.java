@@ -32,7 +32,6 @@ enum SignUpError {
     None,
     FieldsEmpty,
     NameWhiteSpace,
-    PasswordWhiteSpace,
     InvalidEmail,
     PasswordTooShort,
     PasswordsNoMatch
@@ -113,7 +112,6 @@ public class SignUpActivity extends AppCompatActivity {
                         case InvalidEmail:
                             signUpEmailEntry.getText().clear();
                             break;
-                        case PasswordWhiteSpace:
                         case PasswordTooShort:
                         case PasswordsNoMatch:
                             signUpPasswordEntry.getText().clear();
@@ -224,10 +222,6 @@ public class SignUpActivity extends AppCompatActivity {
         if(name.trim().length() == 0){
             return SignUpError.NameWhiteSpace;
         }
-        //Checks if password is only composed of whitespaces
-        if(password.trim().length() == 0){
-            return SignUpError.PasswordWhiteSpace;
-        }
         //Validates Email
         boolean validEmail = Utils.isEmailValid(email);
         if(!validEmail) {
@@ -258,8 +252,6 @@ public class SignUpActivity extends AppCompatActivity {
                 return "Name contains only whitespaces";
             case InvalidEmail:
                 return "Email is invalid.";
-            case PasswordWhiteSpace:
-                return "Password contains only whitespaces";
             case PasswordTooShort:
                 return "Password is too short.";
             case PasswordsNoMatch:
