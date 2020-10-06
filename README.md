@@ -5,6 +5,7 @@ This is the repository of the Service Novigrad android project, made by SEG 2105
 Howard Hao En Tseng (300108234)
 Feyi Adesanya (300120992)
 Ethan Plant (300109850)
+Zayd Ghazal (300112270)
 
 # Deliverable 1
 The following functionality is implemented in deliverable 1:
