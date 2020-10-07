@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
             //If there is an error
             if(loginError != LoginError.None) {
                 //Show a snackbar with the error message
-                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.login_page), errorMessage(loginError), BaseTransientBottomBar.LENGTH_SHORT);
+                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.login_page), loginError.toString(), BaseTransientBottomBar.LENGTH_SHORT);
                 //Add close button
                 mySnackbar.setAction("CLOSE", new View.OnClickListener() {
                     @Override
@@ -173,25 +173,5 @@ public class LoginActivity extends AppCompatActivity {
         }
         //Returns no error message if inputs are valid.
         return LoginError.None;
-    }
-
-    /**
-     * Returns a string representation of the login error
-     * @param error the login error
-     * @return the string representation of the login error.
-     */
-    private String errorMessage(LoginError error) {
-        switch(error) {
-            case InvalidAdminLogin:
-                return "Invalid admin login. ";
-            case FieldsEmpty:
-                return "One or more required fields are empty. ";
-            case EmailInvalid:
-                return "Email is invalid.";
-            case PasswordTooShort:
-                return "Password is too short.";
-            default:
-                return "";
-        }
     }
 }

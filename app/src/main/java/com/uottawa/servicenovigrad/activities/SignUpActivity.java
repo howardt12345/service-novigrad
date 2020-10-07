@@ -76,7 +76,7 @@ public class SignUpActivity extends AppCompatActivity {
         //If there is an error
         if (signUpError != SignUpError.None) {
             //Show a snackbar with the error message
-            Snackbar mySnackbar = Snackbar.make(findViewById(R.id.signup_page), errorMessage(signUpError), BaseTransientBottomBar.LENGTH_SHORT);
+            Snackbar mySnackbar = Snackbar.make(findViewById(R.id.signup_page), signUpError.toString(), BaseTransientBottomBar.LENGTH_SHORT);
             //Add close button
             mySnackbar.setAction("CLOSE", new View.OnClickListener() {
                 @Override
@@ -215,27 +215,5 @@ public class SignUpActivity extends AppCompatActivity {
         }
         //Returns no error if all inputs are valid.
         return SignUpError.None;
-    }
-
-    /**
-     * Returns a string representation of the sign up error.
-     * @param error the sign up error
-     * @return the string representation of the sign up error.
-     */
-    private String errorMessage(SignUpError error) {
-        switch(error) {
-            case FieldsEmpty:
-                return "One or more required fields are empty. ";
-            case NameWhiteSpace:
-                return "Name contains only whitespaces";
-            case InvalidEmail:
-                return "Email is invalid.";
-            case PasswordTooShort:
-                return "Password is too short.";
-            case PasswordsNoMatch:
-                return "Passwords do not match.";
-            default:
-                return "";
-        }
     }
 }

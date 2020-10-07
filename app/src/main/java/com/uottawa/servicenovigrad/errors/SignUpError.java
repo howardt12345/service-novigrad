@@ -1,10 +1,34 @@
 package com.uottawa.servicenovigrad.errors;
 
 public enum SignUpError {
-    None,
-    FieldsEmpty,
-    NameWhiteSpace,
-    InvalidEmail,
-    PasswordTooShort,
-    PasswordsNoMatch
+    None {
+        public String toString() {
+            return "";
+        }
+    },
+    FieldsEmpty {
+        public String toString() {
+            return "One or more required fields are empty. ";
+        }
+    },
+    NameWhiteSpace {
+        public String toString() {
+            return "Name contains only whitespaces. ";
+        }
+    },
+    InvalidEmail {
+        public String toString() {
+            return "Email is invalid.";
+        }
+    },
+    PasswordTooShort {
+        public String toString() {
+            return "Password is too short.";
+        }
+    },
+    PasswordsNoMatch {
+        public String toString() {
+            return "Passwords do not match.";
+        }
+    }
 }
