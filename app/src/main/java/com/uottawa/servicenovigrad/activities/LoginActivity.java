@@ -104,9 +104,11 @@ public class LoginActivity extends AppCompatActivity {
                             case FieldsEmpty:
                                 break;
                             case EmailInvalid:
+                                //Clears only the email entry
                                 login_emailEntry.getText().clear();
                                 break;
                             case PasswordTooShort:
+                                //Clears only the password entry
                                 login_passwordEntry.getText().clear();
                                 break;
                         }
