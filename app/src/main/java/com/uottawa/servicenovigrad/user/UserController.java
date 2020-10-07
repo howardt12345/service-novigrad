@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserController {
-    public static UserController uInstance = null;
+    private static UserController uInstance = null;
 
     private UserAccount userAccount;
 
