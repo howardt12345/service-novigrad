@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.uottawa.servicenovigrad.CurrentUser;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.errors.LoginError;
@@ -125,30 +126,30 @@ public class LoginActivity extends AppCompatActivity {
                         firestore.collection("users")
                         .document(auth.getCurrentUser().getUid()) //Gets the document with the user UID, where the data should be stored.
                         .get()
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    //Gets the result of the firestore read
-                                    DocumentSnapshot document = task.getResult();
-                                    //Gets the name and role from the data
-                                    String n = (String) document.getData().get("name");
-                                    String r = (String) document.getData().get("role");
-                                    //Add info to CurrentUser
-                                    CurrentUser.setInfo(n, email, r, auth.getCurrentUser().getUid());
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                //Gets the name and role from the document snapshot
+                                String n = (String) documentSnapshot.getData().get("name");
+                                String r = (String) documentSnapshot.getData().get("role");
+                                //Add info to CurrentUser
+                                CurrentUser.setInfo(n, email, r, auth.getCurrentUser().getUid());
 
-                                    //Navigate to Main Activity when successful
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    //Show failed error
-                                    Snackbar snackbar = Snackbar.make(findViewById(R.id.login_page), "Failed to get user details from database!", BaseTransientBottomBar.LENGTH_SHORT);
-                                    snackbar.setAction("CLOSE", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {}
-                                    });
-                                    snackbar.show();
-                                }
+                                //Navigate to Main Activity when successful
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                //Show failed error
+                                Snackbar snackbar = Snackbar.make(findViewById(R.id.login_page), "Failed to get user details from database!", BaseTransientBottomBar.LENGTH_SHORT);
+                                snackbar.setAction("CLOSE", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {}
+                                });
+                                snackbar.show();
                             }
                         });
                     }
