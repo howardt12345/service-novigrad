@@ -142,6 +142,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         //Navigate to Main Activity when successful
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        //set the new task and clear flags, so that the user can't go back here
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
                 });

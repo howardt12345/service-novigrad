@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -24,6 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.uottawa.servicenovigrad.CurrentUser;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.errors.SignUpError;
+import com.uottawa.servicenovigrad.user.UserController;
+import com.uottawa.servicenovigrad.utils.Function;
 import com.uottawa.servicenovigrad.utils.Utils;
 
 import java.util.HashMap;
@@ -118,68 +122,32 @@ public class SignUpActivity extends AppCompatActivity {
             //Show snackbar
             mySnackbar.show();
         } else {
-            // Create user on Firebase auth
-            auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            //Sign up using UserController
+            UserController.getInstance().signUp(name, email, role, password, getCurrentFocus(), new Function() {
                 @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // Sucessful signup
+                public void f(Object... params) {
+                    Log.d("LOGIN DEBUG", "Writing data to shared preferences...");
+                    //Writing data to shared preferences after everything has succeeded.
+                    //Get shared preferences
+                    SharedPreferences prefs = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+                    //Get the editor of the shared preferences
+                    SharedPreferences.Editor editor = prefs.edit();
+                    //Write login data to shared preferences
+                    editor.putString(getString(R.string.user_name_key), (String) params[0]);
+                    editor.putString(getString(R.string.user_email_key), (String) params[1]);
+                    editor.putString(getString(R.string.user_role_key), (String) params[2]);
+                    editor.putString(getString(R.string.user_uid_key), (String) params[3]);
+                    //Apply shared preferences changes
+                    editor.apply();
 
-                        //Create a map with the data to write to cloud firestore
-                        Map<String, Object> userInfo = new HashMap<>();
-                        userInfo.put("name", name);
-                        userInfo.put("email", email);
-                        userInfo.put("role", role);
-
-                        //Writes the data to firestore
-                        firestore.collection("users")
-                        .document(auth.getCurrentUser().getUid())
-                        .set(userInfo)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            //Only when firestore succeeds in writing user data to database does the app log the user in.
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                //Add info to CurrentUser
-                                CurrentUser.setInfo(name, email, role, auth.getCurrentUser().getUid());
-
-                                //Navigate to Main Activity when successful
-                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                //Show failed error
-                                showSnackbar("Failed to add user to database!");
-                                //Tries to delete current user so that user can try to create new account again.
-                                auth.getCurrentUser().delete();
-                            }
-                        });
-                    } else {
-                        //Show failed error
-                        showSnackbar("Failed to create user!");
-                    }
+                    //Navigate to Main Activity when successful
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    //set the new task and clear flags, so that the user can't go back here
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                 }
             });
         }
-    }
-
-    /**
-     * Shows snackbar with given message. The snackbar has a close button, which does nothing.
-     * @param message
-     */
-    private void showSnackbar(String message) {
-        //Create snackbar
-        Snackbar snackbar = Snackbar.make(getCurrentFocus(), message, BaseTransientBottomBar.LENGTH_SHORT);
-        //Add close button that does nothing
-        snackbar.setAction("CLOSE", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {}
-        });
-        //Shows the snackbar
-        snackbar.show();
     }
 
     /**

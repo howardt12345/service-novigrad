@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         UserController.getInstance().signOut();
         //Navigate back to Login Page
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        //set the new task and clear flags, so that the user can't go back here
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 }

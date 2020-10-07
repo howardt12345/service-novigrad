@@ -1,20 +1,29 @@
 package com.uottawa.servicenovigrad.user;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.uottawa.servicenovigrad.CurrentUser;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.MainActivity;
+import com.uottawa.servicenovigrad.activities.SignUpActivity;
 import com.uottawa.servicenovigrad.utils.Function;
 import com.uottawa.servicenovigrad.utils.Utils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserController {
     public static UserController uInstance = null;
@@ -57,8 +66,12 @@ public class UserController {
      * @param view the current view, required to show the error message.
      * @param onSuccess the function to call after everything has succeeded.
      */
-    public void signIn(final String email, String password, final View view, final Function onSuccess) {
-
+    public void signIn(
+        final String email,
+        String password,
+        final View view,
+        final Function onSuccess
+    ) {
         //Sign into firebase
         auth.signInWithEmailAndPassword(email, password)
         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -119,12 +132,84 @@ public class UserController {
         });
     }
 
-    public void signUp(String name, String email, String role, String password) {
+    /**
+     * Signs user up with the given name, email, role, and password. Input validation is not handled here.
+     * @param name the name of the user to sign up with
+     * @param email the email of the user to sign up with
+     * @param role the role of the user to sign up with
+     * @param password the password of the user to sign up with
+     * @param view the current view, required to show the error message.
+     * @param onSuccess the function to call after everything has succeeded.
+     */
+    public void signUp(
+        final String name,
+        final String email,
+        final String role,
+        final String password,
+        final View view,
+        final Function onSuccess
+    ) {
+        // Create user on Firebase auth
+        auth.createUserWithEmailAndPassword(email, password)
+        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                //Create a map with the data to write to cloud firestore
+                Map<String, Object> userInfo = new HashMap<>();
+                userInfo.put("name", name);
+                userInfo.put("email", email);
+                userInfo.put("role", role);
 
+                //Writes the data to firestore
+                firestore.collection("users")
+                .document(auth.getCurrentUser().getUid())
+                .set(userInfo)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    //Only when firestore succeeds in writing user data to database does the app log the user in.
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        switch(role) {
+                            case "employee":
+                                setUserAccount(new EmployeeAccount(name, email, auth.getCurrentUser().getUid()));
+                                break;
+                            case "customer":
+                                setUserAccount(new CustomerAccount(name, email, auth.getCurrentUser().getUid()));
+                                break;
+                            default:
+                                //This really shouldn't happen
+                                Utils.showSnackbar("Invalid role! This should never happen.", view);
+                                break;
+                        }
+                        onSuccess.f(name, email, role, auth.getCurrentUser().getUid());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //Show failed error
+                        Utils.showSnackbar("Failed to add user to database.", view);
+                        //Tries to delete current user so that user can try to create new account again.
+                        auth.getCurrentUser().delete();
+                    }
+                });
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                //Show failed error
+                Utils.showSnackbar("Failed to create user!", view);
+            }
+        });
     }
 
     public void signOut() {
-        auth.signOut();
+        if(userAccount instanceof AdminAccount) {
+            //Dispose of anonymous account
+            auth.getCurrentUser().delete();
+        } else {
+            auth.signOut();
+        }
         userAccount = null;
     }
 
