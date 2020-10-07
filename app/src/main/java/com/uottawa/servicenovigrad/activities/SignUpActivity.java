@@ -20,19 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.uottawa.servicenovigrad.CurrentUser;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.errors.SignUpError;
 import com.uottawa.servicenovigrad.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
-
-enum SignUpError {
-    None,
-    FieldsEmpty,
-    NameWhiteSpace,
-    InvalidEmail,
-    PasswordTooShort,
-    PasswordsNoMatch
-}
 
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth auth;

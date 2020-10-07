@@ -19,14 +19,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.uottawa.servicenovigrad.CurrentUser;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.errors.LoginError;
 import com.uottawa.servicenovigrad.utils.Utils;
-
-enum LoginError {
-    None,
-    FieldsEmpty,
-    EmailInvalid,
-    PasswordTooShort,
-}
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
