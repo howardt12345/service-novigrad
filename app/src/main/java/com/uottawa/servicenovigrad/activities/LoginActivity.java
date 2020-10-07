@@ -82,6 +82,8 @@ public class LoginActivity extends AppCompatActivity {
             //Navigate to Main Activity
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
+            //Signs into firebase anonymously, so that the admin can write to database
+            auth.signInAnonymously();
         } else {
             //Validates input and gets error message
             final LoginError loginError = validateInput(email, password);
