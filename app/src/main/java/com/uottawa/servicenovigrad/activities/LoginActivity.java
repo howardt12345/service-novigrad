@@ -3,7 +3,9 @@ package com.uottawa.servicenovigrad.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -24,6 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.uottawa.servicenovigrad.CurrentUser;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.errors.LoginError;
+import com.uottawa.servicenovigrad.user.UserController;
+import com.uottawa.servicenovigrad.utils.Function;
 import com.uottawa.servicenovigrad.utils.Utils;
 
 public class LoginActivity extends AppCompatActivity {
@@ -75,15 +79,18 @@ public class LoginActivity extends AppCompatActivity {
         final boolean admin = email.compareTo("admin") == 0 && password.compareTo("admin") == 0;
         //If logging in as admin
         if(admin) {
-            //Stores information in the CurrentUser static object.
-            CurrentUser.setInfo("admin", "admin", "admin", "admin");
             //Show message to user to notify that they are logging into the admin account.
             Toast.makeText(LoginActivity.this, "Logging in as admin", Toast.LENGTH_SHORT).show();
-            //Navigate to Main Activity
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            //Signs into firebase anonymously, so that the admin can write to database
-            auth.signInAnonymously();
+
+            //Sign in as admin
+            UserController.getInstance().signInAsAdmin(getCurrentFocus(), new Function() {
+                @Override
+                public void f(Object... params) {
+                    //Navigate to Main Activity
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
         } else {
             //Validates input and gets error message
             final LoginError loginError = validateInput(email, password);
@@ -119,59 +126,25 @@ public class LoginActivity extends AppCompatActivity {
                 //Show snackbar
                 mySnackbar.show();
             } else {
-                //Sign into firebase
-                auth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                //Sign in using UserController
+                UserController.getInstance().signIn(email, password, getCurrentFocus(), new Function() {
                     @Override
-                    public void onSuccess(AuthResult authResult) {
-                        //Successful login
+                    public void f(Object... params) {
+                        //Get shared preferences
+                        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+                        //Get the editor of the shared preferences
+                        SharedPreferences.Editor editor = prefs.edit();
+                        //Write login data to shared preferences
+                        editor.putString(getString(R.string.user_name_key), (String) params[0]);
+                        editor.putString(getString(R.string.user_email_key), (String) params[1]);
+                        editor.putString(getString(R.string.user_role_key), (String) params[2]);
+                        editor.putString(getString(R.string.user_uid_key), (String) params[3]);
+                        //Apply shared preferences changes
+                        editor.apply();
 
-                        //Retrieve user info from firestore
-                        firestore.collection("users")
-                        .document(auth.getCurrentUser().getUid()) //Gets the document with the user UID, where the data should be stored.
-                        .get()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                //Gets the name and role from the document snapshot
-                                String n = (String) documentSnapshot.getData().get("name");
-                                String r = (String) documentSnapshot.getData().get("role");
-                                //Add info to CurrentUser
-                                CurrentUser.setInfo(n, email, r, auth.getCurrentUser().getUid());
-
-                                //Navigate to Main Activity when successful
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                //Show failed error
-                                Snackbar snackbar = Snackbar.make(findViewById(R.id.login_page), "Failed to get user details from database!", BaseTransientBottomBar.LENGTH_SHORT);
-                                snackbar.setAction("CLOSE", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {}
-                                });
-                                snackbar.show();
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //Get firebase auth error message
-                        String errorMessage = "Log In Error: " + ((FirebaseAuthException) e).getErrorCode().replace("ERROR_", "");
-
-                        //Show failed error
-                        Snackbar snackbar = Snackbar.make(getCurrentFocus(), errorMessage, BaseTransientBottomBar.LENGTH_SHORT);
-                        //Add close button that does nothing
-                        snackbar.setAction("CLOSE", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {}
-                        });
-                        snackbar.show();
+                        //Navigate to Main Activity when successful
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 });
             }

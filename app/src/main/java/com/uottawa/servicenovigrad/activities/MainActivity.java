@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.uottawa.servicenovigrad.CurrentUser;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.user.UserAccount;
+import com.uottawa.servicenovigrad.user.UserController;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,9 +25,11 @@ public class MainActivity extends AppCompatActivity {
         TextView title = (TextView) findViewById(R.id.successful_login);
         TextView info = (TextView) findViewById(R.id.login_info);
 
+        UserAccount account = UserController.getInstance().getUserAccount();
+
         //Write the name, role, and email of the current user.
-        title.setText("Welcome " + CurrentUser.getName() + "!");
-        info.setText("You are logged in as a " + CurrentUser.getRole() + "\nYour email is: " + CurrentUser.getEmail());
+        title.setText("Welcome " + account.getName() + "!");
+        info.setText("You are logged in as a " + account.getRole() + "\nYour email is: " + account.getEmail());
     }
 
     /**
@@ -34,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void signOut(View view) {
         //Sign out of Firebase
-        FirebaseAuth.getInstance().signOut();
-        //Clears current user info
-        CurrentUser.clearInfo();
+        UserController.getInstance().signOut();
         //Navigate back to Login Page
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
