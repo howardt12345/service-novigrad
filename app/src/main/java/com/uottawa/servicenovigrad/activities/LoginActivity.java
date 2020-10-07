@@ -71,20 +71,8 @@ public class LoginActivity extends AppCompatActivity {
             UserController.getInstance().signInAsAdmin(getCurrentFocus(), new Function() {
                 @Override
                 public void f(Object... params) {
-                    Log.d("LOGIN DEBUG", "Writing data to shared preferences...");
-                    //Writing data to shared preferences after everything has succeeded.
-                    //Get shared preferences
-                    SharedPreferences prefs = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
-                    //Get the editor of the shared preferences
-                    SharedPreferences.Editor editor = prefs.edit();
-                    //Write login data to shared preferences
-                    editor.putString(getString(R.string.user_name_key), "admin");
-                    editor.putString(getString(R.string.user_email_key), "admin");
-                    editor.putString(getString(R.string.user_role_key), "admin");
-                    editor.putString(getString(R.string.user_uid_key), "admin");
-                    //Apply shared preferences changes
-                    editor.apply();
-                    
+                    writeToSharedPrefs("admin", "admin", "admin", "admin");
+
                     //Navigate to Main Activity
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
@@ -130,19 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                 UserController.getInstance().signIn(email, password, getCurrentFocus(), new Function() {
                     @Override
                     public void f(Object... params) {
-                        Log.d("LOGIN DEBUG", "Writing data to shared preferences...");
-                        //Writing data to shared preferences after everything has succeeded.
-                        //Get shared preferences
-                        SharedPreferences prefs = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
-                        //Get the editor of the shared preferences
-                        SharedPreferences.Editor editor = prefs.edit();
-                        //Write login data to shared preferences
-                        editor.putString(getString(R.string.user_name_key), (String) params[0]);
-                        editor.putString(getString(R.string.user_email_key), (String) params[1]);
-                        editor.putString(getString(R.string.user_role_key), (String) params[2]);
-                        editor.putString(getString(R.string.user_uid_key), (String) params[3]);
-                        //Apply shared preferences changes
-                        editor.apply();
+                        writeToSharedPrefs(params);
 
                         //Navigate to Main Activity when successful
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -153,6 +129,22 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         }
+    }
+
+    private void writeToSharedPrefs(Object... params) {
+        Log.d("LOGIN DEBUG", "Writing data to shared preferences...");
+        //Writing data to shared preferences after everything has succeeded.
+        //Get shared preferences
+        SharedPreferences prefs = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+        //Get the editor of the shared preferences
+        SharedPreferences.Editor editor = prefs.edit();
+        //Write login data to shared preferences
+        editor.putString(getString(R.string.user_name_key), (String) params[0]);
+        editor.putString(getString(R.string.user_email_key), (String) params[1]);
+        editor.putString(getString(R.string.user_role_key), (String) params[2]);
+        editor.putString(getString(R.string.user_uid_key), (String) params[3]);
+        //Apply shared preferences changes
+        editor.apply();
     }
 
     /**
