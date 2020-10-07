@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -79,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         //If logging in as admin
         if(admin) {
             //Stores information in the CurrentUser static object.
-            CurrentUser.addInfo("admin", "admin", "admin", "admin");
+            CurrentUser.setInfo("admin", "admin", "admin", "admin");
             //Show message to user to notify that they are logging into the admin account.
             Toast.makeText(LoginActivity.this, "Logging in as admin", Toast.LENGTH_SHORT).show();
             //Navigate to Main Activity
@@ -140,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                                         String n = (String) document.getData().get("name");
                                         String r = (String) document.getData().get("role");
                                         //Add info to CurrentUser
-                                        CurrentUser.addInfo(n, email, r, auth.getCurrentUser().getUid());
+                                        CurrentUser.setInfo(n, email, r, auth.getCurrentUser().getUid());
 
                                         //Navigate to Main Activity when successful
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

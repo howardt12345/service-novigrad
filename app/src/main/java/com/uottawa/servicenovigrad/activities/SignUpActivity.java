@@ -8,11 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -140,7 +137,7 @@ public class SignUpActivity extends AppCompatActivity {
                         //Writes the data to firestore
                         firestore.collection("users").document(auth.getCurrentUser().getUid()).set(userInfo);
                         //Add info to CurrentUser
-                        CurrentUser.addInfo(name, email, role, auth.getCurrentUser().getUid());
+                        CurrentUser.setInfo(name, email, role, auth.getCurrentUser().getUid());
 
                         //Navigate to Main Activity when successful
                         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
