@@ -46,16 +46,6 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         getSupportActionBar().hide();
-
-        Button signUp_login_button = (Button) findViewById(R.id.signUp_login);
-        signUp_login_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Navigate to Login Activity
-                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -63,6 +53,16 @@ public class SignUpActivity extends AppCompatActivity {
         super.onStart();
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
+    }
+
+    /**
+     * Method to open the login activity.
+     * @param view The current view.
+     */
+    public void logInInstead(View view) {
+        //Navigate to Login Activity
+        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 
     /**
