@@ -10,11 +10,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.uottawa.servicenovigrad.CurrentUser;
@@ -113,63 +116,57 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 //Sign into firebase
                 auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            //Successful login
+                    public void onSuccess(AuthResult authResult) {
+                        //Successful login
 
-                            //Retrieve user info from firestore
-                            firestore.collection("users")
-                            .document(auth.getCurrentUser().getUid()) //Gets the document with the user UID, where the data should be stored.
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        //Gets the result of the firestore read
-                                        DocumentSnapshot document = task.getResult();
-                                        //Gets the name and role from the data
-                                        String n = (String) document.getData().get("name");
-                                        String r = (String) document.getData().get("role");
-                                        //Add info to CurrentUser
-                                        CurrentUser.setInfo(n, email, r, auth.getCurrentUser().getUid());
+                        //Retrieve user info from firestore
+                        firestore.collection("users")
+                        .document(auth.getCurrentUser().getUid()) //Gets the document with the user UID, where the data should be stored.
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    //Gets the result of the firestore read
+                                    DocumentSnapshot document = task.getResult();
+                                    //Gets the name and role from the data
+                                    String n = (String) document.getData().get("name");
+                                    String r = (String) document.getData().get("role");
+                                    //Add info to CurrentUser
+                                    CurrentUser.setInfo(n, email, r, auth.getCurrentUser().getUid());
 
-                                        //Navigate to Main Activity when successful
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                    } else {
-                                        //Show failed error
-                                        Snackbar snackbar = Snackbar.make(findViewById(R.id.login_page), "Failed to get user details from database!", BaseTransientBottomBar.LENGTH_SHORT);
-                                        snackbar.setAction("CLOSE", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {}
-                                        });
-                                        snackbar.addCallback(new Snackbar.Callback() {
-                                            @Override
-                                            public void onDismissed(Snackbar snackbar, int event) {
-                                                return;
-                                            }
-                                        });
-                                        snackbar.show();
-                                    }
+                                    //Navigate to Main Activity when successful
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    //Show failed error
+                                    Snackbar snackbar = Snackbar.make(findViewById(R.id.login_page), "Failed to get user details from database!", BaseTransientBottomBar.LENGTH_SHORT);
+                                    snackbar.setAction("CLOSE", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {}
+                                    });
+                                    snackbar.show();
                                 }
-                            });
-                        } else {
-                            //Show failed error
-                            Snackbar snackbar = Snackbar.make(findViewById(R.id.signup_page), "Failed to login!", BaseTransientBottomBar.LENGTH_SHORT);
-                            snackbar.setAction("CLOSE", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {}
-                            });
-                            snackbar.addCallback(new Snackbar.Callback() {
-                                @Override
-                                public void onDismissed(Snackbar snackbar, int event) {
-                                    return;
-                                }
-                            });
-                            snackbar.show();
-                        }
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //Get firebase auth error message
+                        String errorMessage = "Log In Error: " + ((FirebaseAuthException) e).getErrorCode().replace("ERROR_", "");
+
+                        //Show failed error
+                        Snackbar snackbar = Snackbar.make(getCurrentFocus(), errorMessage, BaseTransientBottomBar.LENGTH_SHORT);
+                        //Add close button that does nothing
+                        snackbar.setAction("CLOSE", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {}
+                        });
+                        snackbar.show();
                     }
                 });
             }
