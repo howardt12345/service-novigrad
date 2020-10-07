@@ -5,11 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.uottawa.servicenovigrad.CurrentUser;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;

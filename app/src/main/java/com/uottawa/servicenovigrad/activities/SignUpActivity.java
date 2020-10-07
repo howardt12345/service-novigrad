@@ -1,6 +1,5 @@
 package com.uottawa.servicenovigrad.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -13,25 +12,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.uottawa.servicenovigrad.CurrentUser;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.errors.SignUpError;
 import com.uottawa.servicenovigrad.user.UserController;
 import com.uottawa.servicenovigrad.utils.Function;
 import com.uottawa.servicenovigrad.utils.Utils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth auth;

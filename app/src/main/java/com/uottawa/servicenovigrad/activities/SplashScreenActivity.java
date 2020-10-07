@@ -1,16 +1,11 @@
 package com.uottawa.servicenovigrad.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.uottawa.servicenovigrad.R;
@@ -19,7 +14,6 @@ import com.uottawa.servicenovigrad.user.CustomerAccount;
 import com.uottawa.servicenovigrad.user.EmployeeAccount;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
-import com.uottawa.servicenovigrad.utils.Function;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
