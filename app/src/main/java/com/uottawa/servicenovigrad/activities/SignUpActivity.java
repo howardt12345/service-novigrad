@@ -12,11 +12,14 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.uottawa.servicenovigrad.CurrentUser;
 import com.uottawa.servicenovigrad.R;
@@ -96,13 +99,16 @@ public class SignUpActivity extends AppCompatActivity {
                         case FieldsEmpty:
                             break;
                         case NameWhiteSpace:
+                            //Clears only the name entry
                             signUpNameEntry.getText().clear();
                             break;
                         case InvalidEmail:
+                            //Clears only the email entry
                             signUpEmailEntry.getText().clear();
                             break;
                         case PasswordTooShort:
                         case PasswordsNoMatch:
+                            //Clears both password entries
                             signUpPasswordEntry.getText().clear();
                             signUpPasswordConfirm.getText().clear();
                             break;
@@ -114,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             // Create user on Firebase auth
             auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
@@ -127,31 +133,53 @@ public class SignUpActivity extends AppCompatActivity {
                         userInfo.put("role", role);
 
                         //Writes the data to firestore
-                        firestore.collection("users").document(auth.getCurrentUser().getUid()).set(userInfo);
-                        //Add info to CurrentUser
-                        CurrentUser.setInfo(name, email, role, auth.getCurrentUser().getUid());
+                        firestore.collection("users")
+                        .document(auth.getCurrentUser().getUid())
+                        .set(userInfo)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            //Only when firestore succeeds in writing user data to database does the app log the user in.
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                //Add info to CurrentUser
+                                CurrentUser.setInfo(name, email, role, auth.getCurrentUser().getUid());
 
-                        //Navigate to Main Activity when successful
-                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    } else {
-                        //Show failed error
-                        Snackbar snackbar = Snackbar.make(findViewById(R.id.signup_page), "Failed to create user!", BaseTransientBottomBar.LENGTH_SHORT);
-                        snackbar.setAction("CLOSE", new View.OnClickListener() {
+                                //Navigate to Main Activity when successful
+                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
                             @Override
-                            public void onClick(View v) {}
-                        });
-                        snackbar.addCallback(new Snackbar.Callback() {
-                            @Override
-                            public void onDismissed(Snackbar snackbar, int event) {
-                                return;
+                            public void onFailure(@NonNull Exception e) {
+                                //Show failed error
+                                showSnackbar("Failed to add user to database!");
+                                //Tries to delete current user so that user can try to create new account again.
+                                auth.getCurrentUser().delete();
                             }
                         });
-                        snackbar.show();
+                    } else {
+                        //Show failed error
+                        showSnackbar("Failed to create user!");
                     }
                 }
             });
         }
+    }
+
+    /**
+     * Shows snackbar with given message. The snackbar has a close button, which does nothing.
+     * @param message
+     */
+    private void showSnackbar(String message) {
+        //Create snackbar
+        Snackbar snackbar = Snackbar.make(getCurrentFocus(), message, BaseTransientBottomBar.LENGTH_SHORT);
+        //Add close button that does nothing
+        snackbar.setAction("CLOSE", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {}
+        });
+        //Shows the snackbar
+        snackbar.show();
     }
 
     /**
