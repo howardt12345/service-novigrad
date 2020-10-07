@@ -14,7 +14,7 @@ public class Utils {
      * @return boolean true if valid, false if invalid.
      */
     public static boolean isEmailValid(String email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        return androidx.core.util.PatternsCompat.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     /**
