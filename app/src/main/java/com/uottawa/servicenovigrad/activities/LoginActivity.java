@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -125,9 +126,10 @@ public class LoginActivity extends AppCompatActivity {
                 UserController.getInstance().signIn(email, password, getCurrentFocus(), new Function() {
                     @Override
                     public void f(Object... params) {
+                        Log.d("LOGIN DEBUG", "Writing data to shared preferences...");
                         //Writing data to shared preferences after everything has succeeded.
                         //Get shared preferences
-                        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences prefs = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
                         //Get the editor of the shared preferences
                         SharedPreferences.Editor editor = prefs.edit();
                         //Write login data to shared preferences

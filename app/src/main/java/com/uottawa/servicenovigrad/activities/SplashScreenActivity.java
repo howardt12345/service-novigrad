@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         if(signedIn) {
             try {
                 //Try to get user data from shared preferences.
-                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
 
                 String name = sharedPref.getString(getString(R.string.user_name_key), "");
                 String email = sharedPref.getString(getString(R.string.user_email_key), "");
@@ -69,6 +70,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     throw new Exception("Failed to get data from shared preferences. Aborting login attempt.");
                 }
             } catch (Exception e) {
+                Log.e("SPLASH SCREEN ERROR", e.toString());
                 goToLoginPage();
             }
         } else {
