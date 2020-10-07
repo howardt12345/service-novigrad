@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Service Novigrad</string>
+    <string name="user_name_key">user_name</string>
+    <string name="user_email_key">user_email</string>
+    <string name="user_role_key">user_role</string>
+    <string name="user_uid_key">user_uid</string>
 </resources>
