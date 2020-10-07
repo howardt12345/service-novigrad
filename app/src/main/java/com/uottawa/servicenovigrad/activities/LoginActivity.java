@@ -101,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                                 //Clears only the email entry
                                 login_emailEntry.getText().clear();
                                 break;
+                            case InvalidAdminLogin:
                             case PasswordTooShort:
                                 //Clears only the password entry
                                 login_passwordEntry.getText().clear();
@@ -151,6 +152,10 @@ public class LoginActivity extends AppCompatActivity {
         if(email.isEmpty() || password.isEmpty()) {
             return LoginError.FieldsEmpty;
         }
+        if(email.compareTo("admin") == 0) {
+            //This should only happen when the admin password is wrong.
+            return LoginError.InvalidAdminLogin;
+        }
         //Validates Email
         boolean validEmail = Utils.isEmailValid(email);
         if(!validEmail) {
@@ -171,6 +176,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     private String errorMessage(LoginError error) {
         switch(error) {
+            case InvalidAdminLogin:
+                return "Invalid admin login. ";
             case FieldsEmpty:
                 return "One or more required fields are empty. ";
             case EmailInvalid:
