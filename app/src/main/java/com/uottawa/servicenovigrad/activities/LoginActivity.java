@@ -38,18 +38,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
-
-
-        Button login_createNewAccount_button = (Button) findViewById(R.id.login_createNewAccount);
-        login_createNewAccount_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Navigate to Sign Up Activity
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
     @Override
@@ -62,6 +50,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //Prevent user from going back because it could go back to the splash page
+    }
+
+    /**
+     * Method to open the sign up activity.
+     * @param view The current view.
+     */
+    public void createNewAccount(View view) {
+        //Navigate to Sign Up Activity
+        Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+        startActivity(intent);
     }
 
     /**

@@ -99,6 +99,7 @@
         android:layout_marginBottom="64dp"
         android:background="@drawable/rounded_edges"
         android:gravity="center"
+        android:onClick="createNewAccount"
         android:text="Create A New Account"
         android:textColor="@color/potentialMainTheme1"
         app:layout_constraintBottom_toBottomOf="parent"
