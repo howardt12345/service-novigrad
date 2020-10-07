@@ -48,11 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
     }
 
-    @Override
-    public void onBackPressed() {
-        //Prevent user from going back because it could go back to the splash page
-    }
-
     /**
      * Method to open the sign up activity.
      * @param view The current view.
@@ -130,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 UserController.getInstance().signIn(email, password, getCurrentFocus(), new Function() {
                     @Override
                     public void f(Object... params) {
+                        //Writing data to shared preferences after everything has succeeded.
                         //Get shared preferences
                         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
                         //Get the editor of the shared preferences

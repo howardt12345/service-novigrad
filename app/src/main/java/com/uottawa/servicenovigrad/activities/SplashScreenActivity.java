@@ -62,6 +62,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                     UserController.initialize(account);
 
                     Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                    //set the new task and clear flags, so that the user can't go back to splash screen
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 } else {
                     throw new Exception("Failed to get data from shared preferences. Aborting login attempt.");
@@ -76,6 +78,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void goToLoginPage() {
         Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+        //set the new task and clear flags, so that the user can't go back to splash screen
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
