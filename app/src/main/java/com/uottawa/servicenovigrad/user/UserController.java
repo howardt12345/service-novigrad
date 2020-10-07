@@ -36,7 +36,7 @@ public class UserController {
         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                setUserAccount(new AdminAccount());
+                setUserAccount(new AdminAccount(auth.getCurrentUser().getUid()));
                 onSuccess.f();
             }
         })

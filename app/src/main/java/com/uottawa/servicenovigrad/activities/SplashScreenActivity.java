@@ -48,7 +48,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             account = new CustomerAccount(name, email, uid);
                             break;
                         case "admin":
-                            account = new AdminAccount();
+                            account = new AdminAccount(FirebaseAuth.getInstance().getCurrentUser().getUid());
                             break;
                         default:
                             throw new Exception("Failed to get proper role. Aborting login attempt.");
