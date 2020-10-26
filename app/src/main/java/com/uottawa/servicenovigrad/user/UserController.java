@@ -26,8 +26,12 @@ public class UserController {
     private FirebaseFirestore firestore;
 
     protected UserController() {
-        auth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
+        this(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
+    }
+
+    protected UserController(FirebaseFirestore db, FirebaseAuth auth) {
+        this.auth = auth;
+        firestore = db;
     }
 
     public void signInAsAdmin(final View view, final Function onSuccess) {
@@ -215,6 +219,11 @@ public class UserController {
 
     public static synchronized void initialize(UserAccount account) {
         uInstance = new UserController();
+        uInstance.setUserAccount(account);
+    }
+
+    public static synchronized void initialize(UserAccount account, FirebaseFirestore db, FirebaseAuth auth) {
+        uInstance = new UserController(db, auth);
         uInstance.setUserAccount(account);
     }
 
