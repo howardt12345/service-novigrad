@@ -14,7 +14,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.uottawa.servicenovigrad.utils.Function;
 import com.uottawa.servicenovigrad.utils.Utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class UserController {
@@ -150,11 +153,16 @@ public class UserController {
         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
+                //Get the date and time that the account is created
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault());
+                String currentDateandTime = sdf.format(new Date());
+
                 //Create a map with the data to write to cloud firestore
                 Map<String, Object> userInfo = new HashMap<>();
                 userInfo.put("name", name);
                 userInfo.put("email", email);
                 userInfo.put("role", role);
+                userInfo.put("timeCreated", currentDateandTime);
 
                 //Writes the data to firestore
                 firestore.collection("users")
