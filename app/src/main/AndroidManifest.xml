@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activities.CustomerActivity"></activity>
         <activity android:name=".activities.EmployeeActivity" />
-        <activity android:name=".activities.AdminActivity" />
+        <activity android:name=".activities.admin.AdminMainActivity" />
         <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

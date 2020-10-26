@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.uottawa.servicenovigrad.R;
-import com.uottawa.servicenovigrad.user.AdminAccount;
+import com.uottawa.servicenovigrad.activities.admin.AdminMainActivity;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         //Sets intent based on what role the user is
         switch(account.getRole()) {
             case "admin":
-                intent = new Intent(MainActivity.this, AdminActivity.class);
+                intent = new Intent(MainActivity.this, AdminMainActivity.class);
                 break;
             case "employee":
                 intent = new Intent(MainActivity.this, EmployeeActivity.class);
