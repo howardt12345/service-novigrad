@@ -10,6 +10,8 @@ Ethan Plant (300109850)
 
 Zayd Ghazal (300112270)
 
+[![CircleCI](https://circleci.com/gh/SEG2105-uottawa/seg2105f20-project_gr-1.svg?style=svg&circle-token=f443aec0628521b9bce8be8de86effae4cdfc489)](https://app.circleci.com/pipelines/github/SEG2105-uottawa/seg2105f20-project_gr-1)
+
 
 # Deliverable 1
 The following functionality is implemented in deliverable 1:
