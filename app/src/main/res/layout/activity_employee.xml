@@ -6,4 +6,53 @@
     android:layout_height="match_parent"
     tools:context=".activities.EmployeeActivity">
 
+    <TextView
+        android:id="@+id/successful_login"
+        android:layout_width="308dp"
+        android:layout_height="162dp"
+        android:layout_marginBottom="60dp"
+        android:fontFamily="@font/assistant_bold"
+        android:text="Welcome [firstname]!"
+        android:textColor="@color/potentialMainTheme1"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.257" />
+
+    <TextView
+        android:id="@+id/login_info"
+        android:layout_width="302dp"
+        android:layout_height="151dp"
+        android:layout_marginBottom="28dp"
+        android:fontFamily="@font/assistant_semibold"
+        android:text="You are logged in as a [role]"
+        android:textColor="@color/potentialMainTheme1"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.62" />
+
+    <Button
+        android:id="@+id/signOut_button"
+        android:layout_width="122dp"
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_edges"
+        android:backgroundTint="@color/potentialMainTheme1"
+        android:fontFamily="@font/assistant_bold"
+        android:onClick="signOut"
+        android:text="Sign Out"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.808" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
