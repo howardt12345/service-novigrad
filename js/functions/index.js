@@ -1,4 +1,7 @@
 const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+
+admin.initializeApp();
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -9,12 +12,8 @@ const functions = require('firebase-functions');
 // });
 
 //Deletes the user when the firestore document with the given user uid is deleted
-export const removeUser = functions.firestore.document("/users/{uid}")
-    .onDelete((snapshot, context) => {        
-        const serviceAccount = require('path/to/serviceAccountKey.json');
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            databaseURL: "https://<DATABASE_NAME>>.firebaseio.com"
-        });
+exports.removeUser = functions.firestore
+    .document("/users/{uid}")
+    .onDelete((snapshot, context) => {
         return admin.auth().deleteUser(context.params.uid);
     });
