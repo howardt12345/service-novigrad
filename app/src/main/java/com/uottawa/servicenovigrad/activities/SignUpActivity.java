@@ -91,7 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
                     switch (signUpError) {
                         case FieldsEmpty:
                             break;
-                        case NameWhiteSpace:
+                        case InvalidName:
                             //Clears only the name entry
                             signUpNameEntry.getText().clear();
                             break;
@@ -197,8 +197,8 @@ public class SignUpActivity extends AppCompatActivity {
             return SignUpError.FieldsEmpty;
         }
         //Checks if name is only composed of whitespaces
-        if(name.trim().length() == 0){
-            return SignUpError.NameWhiteSpace;
+        if(name.trim().length() == 0 || !name.matches("^[a-zA-Z\\\\s]*$")){
+            return SignUpError.InvalidName;
         }
         //Validates Email
         boolean validEmail = Utils.isEmailValid(email);

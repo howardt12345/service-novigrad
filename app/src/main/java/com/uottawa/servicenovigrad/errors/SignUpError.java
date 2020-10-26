@@ -11,9 +11,9 @@ public enum SignUpError {
             return "One or more required fields are empty. ";
         }
     },
-    NameWhiteSpace {
+    InvalidName {
         public String toString() {
-            return "Name contains only whitespaces. ";
+            return "Invalid name inputted. ";
         }
     },
     InvalidEmail {
