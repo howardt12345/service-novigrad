@@ -4,11 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.admin.AdminMainActivity;
+import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 

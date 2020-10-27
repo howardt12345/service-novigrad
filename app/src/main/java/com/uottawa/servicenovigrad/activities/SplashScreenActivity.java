@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
 import com.uottawa.servicenovigrad.user.AdminAccount;
 import com.uottawa.servicenovigrad.user.CustomerAccount;
 import com.uottawa.servicenovigrad.user.EmployeeAccount;

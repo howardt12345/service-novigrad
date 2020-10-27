@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 

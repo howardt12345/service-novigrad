@@ -1,4 +1,4 @@
-package com.uottawa.servicenovigrad.activities;
+package com.uottawa.servicenovigrad.activities.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.MainActivity;
 import com.uottawa.servicenovigrad.errors.SignUpError;
 import com.uottawa.servicenovigrad.user.UserController;
 import com.uottawa.servicenovigrad.utils.Function;
