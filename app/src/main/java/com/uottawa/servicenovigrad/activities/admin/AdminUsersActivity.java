@@ -1,15 +1,15 @@
 package com.uottawa.servicenovigrad.activities.admin;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -81,20 +81,7 @@ public class AdminUsersActivity extends AppCompatActivity {
                     }
                 }
 
-                AdminUsersListAdapter adapter = new AdminUsersListAdapter(AdminUsersActivity.this, employees);
-                for(int i = 0; i < adapter.getCount(); i++) {
-                    View view = adapter.getView(i, null, employeesList);
-                    employeesList.addView(view);
-                    //Set delete button
-                    ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete_user);
-                    final int finalI = i;
-                    deleteButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            deleteUser(employees.get(finalI));
-                        }
-                    });
-                }
+                setUpList(employees, employeesList);
             }
         });
 
@@ -121,26 +108,89 @@ public class AdminUsersActivity extends AppCompatActivity {
                     }
                 }
 
-                AdminUsersListAdapter adapter = new AdminUsersListAdapter(AdminUsersActivity.this, customers);
-                for(int i = 0; i < adapter.getCount(); i++) {
-                    View view = adapter.getView(i, null, customersList);
-                    customersList.addView(view);
-                    //Set delete button
-                    ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete_user);
-                    final int finalI = i;
-                    deleteButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            deleteUser(customers.get(finalI));
-                        }
-                    });
-                }
+                setUpList(customers, customersList);
             }
         });
     }
 
-    private void deleteUser(UserAccount account) {
+    private void setUpList(final List<UserAccount> accounts, LinearLayout listView) {
 
+        AdminUsersListAdapter adapter = new AdminUsersListAdapter(AdminUsersActivity.this, accounts);
+        for(int i = 0; i < adapter.getCount(); i++) {
+            final int finalI = i;
+
+            View view = adapter.getView(i, null, listView);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    userInfoDialog(accounts.get(finalI));
+                }
+            });
+            //Set delete button
+            ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete_user);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteUserDialog(accounts.get(finalI));
+                }
+            });
+
+            listView.addView(view);
+        }
+    }
+
+    private void userInfoDialog(UserAccount account) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminUsersActivity.this);
+        alertDialogBuilder
+        .setTitle(account.getName())
+        .setMessage(account.toString())
+        .setCancelable(true)
+        .setPositiveButton(
+                "CLOSE",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }
+        );
+        //Show AlertDialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void deleteUserDialog(final UserAccount account) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminUsersActivity.this);
+        alertDialogBuilder
+        .setTitle("Delete user?")
+        .setMessage("Are you sure you want to delete this user? Any data associated with this user will be permanently deleted.")
+        .setCancelable(true)
+        .setPositiveButton(
+            "YES",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    deleteUser(account);
+                    dialog.cancel();
+                }
+            }
+        )
+        .setNegativeButton(
+            "NO",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            }
+        );
+        //Show AlertDialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void deleteUser(UserAccount account) {
+        usersReference.document(account.getUID()).delete();
     }
 
     public void back(View view) {
