@@ -48,6 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onServicesCardClick"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:contentPadding="16dp">
 
         <LinearLayout
@@ -99,6 +101,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onUsersCardClick"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:contentPadding="16dp">
 
         <LinearLayout
