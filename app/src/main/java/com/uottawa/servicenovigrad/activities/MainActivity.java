@@ -8,6 +8,8 @@ import android.os.Bundle;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.admin.AdminMainActivity;
 import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
+import com.uottawa.servicenovigrad.activities.customer.CustomerActivity;
+import com.uottawa.servicenovigrad.activities.employee.EmployeeActivity;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 

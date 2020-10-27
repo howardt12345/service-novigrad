@@ -11,8 +11,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activities.admin.AdminServicesActivity"></activity>
         <activity android:name=".activities.admin.AdminUsersActivity" />
-        <activity android:name=".activities.CustomerActivity" />
-        <activity android:name=".activities.EmployeeActivity" />
+        <activity android:name=".activities.customer.CustomerActivity" />
+        <activity android:name=".activities.employee.EmployeeActivity" />
         <activity android:name=".activities.admin.AdminMainActivity" />
         <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>

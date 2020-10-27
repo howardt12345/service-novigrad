@@ -1,4 +1,4 @@
-package com.uottawa.servicenovigrad.activities;
+package com.uottawa.servicenovigrad.activities.employee;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,12 +12,12 @@ import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 
-public class CustomerActivity extends AppCompatActivity {
+public class EmployeeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer);
+        setContentView(R.layout.activity_employee);
         getSupportActionBar().hide();
 
         TextView title = (TextView) findViewById(R.id.successful_login);
@@ -38,7 +38,7 @@ public class CustomerActivity extends AppCompatActivity {
         //Sign out of Firebase
         UserController.getInstance().signOut();
         //Navigate back to Login Page
-        Intent intent = new Intent(CustomerActivity.this, LoginActivity.class);
+        Intent intent = new Intent(EmployeeActivity.this, LoginActivity.class);
         //set the new task and clear flags, so that the user can't go back here
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
