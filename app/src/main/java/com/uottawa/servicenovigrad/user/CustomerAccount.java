@@ -8,6 +8,9 @@ public class CustomerAccount extends UserAccount {
 
     @Override
     public String toString() {
-        return null;
+        return "UID: " + getUID()
+            + "\nName: " + getName()
+            + "\nEmail: " + getEmail()
+            + "\nRole: " + getRole();
     }
 }
