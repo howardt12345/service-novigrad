@@ -7,11 +7,8 @@ public class AdminAccount extends UserAccount {
         super("admin", "admin", "admin", uid);
     }
 
-    public UserAccount[] getEmployees() {
-        return null;
-    }
-
-    public UserAccount[] getCustomers() {
+    @Override
+    public String toString() {
         return null;
     }
 }

@@ -33,4 +33,7 @@ public abstract class UserAccount {
         return this.role;
     }
     public String getUID() { return this.uid; }
+
+    @Override
+    public abstract String toString();
 }
