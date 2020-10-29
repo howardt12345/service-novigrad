@@ -1,7 +1,6 @@
 package com.uottawa.servicenovigrad.activities.admin;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ public class AdminUsersListAdapter extends ArrayAdapter<UserAccount> {
     List<UserAccount> accounts;
 
     public AdminUsersListAdapter(@NonNull Activity context, @NonNull List<UserAccount> accounts) {
-        super(context, R.layout.layout_admin_users_list, accounts);
+        super(context, R.layout.layout_admin_users_listitem, accounts);
         this.context = context;
         this.accounts = accounts;
     }
@@ -28,7 +27,7 @@ public class AdminUsersListAdapter extends ArrayAdapter<UserAccount> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View listViewItem = inflater.inflate(R.layout.layout_admin_users_list, null, true);
+        View listViewItem = inflater.inflate(R.layout.layout_admin_users_listitem, null, true);
 
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.user_name);
         TextView textViewEmail = (TextView) listViewItem.findViewById(R.id.user_email);

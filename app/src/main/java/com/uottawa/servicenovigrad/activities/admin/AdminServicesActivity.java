@@ -3,6 +3,7 @@ package com.uottawa.servicenovigrad.activities.admin;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,9 +21,13 @@ import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.user.UserAccount;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminServicesActivity extends AppCompatActivity {
+
+    private int ADD_SERVICE = 0, EDIT_SERVICE = 1;
 
     List<Service> services;
     LinearLayout servicesList;
@@ -121,8 +126,47 @@ public class AdminServicesActivity extends AppCompatActivity {
 
     }
 
-    private void editService(Service service) {
+    public void addService(View view) {
+        Intent intent = new Intent(AdminServicesActivity.this, AdminServicesEdit.class);
+        startActivityForResult(intent, ADD_SERVICE);
+    }
 
+    private void editService(Service service) {
+        Intent intent = new Intent(AdminServicesActivity.this, AdminServicesEdit.class);
+        intent.putExtra("service", service);
+        startActivityForResult(intent, EDIT_SERVICE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //If result is ok
+        if(resultCode == 0) {
+            if(requestCode == ADD_SERVICE) {
+                Service service = (Service) data.getSerializableExtra("service");
+                Map<String, Object> serviceInfo = new HashMap<>();
+
+                serviceInfo.put("name", service.getName());
+                serviceInfo.put("desc", service.getDesc());
+                serviceInfo.put("forms", service.getForms());
+                serviceInfo.put("documents", service.getDocuments());
+
+                servicesReference.add(serviceInfo);
+            } else if (requestCode == EDIT_SERVICE) {
+                Service service = (Service) data.getSerializableExtra("service");
+                Map<String, Object> serviceInfo = new HashMap<>();
+
+                serviceInfo.put("name", service.getName());
+                serviceInfo.put("desc", service.getDesc());
+                serviceInfo.put("forms", service.getForms());
+                serviceInfo.put("documents", service.getDocuments());
+
+                servicesReference.document(service.getId()).set(serviceInfo);
+            } else {
+                //Do nothing
+            }
+        }
     }
 
     private void deleteService(Service service) {
