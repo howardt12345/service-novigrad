@@ -96,6 +96,14 @@ public class AdminServicesActivity extends AppCompatActivity {
                     serviceInfo(services.get(finalI));
                 }
             });
+            //Set edit button functions
+            ImageButton editButton = (ImageButton) view.findViewById(R.id.edit_service);
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editService(services.get(finalI));
+                }
+            });
             //Set delete button functions
             ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete_service);
             deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +118,10 @@ public class AdminServicesActivity extends AppCompatActivity {
     }
 
     private void serviceInfo(Service service) {
+
+    }
+
+    private void editService(Service service) {
 
     }
 
