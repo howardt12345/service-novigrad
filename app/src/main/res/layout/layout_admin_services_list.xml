@@ -8,36 +8,47 @@
     app:contentPadding="16dp">
 
     <LinearLayout
-        android:id="@+id/users_card_content"
+        android:id="@+id/service_card_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/user_info"
+            android:id="@+id/service_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/user_name"
+                android:id="@+id/service_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Name"
+                android:text="Service Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/user_email"
+                android:id="@+id/service_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Email" />
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:minLines="1"
+                android:text="Service Description" />
 
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/delete_user"
+            android:id="@+id/edit_service"
+            android:layout_width="144sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            app:srcCompat="@drawable/ic_edit" />
+
+        <ImageButton
+            android:id="@+id/delete_service"
             android:layout_width="144sp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -45,5 +56,4 @@
             app:srcCompat="@drawable/ic_delete_forever" />
 
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
