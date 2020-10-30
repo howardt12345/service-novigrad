@@ -8,12 +8,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.utils.Utils;
@@ -89,6 +94,46 @@ public class AdminServicesEdit extends AppCompatActivity {
         });
     }
 
+    public void addToForms(View view) {
+        View v = LayoutInflater.from(this).inflate(R.layout.layout_admin_services_edit_dialog, null);
+        final EditText input = (EditText) v.findViewById(R.id.service_edit_dialog_text);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+        .setView(v)
+        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String editTextInput = input.getText().toString();
+                service.getForms().add(editTextInput);
+                formsAdapter.notifyDataSetChanged();
+                Utils.setListViewHeightBasedOnChildren(formsList);
+            }
+        })
+        .setNegativeButton("Cancel", null)
+        .create();
+        dialog.show();
+    }
+
+    public void addToDocuments(View view) {
+        View v = LayoutInflater.from(this).inflate(R.layout.layout_admin_services_edit_dialog, null);
+        final EditText input = (EditText) v.findViewById(R.id.service_edit_dialog_text);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+        .setView(v)
+        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String editTextInput = input.getText().toString();
+                service.getDocuments().add(editTextInput);
+                documentsAdapter.notifyDataSetChanged();
+                Utils.setListViewHeightBasedOnChildren(documentsList);
+            }
+        })
+        .setNegativeButton("Cancel", null)
+        .create();
+        dialog.show();
+    }
+
     @Override
     public void onBackPressed() {
         cancelEdit(this.getCurrentFocus());
@@ -128,6 +173,10 @@ public class AdminServicesEdit extends AppCompatActivity {
     }
 
     public void confirmEdit(View view) {
+        saveEdit();
+    }
+
+    private void saveEdit() {
         Intent intent = new Intent();
         intent.putExtra("service", service);
         setResult(0, intent);
