@@ -131,7 +131,24 @@ public class AdminServicesActivity extends AppCompatActivity {
     }
 
     private void serviceInfo(Service service) {
-
+        //Create new AlertDialog
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminServicesActivity.this);
+        alertDialogBuilder
+        .setTitle(service.getName()) //Set the title of the dialog to the service name
+        .setMessage(service.getInfo()) //Set the message of the dialog to the service info
+        .setCancelable(true)
+        .setPositiveButton(
+                "CLOSE",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }
+        );
+        //Show AlertDialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     /**

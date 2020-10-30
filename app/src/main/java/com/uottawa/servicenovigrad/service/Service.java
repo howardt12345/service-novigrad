@@ -55,4 +55,29 @@ public class Service implements Serializable {
     public void setDocuments(List<String> documents) {
         this.documents = documents;
     }
+
+    /**
+     * Gets the info of the service in a format for a dialog.
+     * @return The info on this service.
+     */
+    public String getInfo() {
+        //New string builder
+        StringBuilder sb = new StringBuilder();
+        //Append the description of the service
+        sb.append(desc);
+        //Add forms header
+        sb.append("\nInformation required: \n");
+        //Add the forms to the string
+        for(String form : forms) {
+            sb.append(" > " + form + "\n");
+        }
+        //Add documents header
+        sb.append("Documents required: \n");
+        //Add the documents to the string
+        for(String doc : documents) {
+            sb.append(" > " + doc + "\n");
+        }
+        //Return the string builder result
+        return sb.toString();
+    }
 }
