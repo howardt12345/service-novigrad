@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Service implements Serializable {
-    private String id;
-    private String name;
-    private String desc;
+    private String id = "";
+    private String name = "";
+    private String desc = "";
     private List<String> forms;
     private List<String> documents;
 

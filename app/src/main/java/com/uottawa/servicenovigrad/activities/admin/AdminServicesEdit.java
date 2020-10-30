@@ -74,6 +74,7 @@ public class AdminServicesEdit extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
         desc.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
