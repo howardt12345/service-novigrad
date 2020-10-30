@@ -1,8 +1,10 @@
 package com.uottawa.servicenovigrad.activities.admin;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -114,7 +116,7 @@ public class AdminServicesActivity extends AppCompatActivity {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    deleteService(services.get(finalI));
+                    deleteServiceDialog(services.get(finalI));
                 }
             });
             //Add the list item to the list view
@@ -169,8 +171,40 @@ public class AdminServicesActivity extends AppCompatActivity {
         }
     }
 
-    private void deleteService(Service service) {
+    private void deleteServiceDialog(final Service service) {
+        //Create new AlertDialog
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminServicesActivity.this);
+        alertDialogBuilder
+        .setTitle("Delete " + service.getName() + "?")
+        .setMessage("Are you sure you want to delete this service? This service will be permanently deleted.")
+        .setCancelable(true)
+        .setPositiveButton(
+                "YES",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Delete the account
+                        deleteService(service);
+                        dialog.cancel();
+                    }
+                }
+        )
+        .setNegativeButton(
+                "NO",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }
+        );
+        //Show AlertDialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
+    private void deleteService(Service service) {
+        servicesReference.document(service.getId()).delete();
     }
 
     public void back(View view) {
