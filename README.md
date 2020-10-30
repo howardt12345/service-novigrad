@@ -23,3 +23,12 @@ The following functionality is implemented in deliverable 1:
 - Logging in as an admin account (username: "admin", password: "admin").
 - Basic welcome screen after logging in displaying the user's name, email and role, as well as a sign out button.
 - Remaining logged in after user has closed the app.
+
+# Deliverable 2
+The following functionality is implemented in deliverable 2:
+- Integration with CircleCI for automated builds and automatic testing.
+- 
+
+The Admin credentials are:
+email: admin
+password: admin
