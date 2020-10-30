@@ -1,17 +1,19 @@
 package com.uottawa.servicenovigrad.service;
 
-import com.google.firebase.firestore.PropertyName;
-
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Service {
+public class Service implements Serializable {
     private String id;
     private String name;
     private String desc;
     private List<String> forms;
     private List<String> documents;
 
-    public Service() {}
+    public Service() {
+        forms = documents = new ArrayList<String>();
+    }
 
     public Service(String id, String name, String desc, List<String> forms, List<String> documents) {
         this.id = id;

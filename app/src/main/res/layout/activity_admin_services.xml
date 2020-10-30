@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:onClick="addService"
     android:orientation="vertical"
     tools:context=".activities.admin.AdminServicesActivity">
 
@@ -50,7 +51,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:onClick="addService">
 
             <LinearLayout
                 android:id="@+id/services_list"
@@ -68,6 +70,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:onClick="addService"
         android:text="Add Service"
         android:theme="@style/Theme.MaterialComponents.NoActionBar"
         app:backgroundTint="@color/colorAccent"
