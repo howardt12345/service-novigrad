@@ -3,13 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16sp">
-
-    <TextView
-        android:id="@+id/services_edit_dialog_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Field" />
+    android:paddingLeft="16sp"
+    android:paddingTop="0sp"
+    android:paddingRight="16sp"
+    android:paddingBottom="0sp">
 
     <EditText
         android:id="@+id/service_edit_dialog_text"

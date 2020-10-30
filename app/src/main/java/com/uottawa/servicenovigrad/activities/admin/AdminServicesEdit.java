@@ -10,20 +10,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.material.textfield.TextInputLayout;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.service.Service;
+import com.uottawa.servicenovigrad.utils.Function;
 import com.uottawa.servicenovigrad.utils.Utils;
 
-import org.w3c.dom.Text;
+import java.util.List;
 
 public class AdminServicesEdit extends AppCompatActivity {
 
@@ -51,8 +48,9 @@ public class AdminServicesEdit extends AppCompatActivity {
         formsList = (ListView) findViewById(R.id.services_edit_formsList);
         documentsList = (ListView) findViewById(R.id.services_edit_documentsList);
 
-        formsAdapter = new ArrayAdapter<String>(this, R.layout.layout_admin_services_edit_listitem, R.id.service_edit_listitem, service.getForms());
-        documentsAdapter = new ArrayAdapter<String>(this, R.layout.layout_admin_services_edit_listitem, R.id.service_edit_listitem, service.getDocuments());
+        formsAdapter = new AdminServicesEditListAdapter(this, service.getForms(), editFromList(service.getForms()), deleteFromList(service.getForms()));
+
+        documentsAdapter = new AdminServicesEditListAdapter(this, service.getDocuments(), editFromList(service.getDocuments()), deleteFromList(service.getDocuments()));
 
         formsList.setAdapter(formsAdapter);
         documentsList.setAdapter(documentsAdapter);
@@ -95,18 +93,26 @@ public class AdminServicesEdit extends AppCompatActivity {
     }
 
     public void addToForms(View view) {
+        addToList(service.getForms());
+    }
+
+    public void addToDocuments(View view) {
+        addToList(service.getDocuments());
+    }
+
+    private void addToList(final List<String> list) {
         View v = LayoutInflater.from(this).inflate(R.layout.layout_admin_services_edit_dialog, null);
         final EditText input = (EditText) v.findViewById(R.id.service_edit_dialog_text);
 
         AlertDialog dialog = new AlertDialog.Builder(this)
+        .setMessage("Add Field")
         .setView(v)
         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String editTextInput = input.getText().toString();
-                service.getForms().add(editTextInput);
-                formsAdapter.notifyDataSetChanged();
-                Utils.setListViewHeightBasedOnChildren(formsList);
+                list.add(editTextInput);
+                updateLists();
             }
         })
         .setNegativeButton("Cancel", null)
@@ -114,24 +120,48 @@ public class AdminServicesEdit extends AppCompatActivity {
         dialog.show();
     }
 
-    public void addToDocuments(View view) {
-        View v = LayoutInflater.from(this).inflate(R.layout.layout_admin_services_edit_dialog, null);
-        final EditText input = (EditText) v.findViewById(R.id.service_edit_dialog_text);
-
-        AlertDialog dialog = new AlertDialog.Builder(this)
-        .setView(v)
-        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+    private Function editFromList(final List<String> list) {
+        return new Function() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String editTextInput = input.getText().toString();
-                service.getDocuments().add(editTextInput);
-                documentsAdapter.notifyDataSetChanged();
-                Utils.setListViewHeightBasedOnChildren(documentsList);
+            public void f(final Object... params) {
+                View v = LayoutInflater.from(AdminServicesEdit.this).inflate(R.layout.layout_admin_services_edit_dialog, null);
+                final EditText input = (EditText) v.findViewById(R.id.service_edit_dialog_text);
+                input.setText(list.get((int) params[0]));
+
+                AlertDialog dialog = new AlertDialog.Builder(AdminServicesEdit.this)
+                .setMessage("Edit Field")
+                .setView(v)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String editTextInput = input.getText().toString();
+                        list.set((int) params[0], editTextInput);
+                        updateLists();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+                dialog.show();
             }
-        })
-        .setNegativeButton("Cancel", null)
-        .create();
-        dialog.show();
+        };
+    }
+
+    private Function deleteFromList(final List<String> list) {
+        return new Function() {
+            @Override
+            public void f(Object... params) {
+                list.remove((int) params[0]);
+                updateLists();
+            }
+        };
+    }
+
+    private void updateLists() {
+        formsAdapter.notifyDataSetChanged();
+        Utils.setListViewHeightBasedOnChildren(formsList);
+
+        documentsAdapter.notifyDataSetChanged();
+        Utils.setListViewHeightBasedOnChildren(documentsList);
     }
 
     @Override
