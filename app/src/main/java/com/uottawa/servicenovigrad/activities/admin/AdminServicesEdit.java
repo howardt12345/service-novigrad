@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.admin.adapters.AdminServicesEditListAdapter;
 import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.utils.Function;
 import com.uottawa.servicenovigrad.utils.Utils;

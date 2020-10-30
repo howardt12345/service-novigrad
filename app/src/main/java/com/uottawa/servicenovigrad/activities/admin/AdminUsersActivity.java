@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.admin.adapters.AdminUsersListAdapter;
 import com.uottawa.servicenovigrad.user.CustomerAccount;
 import com.uottawa.servicenovigrad.user.EmployeeAccount;
 import com.uottawa.servicenovigrad.user.UserAccount;

@@ -1,4 +1,4 @@
-package com.uottawa.servicenovigrad.activities.admin;
+package com.uottawa.servicenovigrad.activities.admin.adapters;
 
 import android.app.Activity;
 import android.content.Context;

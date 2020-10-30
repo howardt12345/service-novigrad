@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.admin.adapters.AdminServicesListAdapter;
 import com.uottawa.servicenovigrad.service.Service;
 
 import java.util.ArrayList;
