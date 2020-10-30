@@ -202,6 +202,10 @@ public class AdminServicesActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Opens a dialog to confirm if user wants to delete given service, and deletes the service when confirmed.
+     * @param service The service to delete.
+     */
     private void deleteServiceDialog(final Service service) {
         //Create new AlertDialog
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminServicesActivity.this);
