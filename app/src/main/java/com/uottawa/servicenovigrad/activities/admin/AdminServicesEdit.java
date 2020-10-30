@@ -7,8 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -29,6 +32,7 @@ public class AdminServicesEdit extends AppCompatActivity {
     ArrayAdapter<String> formsAdapter, documentsAdapter;
 
     ListView formsList, documentsList;
+    EditText name, desc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +69,16 @@ public class AdminServicesEdit extends AppCompatActivity {
         documentsList = (ListView) findViewById(R.id.services_edit_documentsList);
         //Create new adapters for the listviews
         formsAdapter = new AdminServicesEditListAdapter(
-                this,
-                service.getForms(),
-                editFromList(service.getForms(), "Information"),
-                deleteFromList(service.getForms())
+            this,
+            service.getForms(),
+            editFromList(service.getForms(), "Information"),
+            deleteFromList(service.getForms())
         );
         documentsAdapter = new AdminServicesEditListAdapter(
-                this,
-                service.getDocuments(),
-                editFromList(service.getDocuments(), "Document"),
-                deleteFromList(service.getDocuments())
+            this,
+            service.getDocuments(),
+            editFromList(service.getDocuments(), "Document"),
+            deleteFromList(service.getDocuments())
         );
         //Set the adapter to the respective listviews
         formsList.setAdapter(formsAdapter);
@@ -85,8 +89,8 @@ public class AdminServicesEdit extends AppCompatActivity {
         Utils.setListViewHeightBasedOnChildren(documentsList);
 
         //Get the name and description fields
-        EditText name = (EditText) findViewById(R.id.services_edit_editName);
-        EditText desc = (EditText) findViewById(R.id.services_edit_editDesc);
+        name = (EditText) findViewById(R.id.services_edit_editName);
+        desc = (EditText) findViewById(R.id.services_edit_editDesc);
         //Set the text to the service's name and description
         name.setText(service.getName());
         desc.setText(service.getDesc());
@@ -127,7 +131,7 @@ public class AdminServicesEdit extends AppCompatActivity {
      * @param view
      */
     public void addToForms(View view) {
-        addToList(service.getForms(), "Information");
+        addToList(service.getForms(), "Information", view);
     }
 
     /**
@@ -135,7 +139,7 @@ public class AdminServicesEdit extends AppCompatActivity {
      * @param view
      */
     public void addToDocuments(View view) {
-        addToList(service.getDocuments(), "Document");
+        addToList(service.getDocuments(), "Document", view);
     }
 
     /**
@@ -143,7 +147,7 @@ public class AdminServicesEdit extends AppCompatActivity {
      * @param list The list to add a string to.
      * @param name the name of the list.
      */
-    private void addToList(final List<String> list, String name) {
+    private void addToList(final List<String> list, String name, final View view) {
         View v = LayoutInflater.from(this).inflate(R.layout.layout_admin_services_edit_dialog, null);
         final EditText input = (EditText) v.findViewById(R.id.service_edit_dialog_text);
 
@@ -154,8 +158,15 @@ public class AdminServicesEdit extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String editTextInput = input.getText().toString();
-                list.add(editTextInput);
-                updateLists();
+                //If the text is not empty
+                if(!editTextInput.isEmpty()) {
+                    //Add the text to the list
+                    list.add(editTextInput);
+                    //Update the list components
+                    updateLists();
+                } else {
+                    Utils.showSnackbar("Field cannot be empty.", view);
+                }
             }
         })
         .setNegativeButton("Cancel", null)
@@ -176,7 +187,7 @@ public class AdminServicesEdit extends AppCompatActivity {
                 //Gets the index from the parameters
                 final int index = (int) params[0];
                 //Sets up the view to put in the dialog
-                View v = LayoutInflater.from(AdminServicesEdit.this).inflate(R.layout.layout_admin_services_edit_dialog, null);
+                final View v = LayoutInflater.from(AdminServicesEdit.this).inflate(R.layout.layout_admin_services_edit_dialog, null);
                 final EditText input = (EditText) v.findViewById(R.id.service_edit_dialog_text);
                 //Set the text of the input to the string at the index
                 input.setText(list.get((index)));
@@ -189,10 +200,13 @@ public class AdminServicesEdit extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Get the string from the input
                         String editTextInput = input.getText().toString();
-                        //Set the string at the index
-                        list.set(index, editTextInput);
-                        //Update the list components
-                        updateLists();
+                        //If the text is not empty
+                        if(!editTextInput.isEmpty()) {
+                            //Set the string at the index
+                            list.set(index, editTextInput);
+                            //Update the list components
+                            updateLists();
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -283,14 +297,34 @@ public class AdminServicesEdit extends AppCompatActivity {
      * @param view the current view
      */
     public void confirmEdit(View view) {
-        //TODO: Form validation
-        saveEdit();
+        //If the service contents are valid
+        boolean valid = validateEdit(service, view);
+
+        if(valid) {
+            saveEdit();
+        }
+    }
+
+    /**
+     * Validates the edit done to the service.
+     * @param service the service to validate.
+     * @param view the current view
+     */
+    private boolean validateEdit(Service service, View view) {
+        //Verify if any fields are empty
+        if(TextUtils.isEmpty(service.getName()) || TextUtils.isEmpty(service.getDesc())
+                || service.getForms().isEmpty() || service.getDocuments().isEmpty()) {
+            Utils.showSnackbar("One or more required fields are empty.", view);
+            return false;
+        }
+        return true;
     }
 
     /**
      * Saves the edit.
      */
     private void saveEdit() {
+        Log.d("aaaa", service.toString());
         Intent intent = new Intent();
         //Add the service to the intent data
         intent.putExtra("service", service);

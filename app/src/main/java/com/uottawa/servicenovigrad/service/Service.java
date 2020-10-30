@@ -5,14 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Service implements Serializable {
-    private String id = "";
-    private String name = "";
-    private String desc = "";
+    private String id;
+    private String name;
+    private String desc;
     private List<String> forms;
     private List<String> documents;
 
     public Service() {
-        forms = documents = new ArrayList<String>();
+        id = "";
+        name = "";
+        desc = "";
+        forms = new ArrayList<String>();
+        documents = new ArrayList<String>();
     }
 
     public Service(String id, String name, String desc, List<String> forms, List<String> documents) {
@@ -64,7 +68,7 @@ public class Service implements Serializable {
         //New string builder
         StringBuilder sb = new StringBuilder();
         //Append the description of the service
-        sb.append(desc);
+        sb.append(desc + "\n");
         //Add forms header
         sb.append("\nInformation required: \n");
         //Add the forms to the string
@@ -72,7 +76,7 @@ public class Service implements Serializable {
             sb.append(" > " + form + "\n");
         }
         //Add documents header
-        sb.append("Documents required: \n");
+        sb.append("\nDocuments required: \n");
         //Add the documents to the string
         for(String doc : documents) {
             sb.append(" > " + doc + "\n");

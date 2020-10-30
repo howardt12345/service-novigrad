@@ -173,7 +173,6 @@ public class AdminServicesActivity extends AppCompatActivity {
         startActivityForResult(intent, EDIT_SERVICE);
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
