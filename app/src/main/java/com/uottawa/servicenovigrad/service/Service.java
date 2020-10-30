@@ -39,4 +39,20 @@ public class Service implements Serializable {
     public List<String> getDocuments() {
         return documents;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+    public void setForms(List<String> forms) {
+        this.forms = forms;
+    }
+    public void setDocuments(List<String> documents) {
+        this.documents = documents;
+    }
 }
