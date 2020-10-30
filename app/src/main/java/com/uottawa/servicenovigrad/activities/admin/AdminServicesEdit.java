@@ -103,7 +103,7 @@ public class AdminServicesEdit extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //Set the name of the service to the name field content
-                service.setName(s.toString());
+                service.setName(s.toString().trim());
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -118,7 +118,7 @@ public class AdminServicesEdit extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //Set the description of the service to the description field content
-                service.setDesc(s.toString());
+                service.setDesc(s.toString().trim());
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -157,7 +157,7 @@ public class AdminServicesEdit extends AppCompatActivity {
         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String editTextInput = input.getText().toString();
+                String editTextInput = input.getText().toString().trim();
                 //If the text is not empty
                 if(!editTextInput.isEmpty()) {
                     //Add the text to the list
@@ -199,7 +199,7 @@ public class AdminServicesEdit extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Get the string from the input
-                        String editTextInput = input.getText().toString();
+                        String editTextInput = input.getText().toString().trim();
                         //If the text is not empty
                         if(!editTextInput.isEmpty()) {
                             //Set the string at the index
@@ -297,11 +297,29 @@ public class AdminServicesEdit extends AppCompatActivity {
      * @param view the current view
      */
     public void confirmEdit(View view) {
+        //Trims all the fields within the service.
+        trimService(service);
         //If the service contents are valid
         boolean valid = validateEdit(service, view);
 
         if(valid) {
             saveEdit();
+        }
+    }
+
+    /**
+     * Trims all the fields within the service.
+     * @param service the service to trim the fields in
+     */
+    private void trimService(Service service) {
+        service.setName(service.getName().trim());
+        service.setDesc(service.getDesc().trim());
+
+        for(int i = 0; i < service.getForms().size(); i++) {
+            service.getForms().set(i, service.getForms().get(i).trim());
+        }
+        for(int i = 0; i < service.getDocuments().size(); i++) {
+            service.getDocuments().set(i, service.getDocuments().get(i).trim());
         }
     }
 
@@ -324,7 +342,6 @@ public class AdminServicesEdit extends AppCompatActivity {
      * Saves the edit.
      */
     private void saveEdit() {
-        Log.d("aaaa", service.toString());
         Intent intent = new Intent();
         //Add the service to the intent data
         intent.putExtra("service", service);

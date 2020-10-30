@@ -57,7 +57,7 @@ public class AdminServicesActivity extends AppCompatActivity {
         super.onStart();
 
         //Add listener to service reference
-        servicesReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        servicesReference.orderBy("name").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
