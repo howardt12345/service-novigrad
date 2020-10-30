@@ -14,12 +14,20 @@ public class Utils {
 
     /**
      * Checks if string is of valid email format
-     *
-     * @param email
+     * @param email the email to verify
      * @return boolean true if valid, false if invalid.
      */
     public static boolean isEmailValid(String email) {
         return androidx.core.util.PatternsCompat.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    /**
+     * Checks if string is of valid name format
+     * @param name the name to verify
+     * @return whether the name is a valid format
+     */
+    public static boolean isNameValid(String name) {
+        return name.matches("^[a-zA-Z\\\\s]*$");
     }
 
     /**

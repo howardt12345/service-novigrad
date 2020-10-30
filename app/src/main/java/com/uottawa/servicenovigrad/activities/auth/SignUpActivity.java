@@ -198,7 +198,7 @@ public class SignUpActivity extends AppCompatActivity {
             return SignUpError.FieldsEmpty;
         }
         //Checks if name is only composed of whitespaces
-        if(name.trim().length() == 0 || !name.matches("^[a-zA-Z\\\\s]*$")){
+        if(name.trim().length() == 0 || !Utils.isNameValid(name)){
             return SignUpError.InvalidName;
         }
         //Validates Email
