@@ -58,6 +58,10 @@ public class AdminServicesEdit extends AppCompatActivity {
         Utils.setListViewHeightBasedOnChildren(formsList);
         Utils.setListViewHeightBasedOnChildren(documentsList);
 
+        initializeFields();
+    }
+
+    private void initializeFields() {
         EditText name = (EditText) findViewById(R.id.services_edit_editName);
         EditText desc = (EditText) findViewById(R.id.services_edit_editDesc);
 
