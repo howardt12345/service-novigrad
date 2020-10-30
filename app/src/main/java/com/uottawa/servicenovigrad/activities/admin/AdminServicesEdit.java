@@ -35,46 +35,69 @@ public class AdminServicesEdit extends AppCompatActivity {
         setContentView(R.layout.activity_admin_services_edit);
         getSupportActionBar().hide();
 
+        //If there is data passed through to this activity
         if(getIntent().getExtras() != null) {
+            //Get the service from the data
             service = (Service) getIntent().getSerializableExtra("service");
         }
 
+        //Get the title
         TextView title = (TextView) findViewById(R.id.services_edit_title);
+        //If there was no data passed through to this activity
         if(service == null) {
+            //Change title to reflect current function
             title.setText("Add Service");
+            //Create new service
             service = new Service();
         }
 
-        formsList = (ListView) findViewById(R.id.services_edit_formsList);
-        documentsList = (ListView) findViewById(R.id.services_edit_documentsList);
-
-        formsAdapter = new AdminServicesEditListAdapter(this, service.getForms(), editFromList(service.getForms()), deleteFromList(service.getForms()));
-
-        documentsAdapter = new AdminServicesEditListAdapter(this, service.getDocuments(), editFromList(service.getDocuments()), deleteFromList(service.getDocuments()));
-
-        formsList.setAdapter(formsAdapter);
-        documentsList.setAdapter(documentsAdapter);
-
-        Utils.setListViewHeightBasedOnChildren(formsList);
-        Utils.setListViewHeightBasedOnChildren(documentsList);
-
+        //Initialize the fields in this activity
         initializeFields();
     }
 
+    /**
+     * Initializes all the fields in this activity.
+     */
     private void initializeFields() {
+        //Get the listviews from the id
+        formsList = (ListView) findViewById(R.id.services_edit_formsList);
+        documentsList = (ListView) findViewById(R.id.services_edit_documentsList);
+        //Create new adapters for the listviews
+        formsAdapter = new AdminServicesEditListAdapter(
+                this,
+                service.getForms(),
+                editFromList(service.getForms(), "Information"),
+                deleteFromList(service.getForms())
+        );
+        documentsAdapter = new AdminServicesEditListAdapter(
+                this,
+                service.getDocuments(),
+                editFromList(service.getDocuments(), "Document"),
+                deleteFromList(service.getDocuments())
+        );
+        //Set the adapter to the respective listviews
+        formsList.setAdapter(formsAdapter);
+        documentsList.setAdapter(documentsAdapter);
+        //Change the height of the listview to be the size of the children
+        //This is so that the listviews can fit in the linearlayout
+        Utils.setListViewHeightBasedOnChildren(formsList);
+        Utils.setListViewHeightBasedOnChildren(documentsList);
+
+        //Get the name and description fields
         EditText name = (EditText) findViewById(R.id.services_edit_editName);
         EditText desc = (EditText) findViewById(R.id.services_edit_editDesc);
-
+        //Set the text to the service's name and description
         name.setText(service.getName());
         desc.setText(service.getDesc());
 
+        //Add text change listener to the name field
         name.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Set the name of the service to the name field content
                 service.setName(s.toString());
             }
             @Override
@@ -82,12 +105,14 @@ public class AdminServicesEdit extends AppCompatActivity {
             }
         });
 
+        //Add text change listener to the description field
         desc.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Set the description of the service to the description field content
                 service.setDesc(s.toString());
             }
             @Override
@@ -96,20 +121,33 @@ public class AdminServicesEdit extends AppCompatActivity {
         });
     }
 
+    /**
+     * Opens the dialog to add a field to the forms list
+     * @param view
+     */
     public void addToForms(View view) {
-        addToList(service.getForms());
+        addToList(service.getForms(), "Information");
     }
 
+    /**
+     * Opens the dialog to add a field to the documents list
+     * @param view
+     */
     public void addToDocuments(View view) {
-        addToList(service.getDocuments());
+        addToList(service.getDocuments(), "Document");
     }
 
-    private void addToList(final List<String> list) {
+    /**
+     * Opens a dialog to add a string to the given list of strings
+     * @param list The list to add a string to.
+     * @param name the name of the list.
+     */
+    private void addToList(final List<String> list, String name) {
         View v = LayoutInflater.from(this).inflate(R.layout.layout_admin_services_edit_dialog, null);
         final EditText input = (EditText) v.findViewById(R.id.service_edit_dialog_text);
 
         AlertDialog dialog = new AlertDialog.Builder(this)
-        .setMessage("Add Field")
+        .setMessage("Add " + name + " Field")
         .setView(v)
         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -124,22 +162,35 @@ public class AdminServicesEdit extends AppCompatActivity {
         dialog.show();
     }
 
-    private Function editFromList(final List<String> list) {
+    /**
+     * Returns a function that opens a dialog to edit a string from the given list of strings
+     * @param list The list to edit a string in.
+     * @param name the name of the list.
+     * @return the function to open the dialog.
+     */
+    private Function editFromList(final List<String> list, final String name) {
         return new Function() {
             @Override
             public void f(final Object... params) {
+                //Gets the index from the parameters
+                final int index = (int) params[0];
+                //Sets up the view to put in the dialog
                 View v = LayoutInflater.from(AdminServicesEdit.this).inflate(R.layout.layout_admin_services_edit_dialog, null);
                 final EditText input = (EditText) v.findViewById(R.id.service_edit_dialog_text);
-                input.setText(list.get((int) params[0]));
-
+                //Set the text of the input to the string at the index
+                input.setText(list.get((index)));
+                //Set up the dialog
                 AlertDialog dialog = new AlertDialog.Builder(AdminServicesEdit.this)
-                .setMessage("Edit Field")
+                .setMessage("Edit " + name + " Field")
                 .setView(v)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        //Get the string from the input
                         String editTextInput = input.getText().toString();
-                        list.set((int) params[0], editTextInput);
+                        //Set the string at the index
+                        list.set(index, editTextInput);
+                        //Update the list components
                         updateLists();
                     }
                 })
@@ -150,29 +201,47 @@ public class AdminServicesEdit extends AppCompatActivity {
         };
     }
 
+    /**
+     * Returns a function to delete a string from a list of strings
+     * @param list The list to delete a string from.
+     * @return the function to delete the string.
+     */
     private Function deleteFromList(final List<String> list) {
         return new Function() {
             @Override
             public void f(Object... params) {
+                //Delete the item from the list at the index
                 list.remove((int) params[0]);
+                //Update the list components
                 updateLists();
             }
         };
     }
 
+    /**
+     * Updates both the forms list and the documents list
+     */
     private void updateLists() {
+        //Notify the forms adapters that data has changed
         formsAdapter.notifyDataSetChanged();
-        Utils.setListViewHeightBasedOnChildren(formsList);
-
         documentsAdapter.notifyDataSetChanged();
+
+        //Change the height of the listview to be the size of the children
+        //This is so that the listviews can fit in the linearlayout
+        Utils.setListViewHeightBasedOnChildren(formsList);
         Utils.setListViewHeightBasedOnChildren(documentsList);
     }
 
     @Override
     public void onBackPressed() {
+        //Cancel the edit when back button is pressed
         cancelEdit(this.getCurrentFocus());
     }
 
+    /**
+     * Display a dialog to confirm if user wants to cancel the edit
+     * @param view the current view.
+     */
     public void cancelEdit(View view) {
         //Create new AlertDialog
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminServicesEdit.this);
@@ -186,6 +255,7 @@ public class AdminServicesEdit extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
+                    //Close the activity with result code not ok
                     Intent intent = new Intent();
                     setResult(1, intent);
                     finish();
@@ -197,6 +267,7 @@ public class AdminServicesEdit extends AppCompatActivity {
             new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    //Close the dialog without closing the activity
                     dialog.cancel();
                 }
             }
@@ -206,12 +277,21 @@ public class AdminServicesEdit extends AppCompatActivity {
         alertDialog.show();
     }
 
+    /**
+     * Applies form validation, and saves the edit if the forms are good
+     * @param view the current view
+     */
     public void confirmEdit(View view) {
+        //TODO: Form validation
         saveEdit();
     }
 
+    /**
+     * Saves the edit.
+     */
     private void saveEdit() {
         Intent intent = new Intent();
+        //Add the service to the intent data
         intent.putExtra("service", service);
         setResult(0, intent);
         finish();

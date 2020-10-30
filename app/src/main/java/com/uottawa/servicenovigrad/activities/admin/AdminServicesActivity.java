@@ -20,7 +20,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.service.Service;
-import com.uottawa.servicenovigrad.user.UserAccount;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +46,7 @@ public class AdminServicesActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         servicesReference = firestore.collection("services");
 
+        //Set up services list
         services = new ArrayList<>();
         servicesList = (LinearLayout) findViewById(R.id.services_list);
     }
@@ -55,6 +55,7 @@ public class AdminServicesActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        //Add listener to service reference
         servicesReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -62,22 +63,26 @@ public class AdminServicesActivity extends AppCompatActivity {
                     Log.w("ServiceActivity", "Listen failed.", error);
                     return;
                 }
+                //Clear the list and components
                 services.clear();
                 servicesList.removeAllViews();
-
+                //Iterate through each document in collection
                 for(QueryDocumentSnapshot doc : value) {
                     if(doc.exists()) {
+                        //Get the information of the service
                         String id = doc.getId();
                         String name = doc.getString("name");
                         String desc = doc.getString("desc");
                         List<String> forms = (List<String>) doc.get("forms");
                         List<String> documents = (List<String>) doc.get("documents");
 
+                        //Create a new service object
                         Service service = new Service(id, name, desc, forms, documents);
-
+                        //Add service to list
                         services.add(service);
                     }
                 }
+                //Set up the services list
                 setUpList(services, servicesList);
             }
         });
@@ -128,16 +133,28 @@ public class AdminServicesActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Opens the Edit Services page to add a service.
+     * @param view the current view
+     */
     public void addService(View view) {
+        //Set up intent
         Intent intent = new Intent(AdminServicesActivity.this, AdminServicesEdit.class);
         startActivityForResult(intent, ADD_SERVICE);
     }
 
+    /**
+     * Edits the selected service.
+     * @param service the service to edit
+     */
     private void editService(Service service) {
+        //Set up intent
         Intent intent = new Intent(AdminServicesActivity.this, AdminServicesEdit.class);
+        //Add service to intent data to be edited
         intent.putExtra("service", service);
         startActivityForResult(intent, EDIT_SERVICE);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -145,25 +162,21 @@ public class AdminServicesActivity extends AppCompatActivity {
 
         //If result is ok
         if(resultCode == 0) {
+            //Get the service
+            Service service = (Service) data.getSerializableExtra("service");
+            //Create a map with the data to write to cloud firestore
+            Map<String, Object> serviceInfo = new HashMap<>();
+            serviceInfo.put("name", service.getName());
+            serviceInfo.put("desc", service.getDesc());
+            serviceInfo.put("forms", service.getForms());
+            serviceInfo.put("documents", service.getDocuments());
+
+            //If the request was to add a service
             if(requestCode == ADD_SERVICE) {
-                Service service = (Service) data.getSerializableExtra("service");
-                Map<String, Object> serviceInfo = new HashMap<>();
-
-                serviceInfo.put("name", service.getName());
-                serviceInfo.put("desc", service.getDesc());
-                serviceInfo.put("forms", service.getForms());
-                serviceInfo.put("documents", service.getDocuments());
-
+                //Add the service to the database
                 servicesReference.add(serviceInfo);
-            } else if (requestCode == EDIT_SERVICE) {
-                Service service = (Service) data.getSerializableExtra("service");
-                Map<String, Object> serviceInfo = new HashMap<>();
-
-                serviceInfo.put("name", service.getName());
-                serviceInfo.put("desc", service.getDesc());
-                serviceInfo.put("forms", service.getForms());
-                serviceInfo.put("documents", service.getDocuments());
-
+            } else if (requestCode == EDIT_SERVICE) { //If the request was to edit a service
+                //Get the service id, then override the data in the database
                 servicesReference.document(service.getId()).set(serviceInfo);
             } else {
                 //Do nothing
@@ -183,7 +196,7 @@ public class AdminServicesActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //Delete the account
+                        //Delete the service
                         deleteService(service);
                         dialog.cancel();
                     }
@@ -204,10 +217,12 @@ public class AdminServicesActivity extends AppCompatActivity {
     }
 
     private void deleteService(Service service) {
+        //Delete the service from the database
         servicesReference.document(service.getId()).delete();
     }
 
     public void back(View view) {
+        //Close this activity
         this.finish();
     }
 }
