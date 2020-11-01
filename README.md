@@ -27,8 +27,12 @@ The following functionality is implemented in deliverable 1:
 # Deliverable 2
 The following functionality is implemented in deliverable 2:
 - Integration with CircleCI for automated builds and automatic testing.
-- 
+- Viewing a list of Employee and Customer accounts registered to the application.
+- Deletion of Employee and Customer accounts.
+- Adding, Editing, and Deleting services.
 
 The Admin credentials are:
+```
 email: admin
 password: admin
+```
