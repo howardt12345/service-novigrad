@@ -48,6 +48,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.2.0'
     implementation 'com.google.firebase:firebase-database:19.4.0'
 
+    //Material Day Picker
+    implementation 'ca.antonious:materialdaypicker:0.7.3'
+
     implementation 'com.android.support:multidex:1.0.3'
 
     // Required for local unit tests (JUnit 4 framework)
