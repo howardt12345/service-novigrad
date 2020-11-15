@@ -15,7 +15,7 @@
         <activity android:name=".activities.admin.AdminServicesActivity" />
         <activity android:name=".activities.admin.AdminUsersActivity" />
         <activity android:name=".activities.customer.CustomerActivity" />
-        <activity android:name=".activities.employee.EmployeeMainActivity" />
+        <activity android:name=".activities.employee.EmployeeRouterActivity" />
         <activity android:name=".activities.admin.AdminMainActivity" />
         <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>
