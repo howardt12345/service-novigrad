@@ -9,11 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.admin.AdminServicesEdit"></activity>
+        <activity android:name=".activities.employee.EmployeeEditActivity"></activity>
+        <activity android:name=".activities.employee.EmployeeInfoActivity" />
+        <activity android:name=".activities.admin.AdminServicesEdit" />
         <activity android:name=".activities.admin.AdminServicesActivity" />
         <activity android:name=".activities.admin.AdminUsersActivity" />
         <activity android:name=".activities.customer.CustomerActivity" />
-        <activity android:name=".activities.employee.EmployeeActivity" />
+        <activity android:name=".activities.employee.EmployeeMainActivity" />
         <activity android:name=".activities.admin.AdminMainActivity" />
         <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>

@@ -36,3 +36,12 @@ The Admin credentials are:
 email: admin
 password: admin
 ```
+
+# Deliverable 3
+The following functionality is implemented in deliverable 3:
+
+The Sample Employee credentials are:
+```
+email: employee@novigrad.com
+password: employee
+```

@@ -1,7 +1,6 @@
 package com.uottawa.servicenovigrad.activities.admin;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +8,7 @@ import android.view.View;
 
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
-import com.uottawa.servicenovigrad.activities.employee.EmployeeActivity;
 import com.uottawa.servicenovigrad.user.UserController;
-import com.uottawa.servicenovigrad.utils.Utils;
 
 public class AdminMainActivity extends AppCompatActivity {
 

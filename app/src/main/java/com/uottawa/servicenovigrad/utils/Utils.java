@@ -27,7 +27,7 @@ public class Utils {
      * @return whether the name is a valid format
      */
     public static boolean isNameValid(String name) {
-        return name.matches("^[a-zA-Z\\\\s]*$");
+        return name.matches("^[a-zA-Z\\s]*$");
     }
 
     /**
