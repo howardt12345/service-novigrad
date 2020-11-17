@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.employee.EmployeeRouterActivity">
-
+    tools:context=".activities.employee.EmployeeLoaderActivity">
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"

@@ -9,7 +9,8 @@ import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.admin.AdminMainActivity;
 import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
 import com.uottawa.servicenovigrad.activities.customer.CustomerActivity;
-import com.uottawa.servicenovigrad.activities.employee.EmployeeRouterActivity;
+import com.uottawa.servicenovigrad.activities.employee.EmployeeLoaderActivity;
+import com.uottawa.servicenovigrad.activities.employee.EmployeeMainActivity;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, AdminMainActivity.class);
                 break;
             case "employee":
-                intent = new Intent(MainActivity.this, EmployeeRouterActivity.class);
+                intent = new Intent(MainActivity.this, EmployeeLoaderActivity.class);
                 break;
             case "customer":
                 intent = new Intent(MainActivity.this, CustomerActivity.class);

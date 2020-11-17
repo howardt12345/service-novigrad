@@ -30,6 +30,10 @@ public class Utils {
         return name.matches("^[a-zA-Z\\s]*$");
     }
 
+    public static String formatNumber(String number) {
+        return number.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+    }
+
     /**
      * Shows snackbar with given message. The snackbar has a close button, which does nothing.
      * @param message the message to show.
