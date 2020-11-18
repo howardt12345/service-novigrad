@@ -139,7 +139,11 @@ public class AdminServicesEdit extends AppCompatActivity {
                 if(s.toString().trim().isEmpty()) {
                     service.setPrice(0);
                 } else {
-                    service.setPrice(Integer.parseInt(s.toString().trim()));
+                    try {
+                        service.setPrice(Integer.parseInt(s.toString().trim()));
+                    } catch (Exception e) {
+                        service.setPrice(0);
+                    }
                 }
             }
             @Override
@@ -352,10 +356,13 @@ public class AdminServicesEdit extends AppCompatActivity {
      */
     private boolean validateEdit(Service service, View view) {
         //Verify if any fields are empty
-        //TODO: Validate price
         if(TextUtils.isEmpty(service.getName()) || TextUtils.isEmpty(service.getDesc())
                 || service.getForms().isEmpty() || service.getDocuments().isEmpty()) {
             Utils.showSnackbar("One or more required fields are empty.", view);
+            return false;
+        }
+        if(service.getPrice() <= 0) {
+            Utils.showSnackbar("Price must be a positive number.", view);
             return false;
         }
         return true;
