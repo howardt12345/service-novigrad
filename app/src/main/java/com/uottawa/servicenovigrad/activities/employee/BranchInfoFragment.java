@@ -130,9 +130,10 @@ public class BranchInfoFragment extends Fragment {
                                 String desc = doc.getString("desc");
                                 List<String> forms = (List<String>) doc.get("forms");
                                 List<String> documents = (List<String>) doc.get("documents");
+                                int price = doc.getLong("price").intValue();
 
                                 //Create a new service object
-                                Service service = new Service(id, name, desc, forms, documents);
+                                Service service = new Service(id, name, desc, forms, documents, price);
                                 //Add service to list
                                 services.add(service);
                             }
