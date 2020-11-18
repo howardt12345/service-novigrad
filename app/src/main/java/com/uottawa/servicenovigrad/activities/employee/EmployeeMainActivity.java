@@ -28,6 +28,7 @@ import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 import com.uottawa.servicenovigrad.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class EmployeeMainActivity extends AppCompatActivity {
@@ -75,7 +76,35 @@ public class EmployeeMainActivity extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(error == null) {
                     if(value.exists()) {
+                        String id = value.getId();
+                        String name = value.getString("name");
+                        String address = value.getString("address");
+                        String phoneNumber = value.getString("phoneNumber");
+                        ArrayList<String> servicesIds = (ArrayList<String>) value.get("services");
 
+                        ArrayList<String> openDays = (ArrayList<String>) value.get("openDays");
+                        int openingHour = value.getLong("openingHour").intValue();
+                        int openingMinute = value.getLong("openingMinute").intValue();
+                        int closingHour = value.getLong("closingHour").intValue();
+                        int closingMinute = value.getLong("closingMinute").intValue();
+                        double rating = value.getDouble("rating");
+
+                        //Initialize the branch object.
+                        Branch b = new Branch(
+                            id,
+                            name,
+                            address,
+                            phoneNumber,
+                            servicesIds,
+                            openDays,
+                            openingHour,
+                            openingMinute,
+                            closingHour,
+                            closingMinute,
+                            rating
+                        );
+                        branch = b;
+                        initializeFields();
                     } else {
 
                     }
