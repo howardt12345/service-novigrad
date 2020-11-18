@@ -10,6 +10,7 @@ public class Service implements Serializable {
     private String desc;
     private List<String> forms;
     private List<String> documents;
+    private int price;
 
     public Service() {
         id = "";
@@ -19,12 +20,13 @@ public class Service implements Serializable {
         documents = new ArrayList<String>();
     }
 
-    public Service(String id, String name, String desc, List<String> forms, List<String> documents) {
+    public Service(String id, String name, String desc, List<String> forms, List<String> documents, int price) {
         this.id = id;
         this.name = name;
         this.desc = desc;
         this.forms = forms;
         this.documents = documents;
+        this.price = price
     }
 
     //Getters
@@ -43,6 +45,9 @@ public class Service implements Serializable {
     public List<String> getDocuments() {
         return documents;
     }
+    public int getPrice() {
+        return price;
+    }
 
     public void setId(String id) {
         this.id = id;
@@ -58,6 +63,9 @@ public class Service implements Serializable {
     }
     public void setDocuments(List<String> documents) {
         this.documents = documents;
+    }
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     /**
@@ -81,6 +89,7 @@ public class Service implements Serializable {
         for(String doc : documents) {
             sb.append(" > " + doc + "\n");
         }
+        sb.append("Price: " + price + "\n");
         //Return the string builder result
         return sb.toString();
     }
