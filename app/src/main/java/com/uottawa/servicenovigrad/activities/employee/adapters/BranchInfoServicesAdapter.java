@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,11 +32,21 @@ public class BranchInfoServicesAdapter extends ArrayAdapter<Service> {
 
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.service_name);
         TextView textViewDesc = (TextView) listViewItem.findViewById(R.id.service_desc);
+        TextView textViewPrice = (TextView) listViewItem.findViewById(R.id.service_price);
 
         Service service = services.get(position);
 
         textViewName.setText(service.getName());
         textViewDesc.setText(service.getDesc());
+        textViewPrice.setText("Price: $" + service.getPrice());
+
+        //Hide edit button functions
+        ImageButton editButton = (ImageButton) listViewItem.findViewById(R.id.edit_service);
+        editButton.setVisibility(View.GONE);
+
+        //Hide delete button functions
+        ImageButton deleteButton = (ImageButton) listViewItem.findViewById(R.id.delete_service);
+        deleteButton.setVisibility(View.GONE);
 
         return listViewItem;
     }

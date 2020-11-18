@@ -90,7 +90,7 @@ public class Service implements Serializable {
         for(String doc : documents) {
             sb.append(" > " + doc + "\n");
         }
-        sb.append("\nPrice: " + price + "\n");
+        sb.append("\nPrice: $" + price + "\n");
         //Return the string builder result
         return sb.toString();
     }

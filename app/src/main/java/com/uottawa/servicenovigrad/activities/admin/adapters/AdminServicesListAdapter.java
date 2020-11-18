@@ -31,11 +31,13 @@ public class AdminServicesListAdapter extends ArrayAdapter<Service> {
 
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.service_name);
         TextView textViewDesc = (TextView) listViewItem.findViewById(R.id.service_desc);
+        TextView textViewPrice = (TextView) listViewItem.findViewById(R.id.service_price);
 
         Service service = services.get(position);
 
         textViewName.setText(service.getName());
         textViewDesc.setText(service.getDesc());
+        textViewPrice.setText("Price: $" + service.getPrice());
 
         return listViewItem;
     }

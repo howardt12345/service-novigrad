@@ -193,13 +193,6 @@ public class BranchInfoFragment extends Fragment {
                     serviceInfo(services.get(finalI));
                 }
             });
-            //Set edit button functions
-            ImageButton editButton = (ImageButton) view.findViewById(R.id.edit_service);
-            editButton.setVisibility(View.GONE);
-
-            //Set delete button functions
-            ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete_service);
-            deleteButton.setVisibility(View.GONE);
 
             //Add the list item to the list view
             listView.addView(view);
