@@ -16,6 +16,7 @@ public class Service implements Serializable {
         id = "";
         name = "";
         desc = "";
+        price = 0;
         forms = new ArrayList<String>();
         documents = new ArrayList<String>();
     }

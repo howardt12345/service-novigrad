@@ -74,11 +74,12 @@ public class AdminServicesActivity extends AppCompatActivity {
                         String id = doc.getId();
                         String name = doc.getString("name");
                         String desc = doc.getString("desc");
+                        int price = Integer.parseInt(doc.getString("price"));
                         List<String> forms = (List<String>) doc.get("forms");
                         List<String> documents = (List<String>) doc.get("documents");
                         //TODO: Get price from firestore
                         //Create a new service object
-                        Service service = new Service(id, name, desc, forms, documents, 0);
+                        Service service = new Service(id, name, desc, forms, documents, price);
                         //Add service to list
                         services.add(service);
                     }
@@ -185,6 +186,7 @@ public class AdminServicesActivity extends AppCompatActivity {
             Map<String, Object> serviceInfo = new HashMap<>();
             serviceInfo.put("name", service.getName());
             serviceInfo.put("desc", service.getDesc());
+            serviceInfo.put("price", service.getPrice());
             serviceInfo.put("forms", service.getForms());
             serviceInfo.put("documents", service.getDocuments());
 

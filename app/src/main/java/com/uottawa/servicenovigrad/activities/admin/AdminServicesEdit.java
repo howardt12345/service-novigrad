@@ -32,7 +32,7 @@ public class AdminServicesEdit extends AppCompatActivity {
     ArrayAdapter<String> formsAdapter, documentsAdapter;
 
     ListView formsList, documentsList;
-    EditText name, desc;
+    EditText name, desc, price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +91,11 @@ public class AdminServicesEdit extends AppCompatActivity {
         //Get the name and description fields
         name = (EditText) findViewById(R.id.services_edit_editName);
         desc = (EditText) findViewById(R.id.services_edit_editDesc);
+        price = (EditText) findViewById(R.id.services_edit_editPrice);
         //Set the text to the service's name and description
         name.setText(service.getName());
         desc.setText(service.getDesc());
+        price.setText(service.getPrice());
 
         //Add text change listener to the name field
         name.addTextChangedListener(new TextWatcher() {
@@ -126,6 +128,20 @@ public class AdminServicesEdit extends AppCompatActivity {
         });
 
         //TODO: Add price parameter initialization
+        //Add text change listener to the name field
+        price.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Set the price of the service to the price field content
+                service.setPrice(Integer.parseInt(s.toString().trim()));
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     /**

@@ -54,7 +54,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="677dp">
 
         <LinearLayout
             android:id="@+id/services_edit_fields"
@@ -80,6 +80,15 @@
                 android:hint="Service Description"
                 android:inputType="textMultiLine" />
 
+            <EditText
+                android:id="@+id/services_edit_editPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Service Price"
+                android:inputType="textMultiLine" />
+
             <TextView
                 android:id="@+id/services_edit_formsTitle"
                 android:layout_width="match_parent"
@@ -103,11 +112,11 @@
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
+                android:elevation="0dp"
                 android:onClick="addToForms"
                 android:text="Add Information"
                 android:theme="@style/Theme.MaterialComponents.NoActionBar"
                 app:backgroundTint="@color/colorAccent"
-                android:elevation="0dp"
                 app:icon="@drawable/ic_add" />
 
 
@@ -132,11 +141,11 @@
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
+                android:elevation="0dp"
                 android:onClick="addToDocuments"
                 android:text="Add Document"
                 android:theme="@style/Theme.MaterialComponents.NoActionBar"
                 app:backgroundTint="@color/colorAccent"
-                android:elevation="0dp"
                 app:icon="@drawable/ic_add" />
         </LinearLayout>
     </ScrollView>
