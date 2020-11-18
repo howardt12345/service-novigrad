@@ -2,6 +2,7 @@ package com.uottawa.servicenovigrad.activities.employee;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -57,14 +58,10 @@ public class EmployeeMainActivity extends AppCompatActivity {
     }
 
     private void initializeFields() {
-        TextView nameView = (TextView) findViewById(R.id.employee_info_name);
-        nameView.setText("Name: " + branch.getName());
-
-        TextView phoneView = (TextView) findViewById(R.id.employee_info_phoneNumber);
-        phoneView.setText("Phone Number: " + Utils.formatNumber(branch.getPhoneNumber()));
-
-        TextView addressView = (TextView) findViewById(R.id.employee_info_address);
-        addressView.setText("Address: " + branch.getAddress());
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        BranchInfoFragment infoFragment = BranchInfoFragment.newInstance(branch);
+        ft.replace(R.id.employee_info_fragment_container, infoFragment);
+        ft.commit();
     }
 
     @Override

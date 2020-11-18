@@ -4,4 +4,6 @@
     <string name="user_email_key">user_email</string>
     <string name="user_role_key">user_role</string>
     <string name="user_uid_key">user_uid</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

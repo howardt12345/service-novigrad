@@ -10,6 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.antonious.materialdaypicker.MaterialDayPicker;
+
 public class Utils {
 
     /**
@@ -32,6 +38,37 @@ public class Utils {
 
     public static String formatNumber(String number) {
         return number.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+    }
+
+    public static void selectDaysInPicker(MaterialDayPicker picker, List<String> days) {
+        List<MaterialDayPicker.Weekday> selectedDays = new ArrayList<MaterialDayPicker.Weekday>();
+        for(String day : days) {
+            switch(day) {
+                case "Monday":
+                    selectedDays.add(MaterialDayPicker.Weekday.MONDAY);
+                    break;
+                case "Tuesday":
+                    selectedDays.add(MaterialDayPicker.Weekday.TUESDAY);
+                    break;
+                case "Wednesday":
+                    selectedDays.add(MaterialDayPicker.Weekday.WEDNESDAY);
+                    break;
+                case "Thursday":
+                    selectedDays.add(MaterialDayPicker.Weekday.THURSDAY);
+                    break;
+                case "Friday":
+                    selectedDays.add(MaterialDayPicker.Weekday.FRIDAY);
+                    break;
+                case "Saturday":
+                    selectedDays.add(MaterialDayPicker.Weekday.SATURDAY);
+                    break;
+                case "Sunday":
+                    selectedDays.add(MaterialDayPicker.Weekday.SUNDAY);
+                    break;
+            }
+        }
+
+        picker.setSelectedDays(selectedDays);
     }
 
     /**

@@ -15,9 +15,11 @@ import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.admin.AdminServicesActivity;
 import com.uottawa.servicenovigrad.activities.admin.AdminServicesEdit;
 import com.uottawa.servicenovigrad.branch.Branch;
+import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeLoaderActivity extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class EmployeeLoaderActivity extends AppCompatActivity {
         //Get the branch associated with the employee
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference branchesReference = firestore.collection("branches");
+        final CollectionReference servicesReference = firestore.collection("services");
 
         UserAccount account = UserController.getInstance().getUserAccount();
 
@@ -43,8 +46,9 @@ public class EmployeeLoaderActivity extends AppCompatActivity {
                     String name = documentSnapshot.getString("name");
                     String address = documentSnapshot.getString("address");
                     String phoneNumber = documentSnapshot.getString("phoneNumber");
-                    List<String> services = (List<String>) documentSnapshot.get("services");
-                    List<String> openDays = (List<String>) documentSnapshot.get("openDays");
+                    ArrayList<String> servicesIds = (ArrayList<String>) documentSnapshot.get("services");
+
+                    ArrayList<String> openDays = (ArrayList<String>) documentSnapshot.get("openDays");
                     int openingHour = documentSnapshot.getLong("openingHour").intValue();
                     int openingMinute = documentSnapshot.getLong("openingMinute").intValue();
                     int closingHour = documentSnapshot.getLong("closingHour").intValue();
@@ -57,7 +61,7 @@ public class EmployeeLoaderActivity extends AppCompatActivity {
                         name,
                         address,
                         phoneNumber,
-                        services,
+                        servicesIds,
                         openDays,
                         openingHour,
                         openingMinute,

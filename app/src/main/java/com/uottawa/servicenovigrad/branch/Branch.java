@@ -1,10 +1,7 @@
 package com.uottawa.servicenovigrad.branch;
 
-import com.uottawa.servicenovigrad.service.Service;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Branch implements Serializable {
     private String id;
@@ -12,9 +9,9 @@ public class Branch implements Serializable {
     private String address;
     private String phoneNumber;
 
-    private List<String> services;
+    private ArrayList<String> services;
 
-    private List<String> openDays;
+    private ArrayList<String> openDays;
     private int openingHour, openingMinute;
     private int closingHour, closingMinute;
 
@@ -58,8 +55,8 @@ public class Branch implements Serializable {
             String name,
             String address,
             String phoneNumber,
-            List<String> services,
-            List<String> openDays,
+            ArrayList<String> services,
+            ArrayList<String> openDays,
             int openingHour,
             int openingMinute,
             int closingHour,
@@ -96,6 +93,30 @@ public class Branch implements Serializable {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public ArrayList<String> getServices() {
+        return services;
+    }
+
+    public ArrayList<String> getOpenDays() {
+        return openDays;
+    }
+
+    public int getOpeningHour() {
+        return openingHour;
+    }
+
+    public int getOpeningMinute() {
+        return openingMinute;
+    }
+
+    public int getClosingHour() {
+        return closingHour;
+    }
+
+    public int getClosingMinute() {
+        return closingMinute;
     }
 
     public double getRating() {

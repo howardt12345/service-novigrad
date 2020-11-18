@@ -52,88 +52,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/employee_info_fragment_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <LinearLayout
-                    android:id="@+id/employee_info_section"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/employee_info_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="4dp"
-                        android:text="Information"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:id="@+id/employee_info_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="16dp"
-                        android:text="Name: "
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/employee_info_phoneNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="16dp"
-                        android:text="Phone Number:"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/employee_info_address"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="16dp"
-                        android:text="Address:"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/employee_services_section"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/employee_services_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="4dp"
-                        android:text="Services"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textSize="24sp" />
-
-                    <ListView
-                        android:id="@+id/employee_branch_services"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-            </LinearLayout>
+                android:layout_height="match_parent" />
         </ScrollView>
+
 
     </LinearLayout>
 
@@ -145,7 +69,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:text="Edit Info"
+        android:text="Edit Branch"
         android:theme="@style/Theme.MaterialComponents.NoActionBar"
         app:backgroundTint="@color/colorAccent"
         app:icon="@drawable/ic_edit" />
