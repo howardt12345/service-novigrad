@@ -87,7 +87,7 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="Service Price"
-                android:inputType="textMultiLine" />
+                android:inputType="number" />
 
             <TextView
                 android:id="@+id/services_edit_formsTitle"

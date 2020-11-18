@@ -95,7 +95,7 @@ public class AdminServicesEdit extends AppCompatActivity {
         //Set the text to the service's name and description
         name.setText(service.getName());
         desc.setText(service.getDesc());
-        price.setText(service.getPrice());
+        price.setText(service.getPrice() + "");
 
         //Add text change listener to the name field
         name.addTextChangedListener(new TextWatcher() {
@@ -136,7 +136,11 @@ public class AdminServicesEdit extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //Set the price of the service to the price field content
-                service.setPrice(Integer.parseInt(s.toString().trim()));
+                if(s.toString().trim().isEmpty()) {
+                    service.setPrice(0);
+                } else {
+                    service.setPrice(Integer.parseInt(s.toString().trim()));
+                }
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -339,7 +343,6 @@ public class AdminServicesEdit extends AppCompatActivity {
         for(int i = 0; i < service.getDocuments().size(); i++) {
             service.getDocuments().set(i, service.getDocuments().get(i).trim());
         }
-        //TODO: Set price to service
     }
 
     /**
