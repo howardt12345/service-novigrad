@@ -124,6 +124,8 @@ public class AdminServicesEdit extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
+        //TODO: Add price parameter initialization
     }
 
     /**
@@ -321,6 +323,7 @@ public class AdminServicesEdit extends AppCompatActivity {
         for(int i = 0; i < service.getDocuments().size(); i++) {
             service.getDocuments().set(i, service.getDocuments().get(i).trim());
         }
+        //TODO: Set price to service
     }
 
     /**
@@ -330,6 +333,7 @@ public class AdminServicesEdit extends AppCompatActivity {
      */
     private boolean validateEdit(Service service, View view) {
         //Verify if any fields are empty
+        //TODO: Validate price
         if(TextUtils.isEmpty(service.getName()) || TextUtils.isEmpty(service.getDesc())
                 || service.getForms().isEmpty() || service.getDocuments().isEmpty()) {
             Utils.showSnackbar("One or more required fields are empty.", view);

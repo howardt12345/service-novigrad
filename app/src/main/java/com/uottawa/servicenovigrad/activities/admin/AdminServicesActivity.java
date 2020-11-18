@@ -76,9 +76,9 @@ public class AdminServicesActivity extends AppCompatActivity {
                         String desc = doc.getString("desc");
                         List<String> forms = (List<String>) doc.get("forms");
                         List<String> documents = (List<String>) doc.get("documents");
-
+                        //TODO: Get price from firestore
                         //Create a new service object
-                        Service service = new Service(id, name, desc, forms, documents);
+                        Service service = new Service(id, name, desc, forms, documents, 0);
                         //Add service to list
                         services.add(service);
                     }
