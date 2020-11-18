@@ -26,7 +26,7 @@ public class Service implements Serializable {
         this.desc = desc;
         this.forms = forms;
         this.documents = documents;
-        this.price = price
+        this.price = price;
     }
 
     //Getters
