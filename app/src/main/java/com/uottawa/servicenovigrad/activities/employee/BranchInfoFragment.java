@@ -108,7 +108,6 @@ public class BranchInfoFragment extends Fragment {
 
             services = new ArrayList<>();
 
-
             //Add listener to service reference
             servicesReference.orderBy("name").addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
