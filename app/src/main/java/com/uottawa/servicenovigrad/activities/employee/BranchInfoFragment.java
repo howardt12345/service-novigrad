@@ -1,5 +1,6 @@
 package com.uottawa.servicenovigrad.activities.employee;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,48 +109,13 @@ public class BranchInfoFragment extends Fragment {
             rating = getArguments().getDouble(ARG_RATING);
 
             services = new ArrayList<>();
-
-            //Add listener to service reference
-            servicesReference.orderBy("name").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if (error != null) {
-                        Log.w("ServiceActivity", "Listen failed.", error);
-                        return;
-                    }
-                    //Clear the list and components
-                    services.clear();
-                    servicesList.removeAllViews();
-                    //Iterate through each document in collection
-                    for(QueryDocumentSnapshot doc : value) {
-                        if(doc.exists()) {
-                            //Get the information of the service
-                            String id = doc.getId();
-                            if(serviceIds.contains(id)) {
-                                String name = doc.getString("name");
-                                String desc = doc.getString("desc");
-                                List<String> forms = (List<String>) doc.get("forms");
-                                List<String> documents = (List<String>) doc.get("documents");
-                                int price = doc.getLong("price").intValue();
-
-                                //Create a new service object
-                                Service service = new Service(id, name, desc, forms, documents, price);
-                                //Add service to list
-                                services.add(service);
-                            }
-                        }
-                    }
-                    //Set up the services list
-                    setUpServicesList(services, servicesList);
-                }
-            });
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_branch_info, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_branch_info, container, false);
 
         TextView nameView = (TextView) rootView.findViewById(R.id.employee_info_name);
         nameView.setText("Name: " + name);
@@ -167,7 +134,40 @@ public class BranchInfoFragment extends Fragment {
         openDaysPicker.disableAllDays();
 
         servicesList = (LinearLayout) rootView.findViewById(R.id.employee_branch_services);
-        setUpServicesList(services, servicesList);
+        //Add listener to service reference
+        servicesReference.orderBy("name").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w("ServiceActivity", "Listen failed.", error);
+                    return;
+                }
+                //Clear the list and components
+                services.clear();
+                servicesList.removeAllViews();
+                //Iterate through each document in collection
+                for(QueryDocumentSnapshot doc : value) {
+                    if(doc.exists()) {
+                        //Get the information of the service
+                        String id = doc.getId();
+                        if(serviceIds.contains(id)) {
+                            String name = doc.getString("name");
+                            String desc = doc.getString("desc");
+                            List<String> forms = (List<String>) doc.get("forms");
+                            List<String> documents = (List<String>) doc.get("documents");
+                            int price = doc.getLong("price").intValue();
+
+                            //Create a new service object
+                            Service service = new Service(id, name, desc, forms, documents, price);
+                            //Add service to list
+                            services.add(service);
+                        }
+                    }
+                }
+                //Set up the services list
+                setUpServicesList(services, servicesList, rootView.getContext(), inflater);
+            }
+        });
 
         return rootView;
     }
@@ -177,9 +177,9 @@ public class BranchInfoFragment extends Fragment {
      * @param services the list of services to set up the list with
      * @param listView the LinearLayout in which the list items will go in
      */
-    private void setUpServicesList(final List<Service> services, LinearLayout listView) {
+    private void setUpServicesList(final List<Service> services, LinearLayout listView, Context context, LayoutInflater inflater) {
         //Create a list adapter
-        BranchInfoServicesAdapter adapter = new BranchInfoServicesAdapter(getActivity(), services);
+        BranchInfoServicesAdapter adapter = new BranchInfoServicesAdapter(context, services, inflater);
         for(int i = 0; i < adapter.getCount(); i++) {
             //Get final version of index
             final int finalI = i;

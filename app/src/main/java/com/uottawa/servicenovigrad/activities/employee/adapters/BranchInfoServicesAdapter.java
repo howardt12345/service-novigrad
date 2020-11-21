@@ -1,6 +1,7 @@
 package com.uottawa.servicenovigrad.activities.employee.adapters;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +17,17 @@ import com.uottawa.servicenovigrad.service.Service;
 import java.util.List;
 
 public class BranchInfoServicesAdapter extends ArrayAdapter<Service> {
-    private Activity context;
+    private LayoutInflater inflater;
     List<Service> services;
 
-    public BranchInfoServicesAdapter(@NonNull Activity context, @NonNull List<Service> services) {
+    public BranchInfoServicesAdapter(@NonNull Context context, @NonNull List<Service> services, @NonNull LayoutInflater inflater) {
         super(context, R.layout.layout_admin_services_listitem, services);
-        this.context = context;
+        this.inflater = inflater;
         this.services = services;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.layout_admin_services_listitem, null, true);
 
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.service_name);
