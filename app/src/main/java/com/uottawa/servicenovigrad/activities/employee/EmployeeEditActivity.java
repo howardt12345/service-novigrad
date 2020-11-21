@@ -14,6 +14,7 @@ import android.media.Image;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -453,6 +454,29 @@ public class EmployeeEditActivity extends AppCompatActivity {
     }
 
     public void confirmEdit(View view) {
+        boolean valid = validateEdit(branch, view);
+        if(valid) {
+            saveEdit();
+        }
+    }
 
+    private boolean validateEdit(Branch branch, View view) {
+        if(TextUtils.isEmpty(branch.getName()) || TextUtils.isEmpty(branch.getPhoneNumber()) || TextUtils.isEmpty(branch.getAddress())
+        || branch.getOpenDays().isEmpty() || branch.getServices().isEmpty()) {
+            Utils.showSnackbar("One or more required fields are empty.", view);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Saves the edit.
+     */
+    private void saveEdit() {
+        Intent intent = new Intent();
+        //Add the service to the intent data
+        intent.putExtra("branch", branch);
+        setResult(0, intent);
+        finish();
     }
 }

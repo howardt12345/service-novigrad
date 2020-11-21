@@ -47,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="24dp"
                 android:background="#00FFFFFF"
+                android:onClick="confirmEdit"
                 app:srcCompat="@drawable/ic_baseline_done_24" />
 
         </LinearLayout>
