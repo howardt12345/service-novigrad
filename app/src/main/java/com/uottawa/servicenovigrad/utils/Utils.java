@@ -1,5 +1,6 @@
 package com.uottawa.servicenovigrad.utils;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -34,6 +35,10 @@ public class Utils {
      */
     public static boolean isNameValid(String name) {
         return name.matches("^[a-zA-Z\\s]*$");
+    }
+
+    public static boolean isPhoneNumberValid(String number) {
+        return TextUtils.isDigitsOnly(number) && number.length() == 10;
     }
 
     public static String formatNumber(String number) {

@@ -42,7 +42,13 @@ public class EmployeeEditActivity extends AppCompatActivity {
             cancelButton.setVisibility(View.GONE);
 
             newBranch = true;
+            branch = new Branch();
         }
+        initializeFields();
+    }
+
+    private void initializeFields() {
+
     }
 
     @Override
