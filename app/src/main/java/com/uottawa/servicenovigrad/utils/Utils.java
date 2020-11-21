@@ -80,6 +80,36 @@ public class Utils {
         picker.setSelectedDays(selectedDays);
     }
 
+    public static ArrayList<String> convertPickedDays(List<MaterialDayPicker.Weekday> selectedDays) {
+        ArrayList<String> daysList = new ArrayList<String>();
+        for(MaterialDayPicker.Weekday day : selectedDays) {
+            switch(day) {
+                case MONDAY:
+                    daysList.add("Monday");
+                    break;
+                case TUESDAY:
+                    daysList.add("Tuesday");
+                    break;
+                case WEDNESDAY:
+                    daysList.add("Wednesday");
+                    break;
+                case THURSDAY:
+                    daysList.add("Thursday");
+                    break;
+                case FRIDAY:
+                    daysList.add("Friday");
+                    break;
+                case SATURDAY:
+                    daysList.add("Saturday");
+                    break;
+                case SUNDAY:
+                    daysList.add("Sunday");
+                    break;
+            }
+        }
+        return daysList;
+    }
+
     /**
      * Shows snackbar with given message. The snackbar has a close button, which does nothing.
      * @param message the message to show.

@@ -172,6 +172,12 @@ public class EmployeeEditActivity extends AppCompatActivity {
 
         MaterialDayPicker openDaysPicker = (MaterialDayPicker) findViewById(R.id.branch_edit_days_open_picker);
         Utils.selectDaysInPicker(openDaysPicker, branch.getOpenDays());
+        openDaysPicker.setDaySelectionChangedListener(new MaterialDayPicker.DaySelectionChangedListener() {
+            @Override
+            public void onDaySelectionChanged(List<MaterialDayPicker.Weekday> list) {
+                branch.setOpenDays(Utils.convertPickedDays(list));
+            }
+        });
 
         services = new ArrayList<>();
 
@@ -242,16 +248,6 @@ public class EmployeeEditActivity extends AppCompatActivity {
         openingTimeButton.setText(branch.getOpeningHour() + ":" + branch.getOpeningMinute());
     }
 
-    private boolean verifyOpeningTime(int hour, int minute) {
-        if(hour < branch.getClosingHour()) {
-            return true;
-        } else if (hour == branch.getClosingHour()) {
-            return minute < branch.getClosingMinute();
-        } else {
-            return false;
-        }
-    }
-
     private void setClosingTime(int hour, int minute, boolean setBranch) {
         if(setBranch) {
             if(verifyClosingTime(hour, minute)) {
@@ -263,6 +259,16 @@ public class EmployeeEditActivity extends AppCompatActivity {
         }
         Button closingTimeButton = (Button) findViewById(R.id.branch_edit_closing_time);
         closingTimeButton.setText(branch.getClosingHour() + ":" + branch.getClosingMinute());
+    }
+
+    private boolean verifyOpeningTime(int hour, int minute) {
+        if(hour < branch.getClosingHour()) {
+            return true;
+        } else if (hour == branch.getClosingHour()) {
+            return minute < branch.getClosingMinute();
+        } else {
+            return false;
+        }
     }
 
     private boolean verifyClosingTime(int hour, int minute) {
