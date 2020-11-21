@@ -118,13 +118,13 @@ public class BranchInfoFragment extends Fragment {
         nameView.setText(name);
 
         TextView phoneView = (TextView) rootView.findViewById(R.id.employee_info_phoneNumber);
-        phoneView.setText("Phone Number: " + Utils.formatNumber(phoneNumber));
+        phoneView.setText("Phone Number: " + Utils.formatPhoneNumber(phoneNumber));
 
         TextView addressView = (TextView) rootView.findViewById(R.id.employee_info_address);
         addressView.setText("Address: " + address);
 
         TextView workingHoursView = (TextView) rootView.findViewById(R.id.employee_info_workinghours);
-        workingHoursView.setText("Working Hours: " + openingHour + ":" + openingMinute + " - " + closingHour + ":" + closingMinute);
+        workingHoursView.setText("Working Hours: " + Utils.formatTime(openingHour, openingMinute) + " - " + Utils.formatTime(closingHour, closingMinute));
 
         MaterialDayPicker openDaysPicker = (MaterialDayPicker) rootView.findViewById(R.id.branch_days_open_picker);
         Utils.selectDaysInPicker(openDaysPicker, openDays);

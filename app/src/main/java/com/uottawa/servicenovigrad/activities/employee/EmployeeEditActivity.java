@@ -166,7 +166,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
 
         Button addressButton = (Button) findViewById(R.id.branch_edit_address_button);
 
-        addressButton.setText(branch.getAddress());
+        addressButton.setText(TextUtils.isEmpty(branch.getAddress()) ? "Set Address" : branch.getAddress());
 
         setOpeningTime(branch.getOpeningHour(), branch.getOpeningMinute(), false);
         setClosingTime(branch.getClosingHour(), branch.getClosingMinute(), false);
@@ -246,7 +246,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
             }
         }
         Button openingTimeButton = (Button) findViewById(R.id.branch_edit_opening_time);
-        openingTimeButton.setText(branch.getOpeningHour() + ":" + branch.getOpeningMinute());
+        openingTimeButton.setText(Utils.formatTime(branch.getOpeningHour(), branch.getOpeningMinute()));
     }
 
     private void setClosingTime(int hour, int minute, boolean setBranch) {
@@ -259,7 +259,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
             }
         }
         Button closingTimeButton = (Button) findViewById(R.id.branch_edit_closing_time);
-        closingTimeButton.setText(branch.getClosingHour() + ":" + branch.getClosingMinute());
+        closingTimeButton.setText(Utils.formatTime(branch.getClosingHour(), branch.getClosingMinute()));
     }
 
     private boolean verifyOpeningTime(int hour, int minute) {

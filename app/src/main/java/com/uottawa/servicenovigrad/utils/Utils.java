@@ -41,12 +41,16 @@ public class Utils {
         return TextUtils.isDigitsOnly(number) && number.length() == 10;
     }
 
-    public static String formatNumber(String number) {
+    public static String formatPhoneNumber(String number) {
         return number.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
     }
 
     public static String formatToUnformattedNumber(String number) {
         return number.replaceAll("[^\\d]", "");
+    }
+
+    public static String formatTime(int hour, int minute) {
+        return hour + ":" + String.format("%02d", minute);
     }
 
     public static void selectDaysInPicker(MaterialDayPicker picker, List<String> days) {
