@@ -1,4 +1,4 @@
-package com.uottawa.servicenovigrad.activities.employee;
+package com.uottawa.servicenovigrad.activities.branch;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
-import com.uottawa.servicenovigrad.activities.admin.AdminServicesActivity;
-import com.uottawa.servicenovigrad.activities.admin.adapters.AdminServicesListAdapter;
-import com.uottawa.servicenovigrad.activities.employee.adapters.BranchInfoServicesAdapter;
+import com.uottawa.servicenovigrad.activities.branch.adapters.BranchInfoServicesAdapter;
 import com.uottawa.servicenovigrad.branch.Branch;
 import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.utils.Utils;
