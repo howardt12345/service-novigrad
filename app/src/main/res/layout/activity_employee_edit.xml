@@ -8,7 +8,7 @@
     tools:context=".activities.employee.EmployeeEditActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/employee_edit_toolbar"
+        android:id="@+id/branch_edit_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
@@ -56,10 +56,11 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/branch_edit_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp" >
+            android:padding="16dp">
 
             <EditText
                 android:id="@+id/branch_edit_name"
@@ -80,6 +81,7 @@
                 android:maxLength="10" />
 
             <LinearLayout
+                android:id="@+id/branch_edit_opening_time_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -104,6 +106,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/branch_edit_closing_time_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
@@ -126,6 +129,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/branch_edit_open_days_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -147,6 +151,41 @@
                     android:layout_marginTop="4dp"
 
                     />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/branch_edit_services_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Services Offered"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="24sp"
+                    android:layout_marginStart="4dp" />
+
+                <ListView
+                    android:id="@+id/branch_edit_services_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/branch_edit_add_service"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:elevation="0dp"
+                    android:text="Add Service"
+                    android:theme="@style/Theme.MaterialComponents.NoActionBar"
+                    app:backgroundTint="@color/colorAccent"
+                    app:icon="@drawable/ic_add" />
 
             </LinearLayout>
         </LinearLayout>

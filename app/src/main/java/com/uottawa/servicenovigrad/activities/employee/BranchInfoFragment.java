@@ -193,6 +193,10 @@ public class BranchInfoFragment extends Fragment {
                 }
             });
 
+            //Hide delete button functions
+            ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete_service);
+            deleteButton.setVisibility(View.GONE);
+
             //Add the list item to the list view
             listView.addView(view);
         }
