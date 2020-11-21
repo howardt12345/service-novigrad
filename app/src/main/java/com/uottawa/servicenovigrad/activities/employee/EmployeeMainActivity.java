@@ -4,32 +4,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.PhoneNumberUtils;
-import android.telephony.TelephonyManager;
 import android.view.View;
-import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.admin.AdminServicesActivity;
+import com.uottawa.servicenovigrad.activities.admin.AdminServicesEdit;
 import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
+import com.uottawa.servicenovigrad.activities.branch.BranchInfoFragment;
 import com.uottawa.servicenovigrad.branch.Branch;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
-import com.uottawa.servicenovigrad.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class EmployeeMainActivity extends AppCompatActivity {
     private FirebaseFirestore firestore;
@@ -113,6 +106,14 @@ public class EmployeeMainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void editBranch(View view) {
+        //Set up intent
+        Intent intent = new Intent(EmployeeMainActivity.this, EmployeeEditActivity.class);
+        //Add service to intent data to be edited
+        intent.putExtra("branch", branch);
+        startActivityForResult(intent, 0);
     }
 
     @Override

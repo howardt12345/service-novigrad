@@ -69,6 +69,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:onClick="editBranch"
         android:text="Edit Branch"
         android:theme="@style/Theme.MaterialComponents.NoActionBar"
         app:backgroundTint="@color/colorAccent"
