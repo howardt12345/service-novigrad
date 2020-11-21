@@ -122,4 +122,40 @@ public class Branch implements Serializable {
     public double getRating() {
         return rating;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setServices(ArrayList<String> services) {
+        this.services = services;
+    }
+
+    public void setOpenDays(ArrayList<String> openDays) {
+        this.openDays = openDays;
+    }
+
+    public void setOpeningHour(int openingHour) {
+        this.openingHour = openingHour;
+    }
+
+    public void setOpeningMinute(int openingMinute) {
+        this.openingMinute = openingMinute;
+    }
+
+    public void setClosingHour(int closingHour) {
+        this.closingHour = closingHour;
+    }
+
+    public void setClosingMinute(int closingMinute) {
+        this.closingMinute = closingMinute;
+    }
 }

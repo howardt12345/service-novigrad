@@ -43,10 +43,6 @@ public class BranchInfoServicesAdapter extends ArrayAdapter<Service> {
         ImageButton editButton = (ImageButton) listViewItem.findViewById(R.id.edit_service);
         editButton.setVisibility(View.GONE);
 
-        //Hide delete button functions
-        ImageButton deleteButton = (ImageButton) listViewItem.findViewById(R.id.delete_service);
-        deleteButton.setVisibility(View.GONE);
-
         return listViewItem;
     }
 }

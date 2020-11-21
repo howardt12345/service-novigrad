@@ -45,6 +45,10 @@ public class Utils {
         return number.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
     }
 
+    public static String formatToUnformattedNumber(String number) {
+        return number.replaceAll("[^\\d]", "");
+    }
+
     public static void selectDaysInPicker(MaterialDayPicker picker, List<String> days) {
         List<MaterialDayPicker.Weekday> selectedDays = new ArrayList<MaterialDayPicker.Weekday>();
         for(String day : days) {

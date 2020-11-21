@@ -9,6 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +76,64 @@ public class EmployeeEditActivity extends AppCompatActivity {
 
     private void initializeFields() {
         EditText nameField = (EditText) findViewById(R.id.branch_edit_name);
-        EditText phoneNumberField = (EditText) findViewById(R.id.branch_edit_phone_number);
+        final EditText phoneNumberField = (EditText) findViewById(R.id.branch_edit_phone_number);
+
+        phoneNumberField.addTextChangedListener(new PhoneNumberFormattingTextWatcher() {
+            //Flag for if user is backspacing
+            private boolean backspacingFlag = false;
+            //Block the afterTextChanged method from being called again after replacing text
+            private boolean editedFlag = false;
+            //Mark cursor position to restore after replacing
+            private int cursorComplement;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Store cursor relative to the end of the string in the EditText
+                cursorComplement = s.length()-phoneNumberField.getSelectionStart();
+                //Check if user is inputting or erasing character
+                if (count > after) {
+                    backspacingFlag = true;
+                } else {
+                    backspacingFlag = false;
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Set phone number
+                branch.setPhoneNumber(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String string = s.toString();
+                //Unformat the number in the string
+                String phone = Utils.formatToUnformattedNumber(string);
+
+                //if the text was just edited, this will be called another time
+                //Otherwise, format the text
+                if (!editedFlag) {
+                    //Verify when there are more than 6 digits
+                    if (phone.length() >= 6 && !backspacingFlag) {
+                        editedFlag = true;
+                        //Substring the raw digits and add the mask.
+                        String ans = "(" + phone.substring(0, 3) + ") " + phone.substring(3,6) + "-" + phone.substring(6);
+                        phoneNumberField.setText(ans);
+                        //Set the cursor to its original position relative to the end of the string.
+                        phoneNumberField.setSelection(phoneNumberField.getText().length()-cursorComplement);
+
+                        //Verify when only one character mask is needed
+                    } else if (phone.length() >= 3 && !backspacingFlag) {
+                        editedFlag = true;
+                        String ans = "(" +phone.substring(0, 3) + ") " + phone.substring(3);
+                        phoneNumberField.setText(ans);
+                        phoneNumberField.setSelection(phoneNumberField.getText().length()-cursorComplement);
+                    }
+                } else {
+                    editedFlag = false;
+                }
+            }
+        });
 
         nameField.setText(branch.getName());
         phoneNumberField.setText(branch.getPhoneNumber());

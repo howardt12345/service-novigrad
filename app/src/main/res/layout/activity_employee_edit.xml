@@ -78,8 +78,8 @@
                 android:digits="0123456789"
                 android:ems="10"
                 android:hint="Branch Phone Number"
-                android:inputType="numberSigned"
-                android:maxLength="10" />
+                android:inputType="number|phone"
+                android:maxLength="14" />
 
             <LinearLayout
                 android:id="@+id/branch_address_container"

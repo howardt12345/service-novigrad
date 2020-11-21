@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.employee.EmployeeLoaderActivity"></activity>
+        <activity android:name=".activities.service.ServicePickerActivity"></activity>
+        <activity android:name=".activities.employee.EmployeeLoaderActivity" />
         <activity android:name=".activities.employee.EmployeeEditActivity" />
         <activity android:name=".activities.admin.AdminServicesEdit" />
         <activity android:name=".activities.admin.AdminServicesActivity" />
