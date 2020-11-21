@@ -14,28 +14,18 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/employee_info_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="Branch Information"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="24sp" />
-
-        <TextView
             android:id="@+id/employee_info_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Name: "
+            android:layout_marginBottom="4dp"
+            android:text="Branch Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="16sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/employee_info_phoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:text="Phone Number:"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="16sp" />

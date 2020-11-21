@@ -115,7 +115,7 @@ public class BranchInfoFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_branch_info, container, false);
 
         TextView nameView = (TextView) rootView.findViewById(R.id.employee_info_name);
-        nameView.setText("Name: " + name);
+        nameView.setText(name);
 
         TextView phoneView = (TextView) rootView.findViewById(R.id.employee_info_phoneNumber);
         phoneView.setText("Phone Number: " + Utils.formatNumber(phoneNumber));
