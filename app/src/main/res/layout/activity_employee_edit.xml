@@ -81,6 +81,32 @@
                 android:maxLength="10" />
 
             <LinearLayout
+                android:id="@+id/branch_address_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/branch_edit_address_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Address:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/branch_edit_address_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    android:textAllCaps="false" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/branch_edit_opening_time_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -135,7 +161,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/employee_info_days_open_title"
+                    android:id="@+id/branch_edit_days_open_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -168,10 +194,11 @@
                     android:textSize="24sp"
                     android:layout_marginStart="4dp" />
 
-                <ListView
+                <LinearLayout
                     android:id="@+id/branch_edit_services_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"></LinearLayout>
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/branch_edit_add_service"
