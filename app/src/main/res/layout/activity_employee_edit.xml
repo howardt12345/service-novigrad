@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/branch_edit_view"
     tools:context=".activities.employee.EmployeeEditActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -129,6 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="pickOpeningTime"
                     android:text="00:00" />
             </LinearLayout>
 
@@ -152,6 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="pickClosingTime"
                     android:text="00:00" />
             </LinearLayout>
 

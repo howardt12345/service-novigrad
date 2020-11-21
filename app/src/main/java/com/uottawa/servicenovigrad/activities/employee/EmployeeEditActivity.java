@@ -3,7 +3,10 @@ package com.uottawa.servicenovigrad.activities.employee;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +15,7 @@ import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -34,6 +39,8 @@ import com.uottawa.servicenovigrad.branch.Branch;
 import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.utils.Utils;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +54,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
     private boolean newBranch = false;
 
     List<Service> services;
+    LinearLayout servicesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +85,23 @@ public class EmployeeEditActivity extends AppCompatActivity {
     private void initializeFields() {
         EditText nameField = (EditText) findViewById(R.id.branch_edit_name);
         final EditText phoneNumberField = (EditText) findViewById(R.id.branch_edit_phone_number);
+
+        nameField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                branch.setName(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         phoneNumberField.addTextChangedListener(new PhoneNumberFormattingTextWatcher() {
             //Flag for if user is backspacing
@@ -139,47 +164,43 @@ public class EmployeeEditActivity extends AppCompatActivity {
         phoneNumberField.setText(branch.getPhoneNumber());
 
         Button addressButton = (Button) findViewById(R.id.branch_edit_address_button);
-        Button openingTimeButton = (Button) findViewById(R.id.branch_edit_opening_time);
-        Button closingTimeButton = (Button) findViewById(R.id.branch_edit_closing_time);
 
         addressButton.setText(branch.getAddress());
-        openingTimeButton.setText(branch.getOpeningHour() + ":" + branch.getOpeningMinute());
-        closingTimeButton.setText(branch.getClosingHour() + ":" + branch.getClosingMinute());
+
+        setOpeningTime(branch.getOpeningHour(), branch.getOpeningMinute(), false);
+        setClosingTime(branch.getClosingHour(), branch.getClosingMinute(), false);
 
         MaterialDayPicker openDaysPicker = (MaterialDayPicker) findViewById(R.id.branch_edit_days_open_picker);
         Utils.selectDaysInPicker(openDaysPicker, branch.getOpenDays());
 
         services = new ArrayList<>();
 
-        final LinearLayout servicesList = (LinearLayout) findViewById(R.id.branch_edit_services_list);
+        servicesList = (LinearLayout) findViewById(R.id.branch_edit_services_list);
         //Add listener to service reference
         servicesReference.orderBy("name").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
-                    Log.w("ServiceActivity", "Listen failed.", error);
+                    Log.w("EmployeeEditActivity", "Listen failed.", error);
                     return;
                 }
                 //Clear the list and components
                 services.clear();
-                servicesList.removeAllViews();
                 //Iterate through each document in collection
                 for(QueryDocumentSnapshot doc : value) {
                     if(doc.exists()) {
                         //Get the information of the service
                         String id = doc.getId();
-                        if(branch.getServices().contains(id)) {
-                            String name = doc.getString("name");
-                            String desc = doc.getString("desc");
-                            List<String> forms = (List<String>) doc.get("forms");
-                            List<String> documents = (List<String>) doc.get("documents");
-                            int price = doc.getLong("price").intValue();
+                        String name = doc.getString("name");
+                        String desc = doc.getString("desc");
+                        List<String> forms = (List<String>) doc.get("forms");
+                        List<String> documents = (List<String>) doc.get("documents");
+                        int price = doc.getLong("price").intValue();
 
-                            //Create a new service object
-                            Service service = new Service(id, name, desc, forms, documents, price);
-                            //Add service to list
-                            services.add(service);
-                        }
+                        //Create a new service object
+                        Service service = new Service(id, name, desc, forms, documents, price);
+                        //Add service to list
+                        services.add(service);
                     }
                 }
                 //Set up the services list
@@ -188,14 +209,90 @@ public class EmployeeEditActivity extends AppCompatActivity {
         });
     }
 
+    public void pickOpeningTime(View view) {
+        TimePickerDialog openingTimePicker = new TimePickerDialog(EmployeeEditActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                setOpeningTime(hourOfDay, minute, true);
+            }
+        }, branch.getOpeningHour(), branch.getOpeningMinute(), true);
+        openingTimePicker.show();
+    }
+
+    public void pickClosingTime(View view) {
+        TimePickerDialog closingTimePicker = new TimePickerDialog(EmployeeEditActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                setClosingTime(hourOfDay, minute, true);
+            }
+        }, branch.getClosingHour(), branch.getClosingMinute(), true);
+        closingTimePicker.show();
+    }
+
+    private void setOpeningTime(int hour, int minute, boolean setBranch) {
+        if(setBranch) {
+            if(verifyOpeningTime(hour, minute)) {
+                branch.setOpeningHour(hour);
+                branch.setOpeningMinute(minute);
+            } else {
+                Utils.showSnackbar("Opening time cannot be after closing time.", findViewById(R.id.branch_edit_view));
+            }
+        }
+        Button openingTimeButton = (Button) findViewById(R.id.branch_edit_opening_time);
+        openingTimeButton.setText(branch.getOpeningHour() + ":" + branch.getOpeningMinute());
+    }
+
+    private boolean verifyOpeningTime(int hour, int minute) {
+        if(hour < branch.getClosingHour()) {
+            return true;
+        } else if (hour == branch.getClosingHour()) {
+            return minute < branch.getClosingMinute();
+        } else {
+            return false;
+        }
+    }
+
+    private void setClosingTime(int hour, int minute, boolean setBranch) {
+        if(setBranch) {
+            if(verifyClosingTime(hour, minute)) {
+                branch.setClosingHour(hour);
+                branch.setClosingMinute(minute);
+            } else {
+                Utils.showSnackbar("Closing time cannot be before opening time.", findViewById(R.id.branch_edit_view));
+            }
+        }
+        Button closingTimeButton = (Button) findViewById(R.id.branch_edit_closing_time);
+        closingTimeButton.setText(branch.getClosingHour() + ":" + branch.getClosingMinute());
+    }
+
+    private boolean verifyClosingTime(int hour, int minute) {
+        if(hour > branch.getOpeningHour()) {
+            return true;
+        } else if (hour == branch.getOpeningHour()) {
+            return minute > branch.getOpeningMinute();
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Sets up the list in the UI
      * @param services the list of services to set up the list with
      * @param listView the LinearLayout in which the list items will go in
      */
     private void setUpServicesList(final List<Service> services, LinearLayout listView, Context context, LayoutInflater inflater) {
+        //Filter the service list
+        final List<Service> filteredServices = new ArrayList<Service>();
+        for(Service s : services) {
+            if(branch.getServices().contains(s.getId())) {
+                filteredServices.add(s);
+            }
+        }
+
+        servicesList.removeAllViews();
+
         //Create a list adapter
-        BranchInfoServicesAdapter adapter = new BranchInfoServicesAdapter(context, services, inflater);
+        BranchInfoServicesAdapter adapter = new BranchInfoServicesAdapter(context, filteredServices, inflater);
         for(int i = 0; i < adapter.getCount(); i++) {
             //Get final version of index
             final int finalI = i;
@@ -205,12 +302,18 @@ public class EmployeeEditActivity extends AppCompatActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    serviceInfo(services.get(finalI));
+                    serviceInfo(filteredServices.get(finalI));
                 }
             });
 
             //Set delete button functions
             ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete_service);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeService(filteredServices.get(finalI));
+                }
+            });
 
             //Add the list item to the list view
             listView.addView(view);
@@ -229,6 +332,40 @@ public class EmployeeEditActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }
+                );
+        //Show AlertDialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void removeService(final Service service) {
+        //Create new AlertDialog
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EmployeeEditActivity.this);
+        alertDialogBuilder
+                .setTitle("Remove service?")
+                .setMessage("Are you sure you want to remove " + service.getName() + " from your branch profile?")
+                .setCancelable(true)
+                .setPositiveButton(
+                        "YES",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                branch.getServices().remove(service.getId());
+                                //Refresh the services list
+                                setUpServicesList(services, servicesList, EmployeeEditActivity.this, EmployeeEditActivity.this.getLayoutInflater());
+                                dialog.cancel();
+                            }
+                        }
+                )
+                .setNegativeButton(
+                        "NO",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Close the dialog without closing the activity
                                 dialog.cancel();
                             }
                         }
