@@ -239,6 +239,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //If adding a service
         if(requestCode == SERVICE_REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
                 //Get service from result and add to branch list
@@ -248,7 +249,9 @@ public class EmployeeEditActivity extends AppCompatActivity {
                 //Set up the services list
                 setUpServicesList(services, servicesList, EmployeeEditActivity.this, EmployeeEditActivity.this.getLayoutInflater());
             }
-        } else if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+        }
+        //if setting address
+        else if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 branch.setAddress(place.getAddress());
@@ -272,7 +275,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
         List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS);
 
         // Start the autocomplete intent.
-        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).build(this);
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).setCountry("CA").build(this);
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
     }
 
