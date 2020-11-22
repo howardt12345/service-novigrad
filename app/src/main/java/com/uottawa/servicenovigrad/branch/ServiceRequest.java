@@ -83,9 +83,9 @@ public class ServiceRequest {
         }
 
         if(responded) {
-            sb.append("Approved: " + (approved ? "yes" : "no"));
+            sb.append("\nApproved: " + (approved ? "yes" : "no"));
         } else {
-            sb.append("Responded: " + (responded ? "yes" : "no"));
+            sb.append("\nResponded: " + (responded ? "yes" : "no"));
         }
         return sb.toString();
     }

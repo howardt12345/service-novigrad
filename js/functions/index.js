@@ -17,3 +17,26 @@ exports.removeUser = functions.firestore
     .onDelete((snapshot, context) => {
         return admin.auth().deleteUser(context.params.uid);
     });
+
+exports.updateServiceRequest = functions.firestore
+    .document("/requests/{id}")
+    .onWrite((change, context) => {
+        const after = change.after.data();
+
+        return admin.firestore().collection("users").doc(after.customer).get().then(doc => {
+            const data = doc.data();
+            return admin.firestore().collection("requests").doc(context.params.id).update({"customerName": data.name});
+        }).catch(err => console.log(err))
+        .then(() => {
+            return admin.firestore().collection("branches").doc(after.branch).get().then(doc => {
+                const data = doc.data();
+                return admin.firestore().collection("requests").doc(context.params.id).update({"branchName": data.name});
+            }).catch(err => console.log(err))
+            .then(() => {
+                return admin.firestore().collection("services").doc(after.service).get().then(doc => {
+                    const data = doc.data();
+                    return admin.firestore().collection("requests").doc(context.params.id).update({"serviceName": data.name});
+                }).catch(err => console.log(err))
+            })
+        })
+    });
