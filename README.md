@@ -39,6 +39,23 @@ password: admin
 
 # Deliverable 3
 The following functionality is implemented in deliverable 3:
+- The ability to complete the employee branch profile information. 
+    The following are mandatory fields:
+    - Branch Name
+    - Branch Phone Number
+    - Branch Address
+    - Branch Opening Time
+    - Branch Closing Time
+    - Days Branch is Open
+    - Services Offered
+- Adding services to branch profile from the list of services added by the admin.
+- Deleting services from branch profile when no longer being offered.
+- Specifying clinic working hours.
+- Editing working hours.
+- Approving and rejecting service requests submitted to the branch.
+- Field validation for all fields.
+
+The Province of Novigrad is assumed to be within the boundaries of Canada. Thus, the address searching query is restricted to Canada. 
 
 The Sample Employee credentials are:
 ```
