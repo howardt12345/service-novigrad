@@ -23,6 +23,8 @@ import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EmployeeMainActivity extends AppCompatActivity {
     private FirebaseFirestore firestore;
@@ -121,7 +123,25 @@ public class EmployeeMainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == 0) {
-            //logic here
+
+            //Get the branch
+            Branch branch = (Branch) data.getSerializableExtra("branch");
+            //Create a map with the data to write to cloud firestore
+            Map<String, Object> branchInfo = new HashMap<>();
+            branchInfo.put("name", branch.getName());
+            branchInfo.put("phoneNumber", branch.getPhoneNumber());
+            branchInfo.put("address", branch.getAddress());
+            branchInfo.put("services", branch.getServices());
+            branchInfo.put("openDays", branch.getOpenDays());
+            branchInfo.put("openingHour", branch.getOpeningHour());
+            branchInfo.put("openingMinute", branch.getOpeningMinute());
+            branchInfo.put("closingHour", branch.getClosingHour());
+            branchInfo.put("closingMinute", branch.getClosingMinute());
+            branchInfo.put("rating", branch.getRating());
+
+            UserAccount account = UserController.getInstance().getUserAccount();
+
+            branchesReference.document(account.getUID()).set(branchInfo);
         }
     }
 

@@ -146,7 +146,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //Set phone number
-                branch.setPhoneNumber(s.toString());
+                branch.setPhoneNumber(Utils.formatToUnformattedNumber(s.toString()));
             }
 
             @Override
