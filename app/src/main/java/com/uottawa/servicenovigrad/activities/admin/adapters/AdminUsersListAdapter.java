@@ -29,8 +29,8 @@ public class AdminUsersListAdapter extends ArrayAdapter<UserAccount> {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.layout_admin_users_listitem, null, true);
 
-        TextView textViewName = (TextView) listViewItem.findViewById(R.id.user_name);
-        TextView textViewEmail = (TextView) listViewItem.findViewById(R.id.user_email);
+        TextView textViewName = listViewItem.findViewById(R.id.user_name);
+        TextView textViewEmail = listViewItem.findViewById(R.id.user_email);
 
         UserAccount account = accounts.get(position);
 

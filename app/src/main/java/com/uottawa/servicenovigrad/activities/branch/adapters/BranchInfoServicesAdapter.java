@@ -29,9 +29,9 @@ public class BranchInfoServicesAdapter extends ArrayAdapter<Service> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View listViewItem = inflater.inflate(R.layout.layout_admin_services_listitem, null, true);
 
-        TextView textViewName = (TextView) listViewItem.findViewById(R.id.service_name);
-        TextView textViewDesc = (TextView) listViewItem.findViewById(R.id.service_desc);
-        TextView textViewPrice = (TextView) listViewItem.findViewById(R.id.service_price);
+        TextView textViewName = listViewItem.findViewById(R.id.service_name);
+        TextView textViewDesc = listViewItem.findViewById(R.id.service_desc);
+        TextView textViewPrice = listViewItem.findViewById(R.id.service_price);
 
         Service service = services.get(position);
 
@@ -40,7 +40,7 @@ public class BranchInfoServicesAdapter extends ArrayAdapter<Service> {
         textViewPrice.setText("Price: $" + service.getPrice());
 
         //Hide edit button functions
-        ImageButton editButton = (ImageButton) listViewItem.findViewById(R.id.edit_service);
+        ImageButton editButton = listViewItem.findViewById(R.id.edit_service);
         editButton.setVisibility(View.GONE);
 
         return listViewItem;

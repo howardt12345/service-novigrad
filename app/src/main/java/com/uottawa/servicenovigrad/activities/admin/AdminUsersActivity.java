@@ -46,8 +46,8 @@ public class AdminUsersActivity extends AppCompatActivity {
         employees = new ArrayList<>();
         customers = new ArrayList<>();
         //Set up the employee and customer list in the layout
-        employeesList = (LinearLayout) findViewById(R.id.employees_list);
-        customersList = (LinearLayout) findViewById(R.id.customers_list);
+        employeesList = findViewById(R.id.employees_list);
+        customersList = findViewById(R.id.customers_list);
     }
 
     @Override

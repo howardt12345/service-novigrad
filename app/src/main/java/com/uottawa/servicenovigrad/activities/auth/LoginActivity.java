@@ -55,8 +55,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void onLoginButtonPressed(View view) {
         //stores the editText from login page in variables
-        final EditText login_emailEntry = (EditText) findViewById(R.id.login_emailEntry);
-        final EditText login_passwordEntry = (EditText) findViewById(R.id.login_passwordEntry);
+        final EditText login_emailEntry = findViewById(R.id.login_emailEntry);
+        final EditText login_passwordEntry = findViewById(R.id.login_passwordEntry);
         //Get values of email and password variables
         final String email = (login_emailEntry.getText().toString());
         final String password = (login_passwordEntry.getText().toString());

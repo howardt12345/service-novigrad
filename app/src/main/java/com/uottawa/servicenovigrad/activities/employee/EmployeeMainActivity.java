@@ -122,7 +122,7 @@ public class EmployeeMainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == 0) {
+        if(resultCode == RESULT_OK) {
 
             //Get the branch
             Branch branch = (Branch) data.getSerializableExtra("branch");

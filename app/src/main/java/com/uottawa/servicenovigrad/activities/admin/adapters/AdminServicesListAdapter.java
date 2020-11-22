@@ -29,9 +29,9 @@ public class AdminServicesListAdapter extends ArrayAdapter<Service> {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.layout_admin_services_listitem, null, true);
 
-        TextView textViewName = (TextView) listViewItem.findViewById(R.id.service_name);
-        TextView textViewDesc = (TextView) listViewItem.findViewById(R.id.service_desc);
-        TextView textViewPrice = (TextView) listViewItem.findViewById(R.id.service_price);
+        TextView textViewName = listViewItem.findViewById(R.id.service_name);
+        TextView textViewDesc = listViewItem.findViewById(R.id.service_desc);
+        TextView textViewPrice = listViewItem.findViewById(R.id.service_price);
 
         Service service = services.get(position);
 

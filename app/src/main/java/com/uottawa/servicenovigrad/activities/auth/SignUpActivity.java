@@ -57,10 +57,10 @@ public class SignUpActivity extends AppCompatActivity {
      */
     public void onSignUpButtonClicked(View view) {
         //stores the editText from sign up page in variables
-        final EditText signUpNameEntry = (EditText) findViewById(R.id.signUp_nameEntry);
-        final EditText signUpEmailEntry = (EditText) findViewById(R.id.signUp_emailEntry);
-        final EditText signUpPasswordEntry = (EditText) findViewById(R.id.signUp_passwordEntry);
-        final EditText signUpPasswordConfirm = (EditText) findViewById(R.id.signUp_passwordConfirm);
+        final EditText signUpNameEntry = findViewById(R.id.signUp_nameEntry);
+        final EditText signUpEmailEntry = findViewById(R.id.signUp_emailEntry);
+        final EditText signUpPasswordEntry = findViewById(R.id.signUp_passwordEntry);
+        final EditText signUpPasswordConfirm = findViewById(R.id.signUp_passwordConfirm);
         //Get values of email and password variables
         final String name = signUpNameEntry.getText().toString();
         final String email = signUpEmailEntry.getText().toString();

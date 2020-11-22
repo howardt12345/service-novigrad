@@ -114,23 +114,23 @@ public class BranchInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_branch_info, container, false);
 
-        TextView nameView = (TextView) rootView.findViewById(R.id.employee_info_name);
+        TextView nameView = rootView.findViewById(R.id.employee_info_name);
         nameView.setText(name);
 
-        TextView phoneView = (TextView) rootView.findViewById(R.id.employee_info_phoneNumber);
+        TextView phoneView = rootView.findViewById(R.id.employee_info_phoneNumber);
         phoneView.setText("Phone Number: " + Utils.formatPhoneNumber(phoneNumber));
 
-        TextView addressView = (TextView) rootView.findViewById(R.id.employee_info_address);
+        TextView addressView = rootView.findViewById(R.id.employee_info_address);
         addressView.setText("Address: " + address);
 
-        TextView workingHoursView = (TextView) rootView.findViewById(R.id.employee_info_workinghours);
+        TextView workingHoursView = rootView.findViewById(R.id.employee_info_workinghours);
         workingHoursView.setText("Working Hours: " + Utils.formatTime(openingHour, openingMinute) + " - " + Utils.formatTime(closingHour, closingMinute));
 
-        MaterialDayPicker openDaysPicker = (MaterialDayPicker) rootView.findViewById(R.id.branch_days_open_picker);
+        MaterialDayPicker openDaysPicker = rootView.findViewById(R.id.branch_days_open_picker);
         Utils.selectDaysInPicker(openDaysPicker, openDays);
         openDaysPicker.disableAllDays();
 
-        servicesList = (LinearLayout) rootView.findViewById(R.id.employee_branch_services);
+        servicesList = rootView.findViewById(R.id.employee_branch_services);
         //Add listener to service reference
         servicesReference.orderBy("name").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -191,7 +191,7 @@ public class BranchInfoFragment extends Fragment {
             });
 
             //Hide delete button functions
-            ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete_service);
+            ImageButton deleteButton = view.findViewById(R.id.delete_service);
             deleteButton.setVisibility(View.GONE);
 
             //Add the list item to the list view

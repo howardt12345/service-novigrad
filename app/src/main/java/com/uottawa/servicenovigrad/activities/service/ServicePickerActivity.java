@@ -42,7 +42,7 @@ public class ServicePickerActivity extends AppCompatActivity {
 
         //Set up services list
         services = new ArrayList<>();
-        servicesList = (LinearLayout) findViewById(R.id.service_picker_list);
+        servicesList = findViewById(R.id.service_picker_list);
     }
 
     @Override

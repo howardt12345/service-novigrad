@@ -89,12 +89,12 @@ public class EmployeeEditActivity extends AppCompatActivity {
             branch = (Branch) getIntent().getSerializableExtra("branch");
         } else {
             //Change title to reflect current function
-            TextView title = (TextView) findViewById(R.id.employee_edit_title);
+            TextView title = findViewById(R.id.employee_edit_title);
             title.setText("Complete Branch Profile");
             title.setTextSize(24.0f);
 
             //Hide cancel button
-            ImageButton cancelButton = (ImageButton) findViewById(R.id.cancel_button_employee);
+            ImageButton cancelButton = findViewById(R.id.cancel_button_employee);
             cancelButton.setVisibility(View.GONE);
 
             newBranch = true;
@@ -104,8 +104,8 @@ public class EmployeeEditActivity extends AppCompatActivity {
     }
 
     private void initializeFields() {
-        EditText nameField = (EditText) findViewById(R.id.branch_edit_name);
-        final EditText phoneNumberField = (EditText) findViewById(R.id.branch_edit_phone_number);
+        EditText nameField = findViewById(R.id.branch_edit_name);
+        final EditText phoneNumberField = findViewById(R.id.branch_edit_phone_number);
 
         nameField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -184,7 +184,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
         nameField.setText(branch.getName());
         phoneNumberField.setText(branch.getPhoneNumber());
 
-        Button addressButton = (Button) findViewById(R.id.branch_edit_address_button);
+        Button addressButton = findViewById(R.id.branch_edit_address_button);
 
         addressButton.setText(TextUtils.isEmpty(branch.getAddress()) ? "Set Address" : branch.getAddress());
 
@@ -202,7 +202,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
 
         services = new ArrayList<>();
 
-        servicesList = (LinearLayout) findViewById(R.id.branch_edit_services_list);
+        servicesList = findViewById(R.id.branch_edit_services_list);
         //Add listener to service reference
         servicesReference.orderBy("name").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -256,7 +256,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 branch.setAddress(place.getAddress());
 
-                Button addressButton = (Button) findViewById(R.id.branch_edit_address_button);
+                Button addressButton = findViewById(R.id.branch_edit_address_button);
                 addressButton.setText(TextUtils.isEmpty(branch.getAddress()) ? "Set Address" : branch.getAddress());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 // TODO: Handle the error.
@@ -308,7 +308,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
                 Utils.showSnackbar("Opening time cannot be after closing time.", findViewById(R.id.branch_edit_view));
             }
         }
-        Button openingTimeButton = (Button) findViewById(R.id.branch_edit_opening_time);
+        Button openingTimeButton = findViewById(R.id.branch_edit_opening_time);
         openingTimeButton.setText(Utils.formatTime(branch.getOpeningHour(), branch.getOpeningMinute()));
     }
 
@@ -554,7 +554,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
         Intent intent = new Intent();
         //Add the service to the intent data
         intent.putExtra("branch", branch);
-        setResult(0, intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
 }

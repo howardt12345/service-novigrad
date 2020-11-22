@@ -49,7 +49,7 @@ public class AdminServicesActivity extends AppCompatActivity {
 
         //Set up services list
         services = new ArrayList<>();
-        servicesList = (LinearLayout) findViewById(R.id.services_list);
+        servicesList = findViewById(R.id.services_list);
     }
 
     @Override

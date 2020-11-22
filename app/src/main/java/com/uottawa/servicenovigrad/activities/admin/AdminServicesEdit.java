@@ -47,7 +47,7 @@ public class AdminServicesEdit extends AppCompatActivity {
         }
 
         //Get the title
-        TextView title = (TextView) findViewById(R.id.services_edit_title);
+        TextView title = findViewById(R.id.services_edit_title);
         //If there was no data passed through to this activity
         if(service == null) {
             //Change title to reflect current function
@@ -65,8 +65,8 @@ public class AdminServicesEdit extends AppCompatActivity {
      */
     private void initializeFields() {
         //Get the listviews from the id
-        formsList = (ListView) findViewById(R.id.services_edit_formsList);
-        documentsList = (ListView) findViewById(R.id.services_edit_documentsList);
+        formsList = findViewById(R.id.services_edit_formsList);
+        documentsList = findViewById(R.id.services_edit_documentsList);
         //Create new adapters for the listviews
         formsAdapter = new AdminServicesEditListAdapter(
             this,
@@ -89,9 +89,9 @@ public class AdminServicesEdit extends AppCompatActivity {
         Utils.setListViewHeightBasedOnChildren(documentsList);
 
         //Get the name and description fields
-        name = (EditText) findViewById(R.id.services_edit_editName);
-        desc = (EditText) findViewById(R.id.services_edit_editDesc);
-        price = (EditText) findViewById(R.id.services_edit_editPrice);
+        name = findViewById(R.id.services_edit_editName);
+        desc = findViewById(R.id.services_edit_editDesc);
+        price = findViewById(R.id.services_edit_editPrice);
         //Set the text to the service's name and description
         name.setText(service.getName());
         desc.setText(service.getDesc());

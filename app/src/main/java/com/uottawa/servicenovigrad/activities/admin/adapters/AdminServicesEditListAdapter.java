@@ -34,10 +34,10 @@ public class AdminServicesEditListAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.layout_admin_services_edit_listitem, null, true);
 
-        TextView name = (TextView) listViewItem.findViewById(R.id.service_edit_listitem);
+        TextView name = listViewItem.findViewById(R.id.service_edit_listitem);
         name.setText(objects.get(position));
 
-        ImageButton editButton = (ImageButton) listViewItem.findViewById(R.id.edit_service_listitem);
+        ImageButton editButton = listViewItem.findViewById(R.id.edit_service_listitem);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
