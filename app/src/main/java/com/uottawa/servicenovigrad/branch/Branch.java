@@ -26,7 +26,8 @@ public class Branch implements Serializable {
         services = new ArrayList<String>();
         openDays = new ArrayList<String>();
         openingHour = openingMinute = 0;
-        closingHour = closingMinute = 0;
+        closingHour = 23;
+        closingMinute = 59;
 
         rating = 0.0;
     }
@@ -45,10 +46,10 @@ public class Branch implements Serializable {
         services = new ArrayList<String>();
         openDays = new ArrayList<String>();
         openingHour = openingMinute = 0;
-        closingHour = 0;
-        closingMinute = 1;
+        closingHour = 23;
+        closingMinute = 59;
 
-        rating = 0.0f;
+        rating = 0.0;
     }
 
     public Branch(
