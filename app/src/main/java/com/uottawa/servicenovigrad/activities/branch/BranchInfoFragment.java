@@ -136,7 +136,7 @@ public class BranchInfoFragment extends Fragment {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
-                    Log.w("ServiceActivity", "Listen failed.", error);
+                    Log.w("BranchInfoFragment", "Listen failed.", error);
                     return;
                 }
                 //Clear the list and components

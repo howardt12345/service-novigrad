@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    tools:context=".activities.branch.BranchServiceRequestsFragment">
+
+    <TextView
+        android:id="@+id/branch_service_requests_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="Service Requests"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/branch_service_requests_subtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Awaiting Approval"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/branch_service_requests_pending"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/branch_service_requests_subtitle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Approved"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/branch_service_requests_approved"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/branch_service_requests_subtitle3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rejected"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/branch_service_requests_rejected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

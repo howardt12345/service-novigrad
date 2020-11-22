@@ -62,3 +62,12 @@ The Sample Employee credentials are:
 email: employee@novigrad.com
 password: employee
 ```
+
+# Deliverable 4
+
+The Sample Customer credenntials are:
+```
+email: customer@novigrad.com
+password: customer
+```
+Do NOT use these credentials yet. 

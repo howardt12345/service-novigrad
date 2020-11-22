@@ -18,6 +18,7 @@ import com.uottawa.servicenovigrad.activities.admin.AdminServicesActivity;
 import com.uottawa.servicenovigrad.activities.admin.AdminServicesEdit;
 import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
 import com.uottawa.servicenovigrad.activities.branch.BranchInfoFragment;
+import com.uottawa.servicenovigrad.activities.branch.BranchServiceRequestsFragment;
 import com.uottawa.servicenovigrad.branch.Branch;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
@@ -55,8 +56,13 @@ public class EmployeeMainActivity extends AppCompatActivity {
 
     private void initializeFields() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
         BranchInfoFragment infoFragment = BranchInfoFragment.newInstance(branch);
         ft.replace(R.id.employee_info_fragment_container, infoFragment);
+
+        BranchServiceRequestsFragment serviceFragment = BranchServiceRequestsFragment.newInstance(branch.getId());
+        ft.replace(R.id.service_requests_fragment_container, serviceFragment);
+
         ft.commit();
     }
 

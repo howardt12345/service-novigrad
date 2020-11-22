@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingLeft="16dp"
+    android:paddingTop="8dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="8dp"
     tools:context=".activities.branch.BranchInfoFragment">
 
     <LinearLayout
@@ -20,7 +23,7 @@
             android:layout_marginBottom="4dp"
             android:text="Branch Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/employee_info_phoneNumber"
@@ -81,7 +84,7 @@
             android:layout_marginBottom="4dp"
             android:text="Services Offered"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <LinearLayout
             android:id="@+id/employee_branch_services"
