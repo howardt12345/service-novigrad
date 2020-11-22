@@ -28,7 +28,7 @@
                 android:layout_marginRight="24dp"
                 android:background="#00FFFFFF"
                 android:visibility="visible"
-                app:srcCompat="@drawable/ic_close" />
+                app:srcCompat="@drawable/ic_arrow_left" />
 
             <TextView
                 android:id="@+id/service_picker_title"
@@ -38,14 +38,6 @@
                 android:text="Select Service"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="30sp" />
-
-            <ImageButton
-                android:id="@+id/done_button_service_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="24dp"
-                android:background="#00FFFFFF"
-                app:srcCompat="@drawable/ic_baseline_done_24" />
 
         </LinearLayout>
 

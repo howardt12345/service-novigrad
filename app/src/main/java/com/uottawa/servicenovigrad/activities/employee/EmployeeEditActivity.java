@@ -43,6 +43,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.admin.AdminServicesEdit;
 import com.uottawa.servicenovigrad.activities.branch.adapters.BranchInfoServicesAdapter;
+import com.uottawa.servicenovigrad.activities.service.ServicePickerActivity;
 import com.uottawa.servicenovigrad.branch.Branch;
 import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.utils.Utils;
@@ -239,7 +240,14 @@ public class EmployeeEditActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == SERVICE_REQUEST_CODE) {
+            if(resultCode == RESULT_OK) {
+                //Get service from result and add to branch list
+                Service service = (Service) data.getSerializableExtra("service");
+                branch.getServices().add(service.getId());
 
+                //Set up the services list
+                setUpServicesList(services, servicesList, EmployeeEditActivity.this, EmployeeEditActivity.this.getLayoutInflater());
+            }
         } else if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
@@ -312,6 +320,11 @@ public class EmployeeEditActivity extends AppCompatActivity {
         }
         Button closingTimeButton = (Button) findViewById(R.id.branch_edit_closing_time);
         closingTimeButton.setText(Utils.formatTime(branch.getClosingHour(), branch.getClosingMinute()));
+    }
+
+    public void pickService(View view) {
+        Intent intent = new Intent(EmployeeEditActivity.this, ServicePickerActivity.class);
+        startActivityForResult(intent, SERVICE_REQUEST_CODE);
     }
 
     /**
@@ -496,6 +509,10 @@ public class EmployeeEditActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(branch.getName()) || TextUtils.isEmpty(branch.getPhoneNumber()) || TextUtils.isEmpty(branch.getAddress())
         || branch.getOpenDays().isEmpty() || branch.getServices().isEmpty()) {
             Utils.showSnackbar("One or more required fields are empty.", view);
+            return false;
+        }
+        if(branch.getPhoneNumber().length() < 10) {
+            Utils.showSnackbar("Phone number is too short.", view);
             return false;
         }
         if(!verifyOpeningTime(branch.getOpeningHour(), branch.getOpeningMinute())) {

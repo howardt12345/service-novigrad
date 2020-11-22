@@ -216,6 +216,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
                     android:elevation="0dp"
+                    android:onClick="pickService"
                     android:text="Add Service"
                     android:theme="@style/Theme.MaterialComponents.NoActionBar"
                     app:backgroundTint="@color/colorAccent"

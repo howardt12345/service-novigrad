@@ -375,7 +375,7 @@ public class AdminServicesEdit extends AppCompatActivity {
         Intent intent = new Intent();
         //Add the service to the intent data
         intent.putExtra("service", service);
-        setResult(0, intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
 }

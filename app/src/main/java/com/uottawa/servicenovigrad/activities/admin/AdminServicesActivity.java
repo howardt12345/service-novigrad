@@ -178,7 +178,7 @@ public class AdminServicesActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         //If result is ok
-        if(resultCode == 0) {
+        if(resultCode == RESULT_OK) {
             //Get the service
             Service service = (Service) data.getSerializableExtra("service");
             //Create a map with the data to write to cloud firestore
