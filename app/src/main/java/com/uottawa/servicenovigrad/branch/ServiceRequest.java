@@ -7,6 +7,11 @@ public class ServiceRequest {
     private String id;
     private String customerId;
     private String branchId;
+    private String serviceId;
+
+    private String customerName;
+    private String branchName;
+    private String serviceName;
 
     private ArrayList<String> info;
     private Date scheduledTime;
@@ -29,6 +34,10 @@ public class ServiceRequest {
             String id,
             String customerId,
             String branchId,
+            String serviceId,
+            String customerName,
+            String branchName,
+            String serviceName,
             ArrayList<String> info,
             Date scheduledTime,
             boolean approved,
@@ -37,6 +46,11 @@ public class ServiceRequest {
         this.id = id;
         this.customerId = customerId;
         this.branchId = branchId;
+        this.serviceId = serviceId;
+
+        this.customerName = customerName;
+        this.branchName = branchName;
+        this.serviceName = serviceName;
 
         this.info = info;
         this.scheduledTime = scheduledTime;
@@ -46,11 +60,34 @@ public class ServiceRequest {
     }
 
     public String getTitle() {
-        return id;
+        return "From " + customerName;
     }
 
     public String getDesc() {
-        return customerId;
+        return "Request by " + customerName + " for " + serviceName + " on " + scheduledTime.toString();
+    }
+
+    public String getRequestInfo() {
+        //New string builder
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Customer Name: " + customerName + "\n");
+        sb.append("For Service: " + serviceName + "\n");
+        sb.append("Scheduled Time: " + scheduledTime.toString() + "\n");
+
+        sb.append("\nInfo Provided: \n");
+
+        //Add the documents to the string
+        for(String i : info) {
+            sb.append(" > " + i + "\n");
+        }
+
+        if(responded) {
+            sb.append("Approved: " + (approved ? "yes" : "no"));
+        } else {
+            sb.append("Responded: " + (responded ? "yes" : "no"));
+        }
+        return sb.toString();
     }
 
     public String getId() {
@@ -61,47 +98,40 @@ public class ServiceRequest {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
     public String getBranchId() {
         return branchId;
     }
 
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
+    public String getServiceId() {
+        return serviceId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public String getServiceName() {
+        return serviceName;
     }
 
     public ArrayList<String> getInfo() {
         return info;
     }
 
-    public void setInfo(ArrayList<String> info) {
-        this.info = info;
-    }
-
     public Date getScheduledTime() {
         return scheduledTime;
-    }
-
-    public void setScheduledTime(Date scheduledTime) {
-        this.scheduledTime = scheduledTime;
     }
 
     public boolean isApproved() {
         return approved;
     }
 
-    public void setApproved(boolean approved) {
-        this.approved = approved;
-    }
-
     public boolean isResponded() {
         return responded;
     }
 
-    public void setResponded(boolean responded) {
-        this.responded = responded;
-    }
 }
