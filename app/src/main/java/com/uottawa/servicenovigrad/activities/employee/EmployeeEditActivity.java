@@ -27,6 +27,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,11 +50,17 @@ import com.uottawa.servicenovigrad.utils.Utils;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ca.antonious.materialdaypicker.MaterialDayPicker;
 
 public class EmployeeEditActivity extends AppCompatActivity {
+
+    private static String TAG = "EmployeeEditActivity";
+
+    private static int SERVICE_REQUEST_CODE = 1;
+    private static int AUTOCOMPLETE_REQUEST_CODE = 2;
 
     private CollectionReference servicesReference = FirebaseFirestore.getInstance().collection("services");
 
@@ -62,6 +75,12 @@ public class EmployeeEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_edit);
         getSupportActionBar().hide();
+
+        // Initialize the SDK
+        Places.initialize(getApplicationContext(), "AIzaSyCyu0x3W3kNBMvZPfEd9v1Lna52vfFvyp4");
+
+        // Create a new PlacesClient instance
+        PlacesClient placesClient = Places.createClient(this);
 
         //If there is data passed through to this activity
         if(getIntent().getExtras() != null) {
@@ -188,7 +207,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
-                    Log.w("EmployeeEditActivity", "Listen failed.", error);
+                    Log.w(TAG, "Listen failed.", error);
                     return;
                 }
                 //Clear the list and components
@@ -214,6 +233,39 @@ public class EmployeeEditActivity extends AppCompatActivity {
                 setUpServicesList(services, servicesList, EmployeeEditActivity.this, EmployeeEditActivity.this.getLayoutInflater());
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == SERVICE_REQUEST_CODE) {
+
+        } else if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                branch.setAddress(place.getAddress());
+
+                Button addressButton = (Button) findViewById(R.id.branch_edit_address_button);
+                addressButton.setText(TextUtils.isEmpty(branch.getAddress()) ? "Set Address" : branch.getAddress());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+            return;
+        }
+    }
+
+    public void pickAddress(View view) {
+        // Set the fields to specify which types of place data to
+        // return after the user has made a selection.
+        List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS);
+
+        // Start the autocomplete intent.
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).build(this);
+        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
     }
 
     public void pickOpeningTime(View view) {
@@ -260,26 +312,6 @@ public class EmployeeEditActivity extends AppCompatActivity {
         }
         Button closingTimeButton = (Button) findViewById(R.id.branch_edit_closing_time);
         closingTimeButton.setText(Utils.formatTime(branch.getClosingHour(), branch.getClosingMinute()));
-    }
-
-    private boolean verifyOpeningTime(int hour, int minute) {
-        if(hour < branch.getClosingHour()) {
-            return true;
-        } else if (hour == branch.getClosingHour()) {
-            return minute < branch.getClosingMinute();
-        } else {
-            return false;
-        }
-    }
-
-    private boolean verifyClosingTime(int hour, int minute) {
-        if(hour > branch.getOpeningHour()) {
-            return true;
-        } else if (hour == branch.getOpeningHour()) {
-            return minute > branch.getOpeningMinute();
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -466,7 +498,33 @@ public class EmployeeEditActivity extends AppCompatActivity {
             Utils.showSnackbar("One or more required fields are empty.", view);
             return false;
         }
+        if(!verifyOpeningTime(branch.getOpeningHour(), branch.getOpeningMinute())) {
+            Utils.showSnackbar("Opening time cannot be after closing time.", findViewById(R.id.branch_edit_view));
+        }
+        if(!verifyClosingTime(branch.getClosingHour(), branch.getClosingMinute())) {
+            Utils.showSnackbar("Closing time cannot be before opening time.", findViewById(R.id.branch_edit_view));
+        }
         return true;
+    }
+
+    private boolean verifyOpeningTime(int hour, int minute) {
+        if(hour < branch.getClosingHour()) {
+            return true;
+        } else if (hour == branch.getClosingHour()) {
+            return minute < branch.getClosingMinute();
+        } else {
+            return false;
+        }
+    }
+
+    private boolean verifyClosingTime(int hour, int minute) {
+        if(hour > branch.getOpeningHour()) {
+            return true;
+        } else if (hour == branch.getOpeningHour()) {
+            return minute > branch.getOpeningMinute();
+        } else {
+            return false;
+        }
     }
 
     /**

@@ -51,8 +51,8 @@ dependencies {
 
     //Material Day Picker
     implementation 'ca.antonious:materialdaypicker:0.7.3'
-
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.12'
+    //Places api
+    implementation 'com.google.android.libraries.places:places:2.4.0'
 
     implementation 'com.android.support:multidex:1.0.3'
 

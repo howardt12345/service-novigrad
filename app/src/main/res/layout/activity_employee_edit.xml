@@ -103,6 +103,7 @@
                     android:id="@+id/branch_edit_address_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="pickAddress"
                     android:text="Address"
                     android:textAllCaps="false" />
 
@@ -194,10 +195,11 @@
                     android:id="@+id/branch_edit_services_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
                     android:text="Services Offered"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    android:textSize="24sp"
-                    android:layout_marginStart="4dp" />
+                    android:textSize="24sp" />
 
                 <LinearLayout
                     android:id="@+id/branch_edit_services_list"
