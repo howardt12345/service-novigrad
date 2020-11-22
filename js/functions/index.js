@@ -15,7 +15,9 @@ admin.initializeApp();
 exports.removeUser = functions.firestore
     .document("/users/{uid}")
     .onDelete((snapshot, context) => {
-        return admin.auth().deleteUser(context.params.uid);
+        return admin.auth().deleteUser(context.params.uid).then(() => {
+            return admin.firestore().collection("branches").doc(context.params.uid).delete().catch(err => console.log(err));
+        }).catch(err => console.log(err));
     });
 
 exports.updateServiceRequest = functions.firestore

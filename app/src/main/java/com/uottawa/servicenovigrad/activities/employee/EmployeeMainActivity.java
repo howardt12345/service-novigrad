@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -52,6 +53,9 @@ public class EmployeeMainActivity extends AppCompatActivity {
             Intent intent = new Intent(EmployeeMainActivity.this, EmployeeEditActivity.class);
             startActivityForResult(intent, 0);
         }
+
+        TextView branchInfoTitle = findViewById(R.id.employee_info_title);
+        branchInfoTitle.setVisibility(View.VISIBLE);
     }
 
     private void initializeFields() {

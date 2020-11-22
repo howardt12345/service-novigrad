@@ -75,7 +75,8 @@
                         android:paddingLeft="16dp"
                         android:text="Branch Info"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="24sp" />
+                        android:textSize="24sp"
+                        android:visibility="invisible" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
