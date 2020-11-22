@@ -66,7 +66,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/employee_info_title"
@@ -84,6 +84,11 @@
                     android:layout_height="match_parent">
 
                 </androidx.cardview.widget.CardView>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp" />
+
             </LinearLayout>
         </ScrollView>
 
