@@ -30,6 +30,7 @@ import android.widget.TimePicker;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -78,7 +79,9 @@ public class EmployeeEditActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         // Initialize the SDK
-        Places.initialize(getApplicationContext(), "AIzaSyCyu0x3W3kNBMvZPfEd9v1Lna52vfFvyp4");
+        if(!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), "AIzaSyCyu0x3W3kNBMvZPfEd9v1Lna52vfFvyp4");
+        }
 
         // Create a new PlacesClient instance
         PlacesClient placesClient = Places.createClient(this);
@@ -275,7 +278,7 @@ public class EmployeeEditActivity extends AppCompatActivity {
         List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS);
 
         // Start the autocomplete intent.
-        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).setCountry("CA").build(this);
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).setCountry("CA").setTypeFilter(TypeFilter.ADDRESS).build(this);
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
     }
 
