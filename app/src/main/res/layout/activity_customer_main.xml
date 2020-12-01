@@ -49,4 +49,17 @@
         </androidx.appcompat.widget.Toolbar>
 
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/add_request_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="Add Request"
+        android:theme="@style/Theme.MaterialComponents.NoActionBar"
+        app:backgroundTint="@color/colorAccent"
+        app:icon="@drawable/ic_add" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

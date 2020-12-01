@@ -42,3 +42,16 @@ exports.updateServiceRequest = functions.firestore
             })
         })
     });
+
+exports.updateBranchName = functions.firestore
+    .document("branches/{id}")
+    .onWrite((change, context) => {
+        const after = change.after.data();
+        return admin.firestore().collection("requests")
+            .where('branch', '==', context.params.id)
+            .get().then(response => {
+                return response.docs.forEach(doc => {
+                    admin.firestore().collection("requests").doc(doc.id).update({"branchName": after.name})
+                }).catch(err => console.log(err));
+        }).catch(err => console.log(err))
+    });
