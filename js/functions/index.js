@@ -80,3 +80,34 @@ exports.deleteServices = functions.firestore
             }).catch(err => console.log(err));
         })
     });
+
+exports.notifyCustomer = functions.firestore
+    .document("requests/{id}")
+    .onUpdate((change, context) => {
+        const after = change.after.data();
+
+        return admin.firestore().collection("users").doc(after.customer).collection("tokens").get().then(response => {
+            return response.forEach(doc => {
+                let token = doc.id;
+
+                let payload;
+
+                if(after.responded) {
+                    if(after.approved) {
+                        payload = {
+                            notification: {
+                                title: "Your request has been approved."
+                            }
+                        }
+                    } else {
+                        payload = {
+                            notification: {
+                                title: "Your request has been rejected."
+                            }
+                        }
+                    }
+                }
+                return admin.messaging().sendToDevice(token, payload).catch(err => console.log(err));
+            }).catch(err => console.log(err));
+        }).catch(err => console.log(err));
+    })

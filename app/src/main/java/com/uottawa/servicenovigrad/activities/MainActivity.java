@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(!user.isAnonymous()) {
-                    FirebaseFirestore.getInstance().collection("users").document(user.getUid()).update(new HashMap<String, Object>() {{ put("token", token); }});
+                    FirebaseFirestore.getInstance().collection("users").document(user.getUid()).collection("tokens").document(token).set(new HashMap<>());
                 }
             }
         });
