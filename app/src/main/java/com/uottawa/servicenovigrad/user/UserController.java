@@ -1,16 +1,21 @@
 package com.uottawa.servicenovigrad.user;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.uottawa.servicenovigrad.utils.Function;
 import com.uottawa.servicenovigrad.utils.Utils;
 
@@ -208,11 +213,29 @@ public class UserController {
     }
 
     public void signOut() {
+        final String uid = userAccount.getUID();
         if(userAccount instanceof AdminAccount) {
             //Dispose of anonymous account
             auth.getCurrentUser().delete();
-        } else {
             auth.signOut();
+        } else {
+            FirebaseMessaging.getInstance().getToken()
+            .addOnCompleteListener(new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(@NonNull Task<String> task) {
+                    if (!task.isSuccessful()) {
+                        Log.w("Messaging", "Fetching FCM registration token failed", task.getException());
+                        auth.signOut();
+                        return;
+                    }
+
+                    // Get new FCM registration token
+                    final String token = task.getResult();
+
+                    FirebaseFirestore.getInstance().collection("users").document(uid).collection("tokens").document(token).delete();
+                    auth.signOut();
+                }
+            });
         }
         userAccount = null;
     }
