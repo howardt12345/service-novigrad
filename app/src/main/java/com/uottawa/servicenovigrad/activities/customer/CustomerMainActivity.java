@@ -35,4 +35,13 @@ public class CustomerMainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
+    /**
+     * Search for branches
+     * @param view The current view
+     */
+    public void search(View view) {
+        Intent intent = new Intent(CustomerMainActivity.this, CustomerSearchActivity.class);
+        startActivity(intent);
+    }
 }

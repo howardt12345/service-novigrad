@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -30,8 +31,13 @@ public class CustomerSearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
 
-        TextView view = findViewById(R.id.search_text);
-        view.setText(getIntent().getSerializableExtra("searchQuery").toString());
+    /**
+     * Cancel the search and return to the main page
+     * @param view The current view
+     */
+    public void cancelSearch(View view) {
+        finish();
     }
 }
