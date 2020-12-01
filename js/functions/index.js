@@ -43,7 +43,7 @@ exports.updateServiceRequest = functions.firestore
         })
     });
 
-exports.updateBranchName = functions.firestore
+exports.updateBranchNameInRequest = functions.firestore
     .document("branches/{id}")
     .onWrite((change, context) => {
         const after = change.after.data();
@@ -54,4 +54,29 @@ exports.updateBranchName = functions.firestore
                     admin.firestore().collection("requests").doc(doc.id).update({"branchName": after.name})
                 }).catch(err => console.log(err));
         }).catch(err => console.log(err))
+    });
+
+exports.updateServiceNameInRequest = functions.firestore
+    .document("services/{id}")
+    .onWrite((change, context) => {
+        const after = change.after.data();
+        return admin.firestore().collection("requests")
+            .where('service', '==', context.params.id)
+            .get().then(response => {
+                return response.docs.forEach(doc => {
+                    admin.firestore().collection("requests").doc(doc.id).update({"serviceName": after.name})
+                }).catch(err => console.log(err));
+        }).catch(err => console.log(err))
+    })
+
+exports.deleteServices = functions.firestore
+    .document("services/{id}")
+    .onDelete((snap, context) => {
+        return admin.firestore().collection("requests")
+        .where('service', '==', context.params.id)
+        .get().then(response => {
+            return response.docs.forEach(doc => {
+                admin.firestore().collection("requests").doc(doc.id).delete()
+            }).catch(err => console.log(err));
+        })
     });

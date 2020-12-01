@@ -13,6 +13,6 @@ public class CustomerSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_search);
         getSupportActionBar().hide();
-        
+
     }
 }
