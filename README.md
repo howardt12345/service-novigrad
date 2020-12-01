@@ -64,6 +64,9 @@ password: employee
 ```
 
 # Deliverable 4
+The following functionality is implemented in deliverable 4:
+- Customers receive a notification when their service request is approved/rejected
+
 
 The Sample Customer credenntials are:
 ```

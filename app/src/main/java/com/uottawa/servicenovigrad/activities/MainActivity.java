@@ -1,18 +1,27 @@
 package com.uottawa.servicenovigrad.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.admin.AdminMainActivity;
 import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
-import com.uottawa.servicenovigrad.activities.customer.CustomerActivity;
+import com.uottawa.servicenovigrad.activities.customer.CustomerMainActivity;
 import com.uottawa.servicenovigrad.activities.employee.EmployeeLoaderActivity;
-import com.uottawa.servicenovigrad.activities.employee.EmployeeMainActivity;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +33,25 @@ public class MainActivity extends AppCompatActivity {
 
         UserAccount account = UserController.getInstance().getUserAccount();
 
+        FirebaseMessaging.getInstance().getToken()
+        .addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("Messaging", "Fetching FCM registration token failed", task.getException());
+                    return;
+                }
+
+                // Get new FCM registration token
+                final String token = task.getResult();
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if(!user.isAnonymous()) {
+                    FirebaseFirestore.getInstance().collection("users").document(user.getUid()).update(new HashMap<String, Object>() {{ put("token", token); }});
+                }
+            }
+        });
+
         Intent intent;
         //Sets intent based on what role the user is
         switch(account.getRole()) {
@@ -34,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, EmployeeLoaderActivity.class);
                 break;
             case "customer":
-                intent = new Intent(MainActivity.this, CustomerActivity.class);
+                intent = new Intent(MainActivity.this, CustomerMainActivity.class);
                 break;
             default:
                 intent = new Intent(MainActivity.this, LoginActivity.class);
