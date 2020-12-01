@@ -48,14 +48,6 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <SearchView
-            android:id="@+id/branch_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
-            android:layout_gravity="center"
-            android:queryHint="Search branches"/>
-
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
