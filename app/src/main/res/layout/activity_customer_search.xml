@@ -52,4 +52,9 @@
         android:iconifiedByDefault="false"
         android:queryHint="Search branches" />
 
+    <ListView
+        android:id="@+id/search_results"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </LinearLayout>

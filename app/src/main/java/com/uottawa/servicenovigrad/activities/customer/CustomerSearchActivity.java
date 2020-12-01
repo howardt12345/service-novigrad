@@ -7,8 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.customer.adapters.SearchResultListAdapter;
 import com.uottawa.servicenovigrad.branch.Branch;
 
 import java.util.ArrayList;
@@ -27,6 +29,9 @@ public class CustomerSearchActivity extends AppCompatActivity {
     private CollectionReference branches;
 
     private ArrayList<Branch> branchList;
+
+    SearchResultListAdapter adapter;
+    ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +44,17 @@ public class CustomerSearchActivity extends AppCompatActivity {
         branches = firestore.collection("branches");
 
         // Get branch data
-        branchList = new ArrayList<Branch>();
+        branchList = new ArrayList<>();
         getData();
 
-        SearchView searchView = (SearchView) findViewById(R.id.branch_search);
+        // Populate list
+        list = findViewById(R.id.search_results);
+
+        // Create and bind adapter
+        adapter = new SearchResultListAdapter(this, branchList);
+        list.setAdapter(adapter);
+
+        SearchView searchView = findViewById(R.id.branch_search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -77,6 +89,7 @@ public class CustomerSearchActivity extends AppCompatActivity {
                                 (double)document.getData().get("rating")
                         );
                         branchList.add(b);
+                        adapter.notifyDataSetChanged();
                         Log.d("Search: ", document.getId() + "=>" + document.getData());
                     }
                 } else {
