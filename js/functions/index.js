@@ -76,9 +76,17 @@ exports.deleteServices = functions.firestore
         .where('service', '==', context.params.id)
         .get().then(response => {
             return response.docs.forEach(doc => {
-                admin.firestore().collection("requests").doc(doc.id).delete()
-            }).catch(err => console.log(err));
-        })
+                admin.firestore().collection("requests").doc(doc.id).delete().catch(err => console.log(err));
+            })
+        }).then(() => {
+            return admin.firestore().collection("branches")
+            .where("services", "array-contains", context.params.id)
+            .get().then(response => {
+                return response.docs.forEach(doc => {
+                    admin.firestore().collection("branches").doc(doc.id).update({"services": admin.firestore.FieldValue.arrayRemove(context.params.id)}).catch(err => console.log(err));
+                })
+            })
+        }).catch(err => console.log(err));
     });
 
 exports.notifyCustomer = functions.firestore
