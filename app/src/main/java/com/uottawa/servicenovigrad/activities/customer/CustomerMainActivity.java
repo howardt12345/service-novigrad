@@ -119,25 +119,11 @@ public class CustomerMainActivity extends AppCompatActivity {
             });
 
             ImageButton approveButton = view.findViewById(R.id.approve_request);
-            if(requests.get(finalI).isApproved() && requests.get(finalI).isResponded()) {
-                approveButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(context, "Request has been approved.", Toast.LENGTH_SHORT);
-                    }
-                });
-            } else {
+            if(!(requests.get(finalI).isApproved() && requests.get(finalI).isResponded())) {
                 approveButton.setVisibility(View.GONE);
             }
             ImageButton rejectButton = view.findViewById(R.id.reject_request);
-            if(!requests.get(finalI).isApproved() && requests.get(finalI).isResponded()) {
-                rejectButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(context, "Request has been rejected.", Toast.LENGTH_SHORT);
-                    }
-                });
-            } else {
+            if(!(!requests.get(finalI).isApproved() && requests.get(finalI).isResponded())) {
                 rejectButton.setVisibility(View.GONE);
             }
 
