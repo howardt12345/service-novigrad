@@ -1,9 +1,10 @@
 package com.uottawa.servicenovigrad.branch;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ServiceRequest {
+public class ServiceRequest implements Serializable {
     private String id;
     private String customerId;
     private String branchId;

@@ -140,6 +140,12 @@ public class CustomerMainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK) {
+            if(requestCode == NEW_REQUEST) {
+                ServiceRequest request = (ServiceRequest) data.getSerializableExtra("request");
+                //TODO: Make Request
+            }
+        }
     }
 
     public void newRequest(View view) {

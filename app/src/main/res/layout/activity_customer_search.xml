@@ -21,16 +21,6 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/cancel_button_customer_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="24dp"
-                android:background="#00FFFFFF"
-                android:visibility="visible"
-                app:srcCompat="@drawable/ic_arrow_left"
-                android:onClick="cancelSearch"/>
-
             <TextView
                 android:id="@+id/customer_search_toolbar_title"
                 android:layout_width="wrap_content"

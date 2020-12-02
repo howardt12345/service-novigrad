@@ -7,16 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.uottawa.servicenovigrad.R;
-import com.uottawa.servicenovigrad.activities.admin.AdminServicesEdit;
-import com.uottawa.servicenovigrad.activities.employee.EmployeeEditActivity;
-import com.uottawa.servicenovigrad.activities.employee.EmployeeMainActivity;
 import com.uottawa.servicenovigrad.activities.service.ServicePickerActivity;
 import com.uottawa.servicenovigrad.branch.Branch;
+import com.uottawa.servicenovigrad.branch.ServiceRequest;
 import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.utils.Utils;
 
@@ -122,7 +119,33 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
     }
 
     public void confirmEdit(View view) {
-
+        boolean valid = verifyEdit();
+        if(valid) {
+            sendRequest();
+        }
     }
 
+    private boolean verifyEdit() {
+        if(branch == null) {
+            Utils.showSnackbar("A branch must be selected.", findViewById(R.id.new_request_view));
+            return false;
+        }
+        if(service == null) {
+            Utils.showSnackbar("A service must be selected.", findViewById(R.id.new_request_view));
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Saves the edit.
+     */
+    private void sendRequest() {
+        Intent intent = new Intent();
+        //Add the service to the intent data
+        intent.putExtra("request", new ServiceRequest());
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 }
