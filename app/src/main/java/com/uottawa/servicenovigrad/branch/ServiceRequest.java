@@ -59,12 +59,20 @@ public class ServiceRequest {
         this.responded = responded;
     }
 
-    public String getTitle() {
+    public String getBranchSideTitle() {
         return "From " + customerName;
     }
 
-    public String getDesc() {
+    public String getBranchSideDesc() {
         return "Request by " + customerName + " for " + serviceName + " on " + scheduledTime.toString();
+    }
+
+    public String getCustomerSideTitle() {
+        return "To " + branchName;
+    }
+
+    public String getCustomerSideDesc() {
+        return "Request to " + branchName + " for " + serviceName + " on " + scheduledTime.toString();
     }
 
     public String getRequestInfo() {

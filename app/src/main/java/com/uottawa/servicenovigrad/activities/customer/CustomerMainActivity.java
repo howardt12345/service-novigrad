@@ -1,25 +1,138 @@
 package com.uottawa.servicenovigrad.activities.customer;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
+import com.uottawa.servicenovigrad.activities.branch.adapters.ServiceRequestsAdapter;
+import com.uottawa.servicenovigrad.activities.customer.adapters.CustomerServiceRequestAdapter;
+import com.uottawa.servicenovigrad.branch.ServiceRequest;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class CustomerMainActivity extends AppCompatActivity {
+
+    private CollectionReference requestsReference = FirebaseFirestore.getInstance().collection("requests");
+
+    List<ServiceRequest> serviceRequests;
+    LinearLayout requestsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_main);
         getSupportActionBar().hide();
+        serviceRequests = new ArrayList<>();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        requestsList = findViewById(R.id.customer_service_requests);
+
+        requestsReference
+                .whereEqualTo("customer", UserController.getInstance().getUserAccount().getUID())
+                .whereGreaterThan("scheduledTime", new Date())
+                .orderBy("scheduledTime")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.w("ServiceRequestsFragment", "Listen failed.", error);
+                            return;
+                        }
+
+                        serviceRequests.clear();
+
+                        for(QueryDocumentSnapshot doc : value) {
+                            if(doc.exists()) {
+                                //Get the information of the service
+                                String id = doc.getId();
+                                String customerId = doc.getString("customer");
+                                String branchId = doc.getString("branch");
+                                String serviceId = doc.getString("service");
+
+                                String customerName = doc.getString("customerName");
+                                String branchName = doc.getString("branchName");
+                                String serviceName = doc.getString("serviceName");
+
+                                ArrayList<String> info = (ArrayList<String>) doc.get("info");
+
+                                Timestamp scheduledTime = doc.getTimestamp("scheduledTime");
+
+                                boolean approved = doc.getBoolean("approved");
+                                boolean responded = doc.getBoolean("responded");
+
+                                ServiceRequest request = new ServiceRequest(id, customerId, branchId, serviceId, customerName, branchName, serviceName, info, scheduledTime.toDate(), approved, responded);
+
+                                serviceRequests.add(request);
+                            }
+                        }
+
+                        setUpRequestsList(serviceRequests, requestsList, getApplicationContext(), getLayoutInflater());
+                    }
+                });
+    }
+
+    private void setUpRequestsList(final List<ServiceRequest> requests, LinearLayout listView, final Context context, LayoutInflater inflater) {
+
+        requestsList.removeAllViews();
+
+        CustomerServiceRequestAdapter adapter = new CustomerServiceRequestAdapter(context, requests, inflater);
+
+        for(int i = 0; i < adapter.getCount(); i++) {
+            //Get final version of index
+            final int finalI = i;
+            //Get the list item from the adapter at the index
+            View view = adapter.getView(i, null, listView);
+            //Open the user info dialog when the list item is clicked
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //requestInfo(filteredRequests.get(finalI));
+                }
+            });
+
+            ImageButton approveButton = view.findViewById(R.id.approve_request);
+            if(!(requests.get(finalI).isApproved() && requests.get(finalI).isResponded())) {
+                approveButton.setVisibility(View.GONE);
+            }
+            ImageButton rejectButton = view.findViewById(R.id.reject_request);
+            if(!(!requests.get(finalI).isApproved() && requests.get(finalI).isResponded())) {
+                rejectButton.setVisibility(View.GONE);
+            }
+
+            ImageButton undoButton = view.findViewById(R.id.undo_reject_request);
+            undoButton.setVisibility(View.GONE);
+
+            //Add the list item to the list view
+            listView.addView(view);
+        }
     }
 
     /**

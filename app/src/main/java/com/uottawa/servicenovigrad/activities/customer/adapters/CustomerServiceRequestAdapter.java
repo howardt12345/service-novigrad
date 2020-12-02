@@ -1,4 +1,4 @@
-package com.uottawa.servicenovigrad.activities.branch.adapters;
+package com.uottawa.servicenovigrad.activities.customer.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,11 +14,11 @@ import com.uottawa.servicenovigrad.branch.ServiceRequest;
 
 import java.util.List;
 
-public class ServiceRequestsAdapter extends ArrayAdapter<ServiceRequest> {
+public class CustomerServiceRequestAdapter extends ArrayAdapter<ServiceRequest> {
     private LayoutInflater inflater;
     List<ServiceRequest> requests;
 
-    public ServiceRequestsAdapter(@NonNull Context context, @NonNull List<ServiceRequest> requests, @NonNull LayoutInflater inflater) {
+    public CustomerServiceRequestAdapter(@NonNull Context context, @NonNull List<ServiceRequest> requests, @NonNull LayoutInflater inflater) {
         super(context, R.layout.layout_service_request_listitem, requests);
         this.inflater = inflater;
         this.requests = requests;
@@ -33,8 +33,8 @@ public class ServiceRequestsAdapter extends ArrayAdapter<ServiceRequest> {
 
         ServiceRequest request = requests.get(position);
 
-        textViewName.setText(request.getBranchSideTitle());
-        textViewDesc.setText(request.getBranchSideDesc());
+        textViewName.setText(request.getCustomerSideTitle());
+        textViewDesc.setText(request.getCustomerSideDesc());
 
         return listViewItem;
     }
