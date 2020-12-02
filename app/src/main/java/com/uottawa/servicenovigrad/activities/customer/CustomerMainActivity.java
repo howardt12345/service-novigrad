@@ -36,6 +36,8 @@ import java.util.List;
 
 public class CustomerMainActivity extends AppCompatActivity {
 
+    private int NEW_REQUEST = 0;
+
     private CollectionReference requestsReference = FirebaseFirestore.getInstance().collection("requests");
 
     List<ServiceRequest> serviceRequests;
@@ -133,6 +135,16 @@ public class CustomerMainActivity extends AppCompatActivity {
             //Add the list item to the list view
             listView.addView(view);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void newRequest(View view) {
+        Intent intent = new Intent(CustomerMainActivity.this, CustomerNewRequestActivity.class);
+        startActivityForResult(intent, NEW_REQUEST);
     }
 
     /**

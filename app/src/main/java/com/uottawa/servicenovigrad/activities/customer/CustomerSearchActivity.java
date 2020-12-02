@@ -1,8 +1,10 @@
 package com.uottawa.servicenovigrad.activities.customer;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +21,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.customer.adapters.SearchResultListAdapter;
+import com.uottawa.servicenovigrad.activities.service.ServicePickerActivity;
 import com.uottawa.servicenovigrad.branch.Branch;
+import com.uottawa.servicenovigrad.utils.Function;
 
 import java.util.ArrayList;
 
@@ -51,7 +55,42 @@ public class CustomerSearchActivity extends AppCompatActivity {
         list = findViewById(R.id.search_results);
 
         // Create and bind adapter
-        adapter = new SearchResultListAdapter(this, branchList);
+        adapter = new SearchResultListAdapter(this, branchList, new Function() {
+            @Override
+            public void f(final Object... params) {
+                final Branch b = (Branch) params[0];
+                //Create new AlertDialog
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerSearchActivity.this);
+                alertDialogBuilder
+                        .setTitle("Select " + b.getName() + "?") //Set the title of the dialog to the service name
+                        .setMessage("Are you sure you want to select " + b.getName() + "?") //Set the message of the dialog to the service info
+                        .setCancelable(true)
+                        .setPositiveButton(
+                                "SELECT",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent();
+                                        intent.putExtra("branch", b);
+                                        setResult(RESULT_OK, intent);
+                                        finish();
+                                    }
+                                }
+                        )
+                        .setNegativeButton(
+                                "CANCEL",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                }
+                        );
+                //Show AlertDialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        });
         list.setAdapter(adapter);
 
         SearchView searchView = findViewById(R.id.branch_search);

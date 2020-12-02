@@ -51,6 +51,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#00FFFFFF"
+            android:tint="@color/colorAccent"
             app:srcCompat="@drawable/ic_chevron_right" />
     </LinearLayout>
 

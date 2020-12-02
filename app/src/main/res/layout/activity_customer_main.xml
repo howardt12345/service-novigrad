@@ -96,6 +96,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:onClick="newRequest"
         android:text="Add Request"
         android:theme="@style/Theme.MaterialComponents.NoActionBar"
         app:backgroundTint="@color/colorAccent"
