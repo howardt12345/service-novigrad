@@ -120,4 +120,9 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    public void confirmEdit(View view) {
+
+    }
+
 }
