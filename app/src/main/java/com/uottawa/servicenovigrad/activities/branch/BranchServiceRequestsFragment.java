@@ -25,7 +25,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.branch.adapters.ServiceRequestsAdapter;
 import com.uottawa.servicenovigrad.branch.ServiceRequest;
-import com.uottawa.servicenovigrad.service.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -275,7 +274,7 @@ public class BranchServiceRequestsFragment extends Fragment {
         //Create new AlertDialog
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder
-                .setTitle(request.getTitle()) //Set the title of the dialog to the service name
+                .setTitle(request.getBranchSideTitle()) //Set the title of the dialog to the service name
                 .setMessage(request.getRequestInfo()) //Set the message of the dialog to the service info
                 .setCancelable(true)
                 .setPositiveButton(

@@ -21,7 +21,10 @@ import com.uottawa.servicenovigrad.activities.employee.EmployeeLoaderActivity;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,7 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(!user.isAnonymous()) {
-                    FirebaseFirestore.getInstance().collection("users").document(user.getUid()).collection("tokens").document(token).set(new HashMap<>());
+                    FirebaseFirestore.getInstance()
+                            .collection("users")
+                            .document(user.getUid())
+                            .collection("tokens")
+                            .document(token)
+                            .set(new HashMap<String, Object>() {{ put("signedIn", new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault()).format(new Date())); }});
                 }
             }
         });
