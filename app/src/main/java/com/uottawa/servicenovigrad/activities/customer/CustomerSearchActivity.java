@@ -64,6 +64,8 @@ public class CustomerSearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                String query = newText;
+                adapter.filter(newText);
                 return false;
             }
         });
@@ -89,7 +91,7 @@ public class CustomerSearchActivity extends AppCompatActivity {
                                 (double)document.getData().get("rating")
                         );
                         branchList.add(b);
-                        adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged(b);
                         Log.d("Search: ", document.getId() + "=>" + document.getData());
                     }
                 } else {
