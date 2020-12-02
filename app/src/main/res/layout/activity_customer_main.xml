@@ -36,15 +36,6 @@
                     android:textSize="30sp" />
 
                 <ImageButton
-                    android:id="@+id/customer_search_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="24dp"
-                    android:background="#00FFFFFF"
-                    android:onClick="search"
-                    app:srcCompat="@drawable/ic_search" />
-
-                <ImageButton
                     android:id="@+id/customer_signout_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
