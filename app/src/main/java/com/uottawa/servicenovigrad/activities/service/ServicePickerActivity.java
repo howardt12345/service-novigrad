@@ -22,6 +22,7 @@ import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.admin.AdminServicesActivity;
 import com.uottawa.servicenovigrad.activities.admin.adapters.AdminServicesListAdapter;
 import com.uottawa.servicenovigrad.activities.branch.adapters.BranchInfoServicesAdapter;
+import com.uottawa.servicenovigrad.branch.Branch;
 import com.uottawa.servicenovigrad.service.Service;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class ServicePickerActivity extends AppCompatActivity {
     List<Service> services;
     LinearLayout servicesList;
 
+    Branch branch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,10 @@ public class ServicePickerActivity extends AppCompatActivity {
         //Set up services list
         services = new ArrayList<>();
         servicesList = findViewById(R.id.service_picker_list);
+
+        if(getIntent().getExtras() != null) {
+            branch = (Branch) getIntent().getSerializableExtra("branch");
+        }
     }
 
     @Override
@@ -73,7 +80,13 @@ public class ServicePickerActivity extends AppCompatActivity {
                         //Create a new service object
                         Service service = new Service(id, name, desc, forms, documents, price);
                         //Add service to list
-                        services.add(service);
+                        if(branch != null) {
+                            if(branch.getServices().contains(id)) {
+                                services.add(service);
+                            }
+                        } else {
+                            services.add(service);
+                        }
                     }
                 }
                 //Set up the services list
