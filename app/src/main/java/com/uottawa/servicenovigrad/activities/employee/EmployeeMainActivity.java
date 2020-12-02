@@ -21,11 +21,13 @@ import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
 import com.uottawa.servicenovigrad.activities.branch.BranchInfoFragment;
 import com.uottawa.servicenovigrad.activities.branch.BranchServiceRequestsFragment;
 import com.uottawa.servicenovigrad.branch.Branch;
+import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EmployeeMainActivity extends AppCompatActivity {
@@ -47,6 +49,11 @@ public class EmployeeMainActivity extends AppCompatActivity {
         //If there is data passed through to this activity
         if(getIntent().getExtras() != null) {
             branch = (Branch) getIntent().getSerializableExtra("branch");
+            if(branch.getServices().size() == 0) {
+                //Launch edit services page
+                Intent intent = new Intent(EmployeeMainActivity.this, EmployeeEditActivity.class);
+                startActivityForResult(intent, 0);
+            }
             initializeFields();
         } else {
             //Launch edit services page
