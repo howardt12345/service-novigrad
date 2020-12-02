@@ -347,6 +347,17 @@ public class EmployeeEditActivity extends AppCompatActivity {
             }
         }
 
+        List<String> slist = new ArrayList<>();
+
+        for(Service s : services) {
+            slist.add(s.getId());
+        }
+
+        List<String> tmp = new ArrayList<>(branch.getServices());
+        tmp.removeAll(slist);
+
+        branch.getServices().removeAll(tmp);
+
         servicesList.removeAllViews();
 
         //Create a list adapter
