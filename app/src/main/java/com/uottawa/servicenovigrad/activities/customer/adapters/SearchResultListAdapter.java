@@ -49,8 +49,7 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
         else {
             for (Branch b : allBranches) {
                 if (b.getName().toLowerCase(Locale.getDefault()).contains(query)
-                    || b.getAddress().toLowerCase(Locale.getDefault()).contains(query)
-                    || b.getName().toLowerCase(Locale.getDefault()).equals(query)) {
+                    || b.getAddress().toLowerCase(Locale.getDefault()).contains(query)) {
                     add(b);
                 }
             }
