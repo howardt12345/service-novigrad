@@ -41,7 +41,8 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
     Button branchButton, serviceButton, dateButton, timeButton;
     LinearLayout infoLayout, docsLayout;
 
-    List<EditText> infoFields;
+    List<View> infoFields;
+    List<View> docsFields;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
         docsLayout = findViewById(R.id.request_service_docs);
 
         infoFields = new ArrayList<>();
+        docsFields = new ArrayList<>();
 
         request = new ServiceRequest();
     }
@@ -82,32 +84,71 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
                 infoFields.clear();
                 infoLayout.removeAllViews();
+                docsFields.clear();
+                docsLayout.removeAllViews();
 
                 TextView textView = new TextView(this);
-                textView.setText("Select a service first.");
+                textView.setText("Select a Service first.");
                 textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 infoLayout.addView(textView);
+
+                TextView textView1 = new TextView(this);
+                textView1.setText("Select a Service first.");
+                textView1.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                docsLayout.addView(textView1);
 
             } else if (requestCode == GET_SERVICE) {
                 service = (Service) data.getSerializableExtra("service");
 
                 serviceButton.setText(service.getName());
                 request.setServiceId(service.getId());
-                initializeServiceInfo();
+                initializeServiceFields();
             }
         }
     }
 
-    private void initializeServiceInfo() {
+    private void initializeServiceFields() {
         infoFields.clear();
         infoLayout.removeAllViews();
+        docsFields.clear();
+        docsLayout.removeAllViews();
 
         for(String infoField : service.getForms()) {
-            EditText field = new EditText(this);
-            field.setHint(infoField);
+            //If the info field requires a date
+            if(infoField.contains("Date")) {
+                final Button dateButton = new Button(this);
 
-            infoFields.add(field);
-            infoLayout.addView(field);
+                dateButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new DatePickerDialog(CustomerNewRequestActivity.this, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                dateButton.setText(year + "-" + String.format("%02d", month+1) + "-" + String.format("%02d", dayOfMonth));
+                            }
+                        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show();
+                    }
+                });
+
+                infoFields.add(dateButton);
+                infoLayout.addView(dateButton);
+            } else if (infoField.contains("Address")) { //If the info field requires an address
+
+            } else {
+                EditText field = new EditText(this);
+                field.setHint(infoField);
+
+                infoFields.add(field);
+                infoLayout.addView(field);
+            }
+        }
+
+        for(String docField : service.getDocuments()) {
+            Button button = new Button(this);
+            button.setText("Select " + docField);
+
+            docsFields.add(button);
+            docsLayout.addView(button);
         }
     }
 
@@ -150,7 +191,7 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
             Utils.showSnackbar("The branch is not open on the selected day of the week.", findViewById(R.id.new_request_view));
             dateButton.setText("Select Date");
         } else {
-            dateButton.setText(year + "/" + String.format("%02d", month+1) + "/" + String.format("%02d", dayOfMonth));
+            dateButton.setText(year + "-" + String.format("%02d", month+1) + "-" + String.format("%02d", dayOfMonth));
         }
     }
 
