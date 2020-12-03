@@ -36,6 +36,15 @@
                     android:textSize="30sp" />
 
                 <ImageButton
+                    android:id="@+id/customer_rate_branch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#00FFFFFF"
+                    android:onClick="rateBranch"
+                    app:srcCompat="@drawable/ic_rate_review_24px" />
+
+                <ImageButton
                     android:id="@+id/customer_signout_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,7 +89,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/add_request_fab"
+        android:id="@+id/new_request_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -88,7 +97,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:onClick="newRequest"
-        android:text="Add Request"
+        android:text="New Request"
         android:theme="@style/Theme.MaterialComponents.NoActionBar"
         app:backgroundTint="@color/colorAccent"
         app:icon="@drawable/ic_add" />

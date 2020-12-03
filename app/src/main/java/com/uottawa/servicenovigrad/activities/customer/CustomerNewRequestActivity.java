@@ -416,7 +416,7 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
             View v = infoFields.get(i);
             if(v.getClass() == Button.class) {
                 if(((Button) v).getText().toString().equals("Select " + service.getDocuments().get(i))) {
-                    Utils.showSnackbar("One or more of the required fields are empty.", findViewById(R.id.new_request_view));
+                    Utils.showSnackbar("One or more of the required documets are empty.", findViewById(R.id.new_request_view));
                     return false;
                 }
             }

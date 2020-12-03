@@ -41,7 +41,7 @@ import java.util.Map;
 
 public class CustomerMainActivity extends AppCompatActivity {
 
-    private int NEW_REQUEST = 0;
+    private int NEW_REQUEST = 0, MAKE_REVIEW = 1;
 
     private CollectionReference requestsReference = FirebaseFirestore.getInstance().collection("requests");
 
@@ -188,6 +188,11 @@ public class CustomerMainActivity extends AppCompatActivity {
     public void newRequest(View view) {
         Intent intent = new Intent(CustomerMainActivity.this, CustomerNewRequestActivity.class);
         startActivityForResult(intent, NEW_REQUEST);
+    }
+
+    public void rateBranch(View view) {
+        Intent intent = new Intent(CustomerMainActivity.this, CustomerRateActivity.class);
+        startActivityForResult(intent, MAKE_REVIEW);
     }
 
     /**

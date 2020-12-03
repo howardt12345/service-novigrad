@@ -68,6 +68,28 @@ exports.updateBranchInfo = functions.firestore
         }).catch(err => console.log(err))
     });
 
+//Calculates the branch rating when a new review is made to the branch
+exports.calculateBranchRating = functions.firestore
+    .document("branches/{id}/reviews/{reviewId}")
+    .onWrite((change, context) => {
+        let sum = 0;
+        let count = 0;
+        return admin.firestore().collection("branch").doc(context.params.id).collection("reviews")
+        .get().then(response => {
+            return response.docs.forEach(doc => {
+                return admin.firestore().collection("branch").doc(context.params.id).collection("reviews").get(doc.id)
+                .then(doc1 => {
+                    const data = doc1.data();
+                    sum += data.score;
+                    count += 1;
+                    return null;
+                }).catch(err => console.log(err))
+            })
+        }).then(() => {
+            return admin.firestore().collection("branch").doc(context.params.id).update({"rating": sum/count}).catch(err => console.log(err))
+        }).catch(err => console.log(err))
+    });
+
 //Updates the service request service name when a service is renamed
 exports.updateServiceNameInRequest = functions.firestore
     .document("services/{id}")
