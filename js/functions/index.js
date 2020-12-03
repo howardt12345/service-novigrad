@@ -74,19 +74,19 @@ exports.calculateBranchRating = functions.firestore
     .onWrite((change, context) => {
         let sum = 0;
         let count = 0;
-        return admin.firestore().collection("branch").doc(context.params.id).collection("reviews")
+        return admin.firestore().collection("branches").doc(context.params.id).collection("reviews")
         .get().then(response => {
             return response.docs.forEach(doc => {
-                return admin.firestore().collection("branch").doc(context.params.id).collection("reviews").get(doc.id)
+                return admin.firestore().collection("branches").doc(context.params.id).collection("reviews").get(doc.id)
                 .then(doc1 => {
                     const data = doc1.data();
-                    sum += data.score;
-                    count += 1;
+                    sum = sum + data.score;
+                    count = count + 1;
                     return null;
                 }).catch(err => console.log(err))
             })
         }).then(() => {
-            return admin.firestore().collection("branch").doc(context.params.id).update({"rating": sum/count}).catch(err => console.log(err))
+            return admin.firestore().collection("branches").doc(context.params.id).update({"rating": sum/count}).catch(err => console.log(err))
         }).catch(err => console.log(err))
     });
 

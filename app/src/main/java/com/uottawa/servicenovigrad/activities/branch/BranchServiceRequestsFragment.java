@@ -121,7 +121,8 @@ public class BranchServiceRequestsFragment extends Fragment {
 
                         ServiceRequest request = new ServiceRequest(id, customerId, branchId, serviceId, customerName, branchName, serviceName, info, scheduledTime.toDate(), approved, responded);
 
-                        serviceRequests.add(request);
+                        if (customerName != null && branchName != null && serviceName != null)
+                            serviceRequests.add(request);
                     }
                 }
 
