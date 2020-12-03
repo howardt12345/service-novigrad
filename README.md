@@ -68,7 +68,7 @@ The following functionality is implemented in deliverable 4:
 - Creating a new request to a given branch.
 - Searching for branch by name, address, phone number, working hours, and types of services provided.
 - Filling the required information and documents required by the service.
-- Rating a branch by providing a comment and a rating from 1 to 5. (NOT IMPLEMENTED YET)
+- Rating a branch by providing a comment and a rating from 1 to 5.
 - Field validation for all fields.
 - Customer receives a notification when their request is accepted/rejected.
 - Employee receives a notification when a new request is made to their branch. (Additional feature)
