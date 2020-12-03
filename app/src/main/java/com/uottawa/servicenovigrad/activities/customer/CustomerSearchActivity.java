@@ -37,6 +37,7 @@ public class CustomerSearchActivity extends AppCompatActivity {
 
     private ArrayList<Branch> branchList;
     private ArrayList<String> serviceList;
+    private ArrayList<String> serviceNameList;
 
     SearchResultListAdapter adapter;
     ListView list;
@@ -55,6 +56,7 @@ public class CustomerSearchActivity extends AppCompatActivity {
         // Get branch data
         branchList = new ArrayList<>();
         serviceList = new ArrayList<>();
+        serviceNameList = new ArrayList<>();
         getData();
 
         // Populate list
@@ -137,7 +139,6 @@ public class CustomerSearchActivity extends AppCompatActivity {
                         );
                         branchList.add(b);
                         adapter.notifyDataSetChanged(b);
-                        Log.d("Search: ", document.getId() + "=>" + document.getData());
                     }
                 } else {
                     Log.d("Search: ", "Error getting branch data from database");
@@ -150,10 +151,9 @@ public class CustomerSearchActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot doc : task.getResult()) {
-                        serviceList.add(doc.getString("name"));
+                        serviceList.add(doc.getId());
+                        serviceNameList.add(doc.getString("name"));
                     }
-
-                    Collections.sort(serviceList);
                 }
             }
         });
@@ -167,9 +167,9 @@ public class CustomerSearchActivity extends AppCompatActivity {
         TimePickerDialog picker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                // Nothing to do rn
+                adapter.filterTimes(hourOfDay, minute, true);
             }
-        }, hour, min, false);
+        }, hour, min, true);
         picker.show();
     }
 
@@ -180,9 +180,9 @@ public class CustomerSearchActivity extends AppCompatActivity {
         TimePickerDialog picker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                // Nothing to do rn
+                adapter.filterTimes(hourOfDay, minute, false);
             }
-        }, hour, min, false);
+        }, hour, min, true);
         picker.show();
     }
 
@@ -190,32 +190,50 @@ public class CustomerSearchActivity extends AppCompatActivity {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Select Days of Week");
         String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-        boolean[] checkedItems = new boolean[7];
-        alertDialog.setMultiChoiceItems(days, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        boolean[] initialState = new boolean[7];
+        final boolean[] selected = initialState;
+        alertDialog.setMultiChoiceItems(days, initialState, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                // Do nothing for now
+                selected[which] = isChecked;
+            }
+        });
+
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                adapter.filterDayOfWeek(selected);
             }
         });
         AlertDialog alert = alertDialog.create();
-        alert.setCanceledOnTouchOutside(false);
         alert.show();
     }
 
     public void selectServices(View view) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Select Services");
-        String[] services = new String[serviceList.size()];
-        serviceList.toArray(services);
-        boolean[] checkedItems = new boolean[services.length];
-        alertDialog.setMultiChoiceItems(services, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        final String[] services = new String[serviceNameList.size()];
+        serviceNameList.toArray(services);
+        boolean[] initialState = new boolean[services.length];
+        final ArrayList<String> selected = new ArrayList<>();
+        alertDialog.setMultiChoiceItems(services, initialState, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                // Do nothing for now
+                if (isChecked) {
+                    selected.add(serviceList.get(which));
+                } else {
+                    if (selected.contains(serviceList.get(which))) selected.remove(serviceList.get(which));
+                }
+            }
+        });
+
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                adapter.filterServices(selected);
             }
         });
         AlertDialog alert = alertDialog.create();
-        alert.setCanceledOnTouchOutside(false);
         alert.show();
     }
 }

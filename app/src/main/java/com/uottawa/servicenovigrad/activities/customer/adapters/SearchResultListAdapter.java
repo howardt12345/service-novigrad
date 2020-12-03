@@ -2,6 +2,7 @@ package com.uottawa.servicenovigrad.activities.customer.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +16,18 @@ import com.uottawa.servicenovigrad.utils.Function;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SearchResultListAdapter extends ArrayAdapter<Branch> {
     ArrayList<Branch> allBranches;
     Function onSelect;
+    String searchQuery;
 
     public SearchResultListAdapter(Context context, ArrayList<Branch> branches, Function onSelect) {
         super(context, 0, branches);
         allBranches = new ArrayList<>();
         this.onSelect = onSelect;
+        searchQuery = "";
     }
 
     @Override
@@ -57,6 +61,7 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
 
     public void filter(String query) {
         query = query.toLowerCase(Locale.getDefault());
+        searchQuery = query;
         clear();
         if (query.length() == 0) addAll(allBranches);
         else {
@@ -67,6 +72,71 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
                 }
             }
         }
+        notifyDataSetChanged();
+    }
+
+    public void filterTimes(int hour, int minute, boolean isOpening) {
+        filter(searchQuery); // Reset the list of branches
+        CopyOnWriteArrayList<Branch> branches = new CopyOnWriteArrayList<>();
+        for (int i = 0; i < getCount(); ++i) {
+            branches.add(getItem(i));
+        }
+        for (Branch b : branches) {
+            if (isOpening && (b.getOpeningHour() < hour || b.getOpeningHour() == hour && b.getOpeningMinute() < minute)
+                || !isOpening && (b.getClosingHour() < hour || b.getClosingHour() == hour && b.getClosingMinute() < minute)) {
+                branches.remove(b);
+            }
+        }
+        clear();
+        addAll(branches);
+        notifyDataSetChanged();
+    }
+
+    public void filterDayOfWeek(boolean[] selected) {
+        filter(searchQuery);
+        CopyOnWriteArrayList<Branch> branches = new CopyOnWriteArrayList<>();
+        for (int i = 0; i < getCount(); ++i) {
+            branches.add(getItem(i));
+        }
+        for (Branch b : branches) {
+            ArrayList<String> openDays = b.getOpenDays();
+            if (selected[0] && !openDays.contains("Sunday")
+                || selected[1] && !openDays.contains("Monday")
+                || selected[2] && !openDays.contains("Tuesday")
+                || selected[3] && !openDays.contains("Wednesday")
+                || selected[4] && !openDays.contains("Thursday")
+                || selected[5] && !openDays.contains("Friday")
+                || selected[6] && !openDays.contains("Saturday")) {
+                branches.remove(b);
+            }
+        }
+        clear();
+        addAll(branches);
+        notifyDataSetChanged();
+    }
+
+    public void filterServices(ArrayList<String> selected) {
+        filter(searchQuery);
+        CopyOnWriteArrayList<Branch> branches = new CopyOnWriteArrayList<>();
+        for (int i = 0; i < getCount(); ++i) {
+            branches.add(getItem(i));
+        }
+        for (Branch b : branches) {
+            boolean contains = false;
+            ArrayList<String> offered = b.getServices();
+            for (String s : selected) {
+                for (String t : offered) {
+                    if (t.equals(s)) {
+                        contains = true;
+                    }
+                }
+            }
+            if (!contains) {
+                branches.remove(b);
+            }
+        }
+        clear();
+        addAll(branches);
         notifyDataSetChanged();
     }
 }
