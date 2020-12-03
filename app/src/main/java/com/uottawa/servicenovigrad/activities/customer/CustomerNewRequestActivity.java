@@ -84,6 +84,16 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
         infoFields = new ArrayList<>();
         docsFields = new ArrayList<>();
+
+        TextView textView = new TextView(this);
+        textView.setText("Select a Service first.");
+        textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        infoLayout.addView(textView);
+
+        TextView textView1 = new TextView(this);
+        textView1.setText("Select a Service first.");
+        textView1.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        docsLayout.addView(textView1);
     }
 
     @Override
