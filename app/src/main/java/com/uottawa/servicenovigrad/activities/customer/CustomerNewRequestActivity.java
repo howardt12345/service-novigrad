@@ -147,7 +147,6 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 String uriString = uri.toString();
                 File myFile = new File(uriString);
-                String path = myFile.getAbsolutePath();
                 String displayName = null;
 
                 if (uriString.startsWith("content://")) {
