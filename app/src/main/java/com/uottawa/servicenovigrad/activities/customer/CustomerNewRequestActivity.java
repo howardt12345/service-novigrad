@@ -4,18 +4,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.employee.EmployeeEditActivity;
 import com.uottawa.servicenovigrad.activities.service.ServicePickerActivity;
 import com.uottawa.servicenovigrad.branch.Branch;
 import com.uottawa.servicenovigrad.branch.ServiceRequest;
 import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.utils.Utils;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class CustomerNewRequestActivity extends AppCompatActivity {
 
@@ -26,7 +34,7 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
     ServiceRequest request;
 
-    Button branchButton, serviceButton;
+    Button branchButton, serviceButton, dateButton, timeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,8 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
         branchButton = findViewById(R.id.request_select_branch);
         serviceButton = findViewById(R.id.request_select_service);
+        dateButton = findViewById(R.id.request_select_date);
+        timeButton = findViewById(R.id.request_select_time);
 
         request = new ServiceRequest();
     }
@@ -70,6 +80,11 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
     }
 
+    public void selectBranch(View view) {
+        Intent intent = new Intent(CustomerNewRequestActivity.this, CustomerSearchActivity.class);
+        startActivityForResult(intent, GET_BRANCH);
+    }
+
     public void selectService(View view) {
         if(branch != null) {
             Intent intent = new Intent(CustomerNewRequestActivity.this, ServicePickerActivity.class);
@@ -80,9 +95,51 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
         }
     }
 
-    public void selectBranch(View view) {
-        Intent intent = new Intent(CustomerNewRequestActivity.this, CustomerSearchActivity.class);
-        startActivityForResult(intent, GET_BRANCH);
+    public void selectDate(View view) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(CustomerNewRequestActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                setDate(year, month, dayOfMonth);
+            }
+        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DATE, 1);
+
+        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+        datePickerDialog.show();
+    }
+
+    private void setDate(int year, int month, int dayOfMonth) {
+        Calendar c = Calendar.getInstance();
+        c.set(year, month, dayOfMonth);
+
+        if(!Utils.getDaysOfWeek(branch.getOpenDays()).contains(c.get(Calendar.DAY_OF_WEEK))) {
+            Utils.showSnackbar("The branch is not open on the selected day of the week.", findViewById(R.id.new_request_view));
+            dateButton.setText("Select Date");
+        } else {
+            dateButton.setText(year + "/" + String.format("%02d", month) + "/" + String.format("%02d", dayOfMonth));
+        }
+    }
+
+    public void selectTime(View view) {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(CustomerNewRequestActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                setTime(hourOfDay, minute);
+            }
+        }, branch.getOpeningHour(), branch.getOpeningMinute(), true);
+        timePickerDialog.show();
+    }
+
+    private void setTime(int hourOfDay, int minute) {
+        if(!branch.isOpenAt(hourOfDay, minute)) {
+            Utils.showSnackbar("The branch is not open on the selected time.", findViewById(R.id.new_request_view));
+            timeButton.setText("Select Time");
+        } else {
+            timeButton.setText(Utils.formatTime(hourOfDay, minute));
+        }
     }
 
     @Override

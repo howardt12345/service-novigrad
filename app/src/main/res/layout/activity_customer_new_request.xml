@@ -129,7 +129,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="0000/00/00" />
+                    android:onClick="selectDate"
+                    android:text="Select Date" />
 
             </LinearLayout>
 
@@ -152,7 +153,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="00:00" />
+                    android:onClick="selectTime"
+                    android:text="Select Time" />
 
             </LinearLayout>
 

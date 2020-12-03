@@ -1,7 +1,9 @@
 package com.uottawa.servicenovigrad.branch;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Branch implements Serializable {
     private String id;
@@ -160,4 +162,22 @@ public class Branch implements Serializable {
     public void setClosingMinute(int closingMinute) {
         this.closingMinute = closingMinute;
     }
+
+    public boolean isOpenAt(int hourOfDay, int minute) {
+        try {
+            Calendar c1 = Calendar.getInstance();
+            c1.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", openingHour) + ":" + String.format("%02d", openingMinute) + ":00"));
+
+            Calendar c2 = Calendar.getInstance();
+            c2.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", closingHour) + ":" + String.format("%02d", closingMinute) + ":00"));
+
+            Calendar c3 = Calendar.getInstance();
+            c3.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute) + ":00"));
+
+            return c3.after(c1) && c3.before(c2);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

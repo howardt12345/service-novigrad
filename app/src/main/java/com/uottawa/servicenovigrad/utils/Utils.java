@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import ca.antonious.materialdaypicker.MaterialDayPicker;
@@ -112,6 +113,36 @@ public class Utils {
             }
         }
         return daysList;
+    }
+
+    public static List<Integer> getDaysOfWeek(List<String> days) {
+        List<Integer> selectedDays = new ArrayList<Integer>();
+        for(String day : days) {
+            switch(day) {
+                case "Monday":
+                    selectedDays.add(Calendar.MONDAY);
+                    break;
+                case "Tuesday":
+                    selectedDays.add(Calendar.TUESDAY);
+                    break;
+                case "Wednesday":
+                    selectedDays.add(Calendar.WEDNESDAY);
+                    break;
+                case "Thursday":
+                    selectedDays.add(Calendar.THURSDAY);
+                    break;
+                case "Friday":
+                    selectedDays.add(Calendar.FRIDAY);
+                    break;
+                case "Saturday":
+                    selectedDays.add(Calendar.SATURDAY);
+                    break;
+                case "Sunday":
+                    selectedDays.add(Calendar.SUNDAY);
+                    break;
+            }
+        }
+        return selectedDays;
     }
 
     /**
