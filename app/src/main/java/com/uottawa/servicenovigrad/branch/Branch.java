@@ -165,16 +165,16 @@ public class Branch implements Serializable {
 
     public boolean isOpenAt(int hourOfDay, int minute) {
         try {
-            Calendar c1 = Calendar.getInstance();
-            c1.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", openingHour) + ":" + String.format("%02d", openingMinute) + ":00"));
+            Calendar opening = Calendar.getInstance();
+            opening.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", openingHour) + ":" + String.format("%02d", openingMinute) + ":00"));
 
-            Calendar c2 = Calendar.getInstance();
-            c2.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", closingHour) + ":" + String.format("%02d", closingMinute) + ":00"));
+            Calendar closing = Calendar.getInstance();
+            closing.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", closingHour) + ":" + String.format("%02d", closingMinute) + ":00"));
 
-            Calendar c3 = Calendar.getInstance();
-            c3.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute) + ":00"));
+            Calendar selected = Calendar.getInstance();
+            selected.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute) + ":00"));
 
-            return c3.after(c1) && c3.before(c2);
+            return selected.after(opening) && selected.before(closing);
         } catch (Exception e) {
             return false;
         }
