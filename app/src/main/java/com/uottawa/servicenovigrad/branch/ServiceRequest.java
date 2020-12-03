@@ -106,13 +106,22 @@ public class ServiceRequest implements Serializable {
     public String getCustomerId() {
         return customerId;
     }
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
 
     public String getBranchId() {
         return branchId;
     }
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getServiceId() {
         return serviceId;
+    }
+    public void setServiceId(String serviceId) {
+        this.serviceId = serviceId;
     }
 
     public String getCustomerName() {
@@ -130,9 +139,15 @@ public class ServiceRequest implements Serializable {
     public ArrayList<String> getInfo() {
         return info;
     }
+    public void setInfo(ArrayList<String> info) {
+        this.info = info;
+    }
 
     public Date getScheduledTime() {
         return scheduledTime;
+    }
+    public void setScheduledTime(Date scheduledTime) {
+        this.scheduledTime = scheduledTime;
     }
 
     public boolean isApproved() {

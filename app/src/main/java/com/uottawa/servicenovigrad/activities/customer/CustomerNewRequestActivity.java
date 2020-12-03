@@ -24,6 +24,8 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
     Branch branch;
     Service service;
 
+    ServiceRequest request;
+
     Button branchButton, serviceButton;
 
     @Override
@@ -39,6 +41,33 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
         branchButton = findViewById(R.id.request_select_branch);
         serviceButton = findViewById(R.id.request_select_service);
+
+        request = new ServiceRequest();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK) {
+            if(requestCode == GET_BRANCH) {
+                branch = (Branch) data.getSerializableExtra("branch");
+                branchButton.setText(branch.getName());
+                service = null;
+                serviceButton.setText("Select Service");
+
+                request.setBranchId(branch.getId());
+                request.setServiceId("");
+            } else if (requestCode == GET_SERVICE) {
+                service = (Service) data.getSerializableExtra("service");
+
+                serviceButton.setText(service.getName());
+                request.setServiceId(service.getId());
+            }
+        }
+    }
+
+    private void initializeServiceInfo() {
+
     }
 
     public void selectService(View view) {
@@ -54,23 +83,6 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
     public void selectBranch(View view) {
         Intent intent = new Intent(CustomerNewRequestActivity.this, CustomerSearchActivity.class);
         startActivityForResult(intent, GET_BRANCH);
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK) {
-            if(requestCode == GET_BRANCH) {
-                branch = (Branch) data.getSerializableExtra("branch");
-                branchButton.setText(branch.getName());
-                service = null;
-                serviceButton.setText("Select Service");
-            } else if (requestCode == GET_SERVICE) {
-                service = (Service) data.getSerializableExtra("service");
-                serviceButton.setText(service.getName());
-            }
-        }
     }
 
     @Override
@@ -126,11 +138,11 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
     }
 
     private boolean verifyEdit() {
-        if(branch == null) {
+        if(branch == null || request.getBranchId().isEmpty()) {
             Utils.showSnackbar("A branch must be selected.", findViewById(R.id.new_request_view));
             return false;
         }
-        if(service == null) {
+        if(service == null || request.getServiceId().isEmpty()) {
             Utils.showSnackbar("A service must be selected.", findViewById(R.id.new_request_view));
             return false;
         }
@@ -144,7 +156,7 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
     private void sendRequest() {
         Intent intent = new Intent();
         //Add the service to the intent data
-        intent.putExtra("request", new ServiceRequest());
+        intent.putExtra("request", request);
         setResult(RESULT_OK, intent);
         finish();
     }

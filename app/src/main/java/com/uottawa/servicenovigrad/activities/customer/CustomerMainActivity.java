@@ -143,6 +143,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK) {
             if(requestCode == NEW_REQUEST) {
                 ServiceRequest request = (ServiceRequest) data.getSerializableExtra("request");
+
                 //TODO: Make Request
             }
         }
