@@ -122,7 +122,7 @@ public class CustomerMainActivity extends AppCompatActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //requestInfo(filteredRequests.get(finalI));
+                    requestInfo(requests.get(finalI));
                 }
             });
 
@@ -141,6 +141,27 @@ public class CustomerMainActivity extends AppCompatActivity {
             //Add the list item to the list view
             listView.addView(view);
         }
+    }
+
+    private void requestInfo(ServiceRequest request) {
+        //Create new AlertDialog
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerMainActivity.this);
+        alertDialogBuilder
+                .setTitle(request.getCustomerSideTitle()) //Set the title of the dialog to the service name
+                .setMessage(request.getRequestInfo()) //Set the message of the dialog to the service info
+                .setCancelable(true)
+                .setPositiveButton(
+                        "CLOSE",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }
+                );
+        //Show AlertDialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     @Override

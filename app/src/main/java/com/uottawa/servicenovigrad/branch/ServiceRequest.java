@@ -81,6 +81,7 @@ public class ServiceRequest implements Serializable {
         //New string builder
         StringBuilder sb = new StringBuilder();
 
+        sb.append("Branch Name: " + branchName + "\n");
         sb.append("Customer Name: " + customerName + "\n");
         sb.append("For Service: " + serviceName + "\n");
         sb.append("Scheduled Time: " + scheduledTime.toString() + "\n");
