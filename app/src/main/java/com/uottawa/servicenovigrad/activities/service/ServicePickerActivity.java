@@ -125,6 +125,10 @@ public class ServicePickerActivity extends AppCompatActivity {
         }
     }
 
+    public void exit(View view) {
+        finish();
+    }
+
     private void pickService(final Service service) {
         //Create new AlertDialog
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ServicePickerActivity.this);
