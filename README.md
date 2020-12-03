@@ -65,7 +65,6 @@ password: employee
 
 # Deliverable 4
 The following functionality is implemented in deliverable 4:
-- Customers receive a notification when their service request is approved/rejected.
 - Creating a new request to a given branch.
 - Searching for branch by name, address, phone number, working hours, and types of services provided.
 - Filling the required information and documents required by the service.
