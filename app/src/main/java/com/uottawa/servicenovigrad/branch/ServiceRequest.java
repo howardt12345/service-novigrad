@@ -23,6 +23,7 @@ public class ServiceRequest implements Serializable {
         id = "";
         customerId = "";
         branchId = "";
+        serviceId = "";
 
         info = new ArrayList<>();
         scheduledTime = new Date();

@@ -35,7 +35,9 @@ import com.uottawa.servicenovigrad.user.UserController;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerMainActivity extends AppCompatActivity {
 
@@ -146,8 +148,17 @@ public class CustomerMainActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK) {
             if(requestCode == NEW_REQUEST) {
                 ServiceRequest request = (ServiceRequest) data.getSerializableExtra("request");
+                Map<String, Object> requestInfo = new HashMap<>();
 
-                //TODO: Make Request
+                requestInfo.put("branch", request.getBranchId());
+                requestInfo.put("customer", UserController.getInstance().getUserAccount().getUID());
+                requestInfo.put("service", request.getServiceId());
+                requestInfo.put("scheduledTime", request.getScheduledTime());
+                requestInfo.put("info", request.getInfo());
+                requestInfo.put("approved", false);
+                requestInfo.put("responded", false);
+
+                requestsReference.add(requestInfo);
             }
         }
     }
