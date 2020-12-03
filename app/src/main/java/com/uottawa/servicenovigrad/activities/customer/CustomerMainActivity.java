@@ -70,7 +70,7 @@ public class CustomerMainActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (error != null) {
-                            Log.w("ServiceRequestsFragment", "Listen failed.", error);
+                            Log.w("CustomerMainActivity", "Listen failed.", error);
                             return;
                         }
 

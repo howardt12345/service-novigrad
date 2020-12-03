@@ -2,6 +2,7 @@ package com.uottawa.servicenovigrad.activities.customer.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.branch.BranchInfoFragment;
 import com.uottawa.servicenovigrad.branch.Branch;
 import com.uottawa.servicenovigrad.utils.Function;
+import com.uottawa.servicenovigrad.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -23,11 +29,17 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
     Function onSelect;
     String searchQuery;
 
+    String day, service;
+    int hour = -1, minute = -1;
+
     public SearchResultListAdapter(Context context, ArrayList<Branch> branches, Function onSelect) {
         super(context, 0, branches);
         allBranches = new ArrayList<>();
         this.onSelect = onSelect;
         searchQuery = "";
+
+        day = "";
+        service = "";
     }
 
     @Override
@@ -36,11 +48,15 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
         if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_branch_search_listitem, parent, false);
 
         TextView branchName =  convertView.findViewById(R.id.branch_name);
+        TextView branchPnNo = convertView.findViewById(R.id.branch_phone_number);
         TextView branchAddr = convertView.findViewById(R.id.branch_addr);
+        TextView branchWkHrs = convertView.findViewById(R.id.branch_working_hours);
         TextView branchRating = convertView.findViewById(R.id.branch_rating);
 
         branchName.setText(b.getName());
+        branchPnNo.setText("Phone Number: " + Utils.formatPhoneNumber(b.getPhoneNumber()));
         branchAddr.setText(b.getAddress());
+        branchWkHrs.setText("Working Hours: " + Utils.formatTime(b.getOpeningHour(), b.getOpeningMinute()) + " - " + Utils.formatTime(b.getClosingHour(), b.getClosingMinute()));
         branchRating.setText("Rating: " + b.getRating());
 
         ImageButton selectBranch = convertView.findViewById(R.id.select_branch);
@@ -72,18 +88,26 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
                 }
             }
         }
+        if(!TextUtils.isEmpty(service)) {
+            filterService();
+        } else {
+            if(!TextUtils.isEmpty(day)) {
+                filterDayOfWeek();
+            }
+            if(hour != -1 || minute != -1) {
+                filterTime();
+            }
+        }
         notifyDataSetChanged();
     }
 
-    public void filterTimes(int hour, int minute, boolean isOpening) {
-        filter(searchQuery); // Reset the list of branches
+    private void filterTime() {
         CopyOnWriteArrayList<Branch> branches = new CopyOnWriteArrayList<>();
         for (int i = 0; i < getCount(); ++i) {
             branches.add(getItem(i));
         }
         for (Branch b : branches) {
-            if (isOpening && (b.getOpeningHour() < hour || b.getOpeningHour() == hour && b.getOpeningMinute() < minute)
-                || !isOpening && (b.getClosingHour() < hour || b.getClosingHour() == hour && b.getClosingMinute() < minute)) {
+            if (!b.isOpenAt(hour, minute)) {
                 branches.remove(b);
             }
         }
@@ -92,8 +116,7 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
         notifyDataSetChanged();
     }
 
-    public void filterDayOfWeek(String day) {
-        filter(searchQuery);
+    private void filterDayOfWeek() {
         CopyOnWriteArrayList<Branch> branches = new CopyOnWriteArrayList<>();
         for (int i = 0; i < getCount(); ++i) {
             branches.add(getItem(i));
@@ -109,23 +132,13 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
         notifyDataSetChanged();
     }
 
-    public void filterServices(ArrayList<String> selected) {
-        filter(searchQuery);
+    private void filterService() {
         CopyOnWriteArrayList<Branch> branches = new CopyOnWriteArrayList<>();
         for (int i = 0; i < getCount(); ++i) {
             branches.add(getItem(i));
         }
         for (Branch b : branches) {
-            boolean contains = false;
-            ArrayList<String> offered = b.getServices();
-            for (String s : selected) {
-                for (String t : offered) {
-                    if (t.equals(s)) {
-                        contains = true;
-                    }
-                }
-            }
-            if (!contains) {
+            if (!b.getServices().contains(service)) {
                 branches.remove(b);
             }
         }
@@ -134,7 +147,27 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
         notifyDataSetChanged();
     }
 
+    public void setDayFilter(String day) {
+        this.day = day;
+        filter(searchQuery);
+    }
+
+    public void setTimeFilter(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+        filter(searchQuery);
+    }
+
+    public void setServiceFilter(String service) {
+        this.service = service;
+        filter(searchQuery);
+    }
+
     public void resetFilter() {
+        day = "";
+        service = "";
+        hour = -1;
+        minute = -1;
         filter(searchQuery);
     }
 }

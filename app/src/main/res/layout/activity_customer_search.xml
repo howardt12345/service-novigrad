@@ -80,22 +80,15 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/customer_search_opening_time"
+                android:id="@+id/customer_search_select_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_weight="1"
-                android:onClick="openingTimeSelector"
-                android:text="Opening Time" />
-
-            <Button
-                android:id="@+id/customer_search_closing_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
                 android:layout_weight="1"
-                android:onClick="closingTimeSelector"
-                android:text="Closing Time" />
+                android:onClick="timeSelector"
+                android:text="Select Time" />
+
         </LinearLayout>
 
         <ca.antonious.materialdaypicker.MaterialDayPicker
@@ -115,7 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:onClick="selectServices"
+        android:onClick="selectService"
         android:text="Select Service" />
 
     <View

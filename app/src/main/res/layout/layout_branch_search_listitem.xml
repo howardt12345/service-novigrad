@@ -30,6 +30,12 @@
                 android:textSize="18sp"/>
 
             <TextView
+                android:id="@+id/branch_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="(000) 000-0000" />
+
+            <TextView
                 android:id="@+id/branch_addr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,10 +45,17 @@
                 android:text="Branch Address" />
 
             <TextView
+                android:id="@+id/branch_working_hours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Working Hours" />
+
+            <TextView
                 android:id="@+id/branch_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Rating: " />
+
         </LinearLayout>
 
         <ImageButton

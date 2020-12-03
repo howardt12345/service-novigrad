@@ -1,8 +1,10 @@
 package com.uottawa.servicenovigrad.activities.customer;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -19,15 +21,18 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.branch.BranchInfoFragment;
 import com.uottawa.servicenovigrad.activities.customer.adapters.SearchResultListAdapter;
+import com.uottawa.servicenovigrad.activities.service.ServicePickerActivity;
 import com.uottawa.servicenovigrad.branch.Branch;
+import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.utils.Function;
 import com.uottawa.servicenovigrad.utils.Utils;
 
@@ -36,26 +41,29 @@ import java.util.Calendar;
 import java.util.List;
 
 import ca.antonious.materialdaypicker.MaterialDayPicker;
+import ca.antonious.materialdaypicker.SingleSelectionMode;
 
 public class CustomerSearchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    private int GET_SERVICE = 0;
 
     private FirebaseFirestore firestore;
     private CollectionReference branches;
     private CollectionReference services;
 
     private ArrayList<Branch> branchList;
-    private ArrayList<String> serviceList;
-    private ArrayList<String> serviceNameList;
 
     SearchResultListAdapter resultsListAdapter;
     ListView list;
 
     MaterialDayPicker daysPicker;
     LinearLayout dateAndTimeSelect;
-    Button serviceSelectButton, openingTimeButton, closingTimeButton;
+    Button serviceSelectButton, timeButton;
     Spinner filterSpinner;
 
-    String[] filters = {"None", "Date and Time", "Service"};
+    SearchView searchView;
+
+    String[] filters = {"None", "Date and Time", "Specific Service"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +78,6 @@ public class CustomerSearchActivity extends AppCompatActivity implements Adapter
 
         // Get branch data
         branchList = new ArrayList<>();
-        serviceList = new ArrayList<>();
-        serviceNameList = new ArrayList<>();
         getData();
 
         // Populate list
@@ -79,25 +85,28 @@ public class CustomerSearchActivity extends AppCompatActivity implements Adapter
 
         //Get days picker
         daysPicker = findViewById(R.id.customer_search_days_picker);
+        daysPicker.setSelectionMode(SingleSelectionMode.create());
         daysPicker.setDaySelectionChangedListener(new MaterialDayPicker.DaySelectionChangedListener() {
             @Override
             public void onDaySelectionChanged(List<MaterialDayPicker.Weekday> list) {
-
+                if(list.isEmpty()) {
+                    resultsListAdapter.resetFilter();
+                } else {
+                    List<String> convertedDays = Utils.convertPickedDays(list);
+                    resultsListAdapter.setDayFilter(convertedDays.get(0));
+                }
             }
         });
         //Get opening and closing time buttons
-        openingTimeButton = findViewById(R.id.customer_search_opening_time);
-        closingTimeButton = findViewById(R.id.customer_search_closing_time);
+        timeButton = findViewById(R.id.customer_search_select_time);
 
         //Get the date and time selection layout and hide it
         dateAndTimeSelect = findViewById(R.id.customer_search_date_and_time);
         dateAndTimeSelect.setVisibility(View.GONE);
 
-
         //Get the service selection layout and hide it
         serviceSelectButton = findViewById(R.id.customer_search_service_select);
         serviceSelectButton.setVisibility(View.GONE);
-
 
         //Set up the filter spinner
         filterSpinner = findViewById(R.id.customer_search_filter);
@@ -146,7 +155,7 @@ public class CustomerSearchActivity extends AppCompatActivity implements Adapter
         });
         list.setAdapter(resultsListAdapter);
 
-        SearchView searchView = findViewById(R.id.branch_search);
+        searchView = findViewById(R.id.branch_search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -163,125 +172,82 @@ public class CustomerSearchActivity extends AppCompatActivity implements Adapter
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK) {
+            if(requestCode == GET_SERVICE) {
+                Service service = (Service) data.getSerializableExtra("service");
+                serviceSelectButton.setText(service.getName());
+                resultsListAdapter.setServiceFilter(service.getId());
+            }
+        }
+    }
+
     public void getData() {
-        branches.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        branches.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Branch b = new Branch(
-                                document.getId(),
-                                (String)document.getData().get("name"),
-                                (String)document.getData().get("address"),
-                                (String)document.getData().get("phoneNumber"),
-                                (ArrayList<String>)document.getData().get("services"),
-                                (ArrayList<String>)document.getData().get("openDays"),
-                                ((Long)document.getData().get("openingHour")).intValue(),
-                                ((Long)document.getData().get("openingMinute")).intValue(),
-                                ((Long)document.getData().get("closingHour")).intValue(),
-                                ((Long)document.getData().get("closingMinute")).intValue(),
-                                (double)document.getData().get("rating")
-                        );
-                        branchList.add(b);
-                        resultsListAdapter.notifyDataSetChanged(b);
-                    }
-                } else {
-                    Log.d("Search: ", "Error getting branch data from database");
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w("CustomerSearchActivity", "Listen failed.", error);
+                    return;
                 }
-            }
-        });
 
-        services.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        serviceList.add(doc.getId());
-                        serviceNameList.add(doc.getString("name"));
-                    }
+                branchList.clear();
+
+                for (QueryDocumentSnapshot document : value) {
+                    String id = document.getId();
+                    String name = document.getString("name");
+                    String address = document.getString("address");
+                    String phoneNumber = document.getString("phoneNumber");
+                    ArrayList<String> servicesIds = (ArrayList<String>) document.get("services");
+
+                    ArrayList<String> openDays = (ArrayList<String>) document.get("openDays");
+                    int openingHour = document.getLong("openingHour").intValue();
+                    int openingMinute = document.getLong("openingMinute").intValue();
+                    int closingHour = document.getLong("closingHour").intValue();
+                    int closingMinute = document.getLong("closingMinute").intValue();
+                    double rating = document.getDouble("rating");
+
+                    //Initialize the branch object.
+                    Branch b = new Branch(
+                            id,
+                            name,
+                            address,
+                            phoneNumber,
+                            servicesIds,
+                            openDays,
+                            openingHour,
+                            openingMinute,
+                            closingHour,
+                            closingMinute,
+                            rating
+                    );
+                    branchList.add(b);
+                    resultsListAdapter.notifyDataSetChanged(b);
                 }
             }
         });
     }
 
-
-    public void openingTimeSelector(View view) {
+    public void timeSelector(View view) {
         final Calendar cal = Calendar.getInstance();
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int min = cal.get(Calendar.MINUTE);
         TimePickerDialog picker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                resultsListAdapter.filterTimes(hourOfDay, minute, true);
-                openingTimeButton.setText(Utils.formatTime(hourOfDay, minute));
+                resultsListAdapter.setTimeFilter(hourOfDay, minute);
+                timeButton.setText(Utils.formatTime(hourOfDay, minute));
             }
         }, hour, min, true);
         picker.show();
     }
 
-    public void closingTimeSelector(View view) {
-        final Calendar cal = Calendar.getInstance();
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
-        int min = cal.get(Calendar.MINUTE);
-        TimePickerDialog picker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                resultsListAdapter.filterTimes(hourOfDay, minute, false);
-                closingTimeButton.setText(Utils.formatTime(hourOfDay, minute));
-            }
-        }, hour, min, true);
-        picker.show();
-    }
-
-    public void selectDaysOfWeek(View view) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Select Days of Week");
-        String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-        boolean[] initialState = new boolean[7];
-        final boolean[] selected = initialState;
-        alertDialog.setMultiChoiceItems(days, initialState, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                selected[which] = isChecked;
-            }
-        });
-
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                resultsListAdapter.filterDayOfWeek(selected);
-            }
-        });
-        AlertDialog alert = alertDialog.create();
-        alert.show();
-    }
-
-    public void selectServices(View view) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Select Services");
-        final String[] services = new String[serviceNameList.size()];
-        serviceNameList.toArray(services);
-        boolean[] initialState = new boolean[services.length];
-        final ArrayList<String> selected = new ArrayList<>();
-        alertDialog.setMultiChoiceItems(services, initialState, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if (isChecked) {
-                    selected.add(serviceList.get(which));
-                } else {
-                    if (selected.contains(serviceList.get(which))) selected.remove(serviceList.get(which));
-                }
-            }
-        });
-
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                resultsListAdapter.filterServices(selected);
-            }
-        });
-        AlertDialog alert = alertDialog.create();
-        alert.show();
+    public void selectService(View view) {
+        Intent intent = new Intent(CustomerSearchActivity.this, ServicePickerActivity.class);
+        startActivityForResult(intent, GET_SERVICE);
     }
 
     @Override
@@ -289,8 +255,9 @@ public class CustomerSearchActivity extends AppCompatActivity implements Adapter
         //Reset the filters
         dateAndTimeSelect.setVisibility(View.GONE);
         serviceSelectButton.setVisibility(View.GONE);
-        openingTimeButton.setText("Opening Time");
-        closingTimeButton.setText("Closing Time");
+        daysPicker.clearSelection();
+        timeButton.setText("Select Time");
+        serviceSelectButton.setText("Select Service");
 
         resultsListAdapter.resetFilter();
 

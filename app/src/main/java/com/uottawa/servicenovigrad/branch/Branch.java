@@ -166,10 +166,10 @@ public class Branch implements Serializable {
     public boolean isOpenAt(int hourOfDay, int minute) {
         try {
             Calendar opening = Calendar.getInstance();
-            opening.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", openingHour) + ":" + String.format("%02d", openingMinute) + ":00"));
+            opening.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", openingHour) + ":" + String.format("%02d", openingMinute-1) + ":00"));
 
             Calendar closing = Calendar.getInstance();
-            closing.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", closingHour) + ":" + String.format("%02d", closingMinute) + ":00"));
+            closing.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", closingHour) + ":" + String.format("%02d", closingMinute+1) + ":00"));
 
             Calendar selected = Calendar.getInstance();
             selected.setTime(new SimpleDateFormat("HH:mm:ss").parse(String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute) + ":00"));
