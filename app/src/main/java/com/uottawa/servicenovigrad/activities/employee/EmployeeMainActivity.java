@@ -1,9 +1,11 @@
 package com.uottawa.servicenovigrad.activities.employee;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.uottawa.servicenovigrad.R;
+import com.uottawa.servicenovigrad.activities.admin.AdminMainActivity;
 import com.uottawa.servicenovigrad.activities.admin.AdminServicesActivity;
 import com.uottawa.servicenovigrad.activities.admin.AdminServicesEdit;
 import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
@@ -167,12 +170,39 @@ public class EmployeeMainActivity extends AppCompatActivity {
      * @param view The current view.
      */
     public void signOut(View view) {
-        //Sign out of Firebase
-        UserController.getInstance().signOut();
-        //Navigate back to Login Page
-        Intent intent = new Intent(EmployeeMainActivity.this, LoginActivity.class);
-        //set the new task and clear flags, so that the user can't go back here
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        //Create new AlertDialog
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EmployeeMainActivity.this);
+        alertDialogBuilder
+                .setTitle("Log out?")
+                .setMessage("Are you sure you want to log out?")
+                .setCancelable(true)
+                .setPositiveButton(
+                        "YES",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Sign out of Firebase
+                                UserController.getInstance().signOut();
+                                //Navigate back to Login Page
+                                Intent intent = new Intent(EmployeeMainActivity.this, LoginActivity.class);
+                                //set the new task and clear flags, so that the user can't go back here
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
+                        }
+                )
+                .setNegativeButton(
+                        "NO",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Close the dialog without closing the activity
+                                dialog.cancel();
+                            }
+                        }
+                );
+        //Show AlertDialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }
