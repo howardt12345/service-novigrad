@@ -195,6 +195,7 @@ public class CustomerSearchActivity extends AppCompatActivity implements Adapter
                 }
 
                 branchList.clear();
+                resultsListAdapter.clear();
 
                 for (QueryDocumentSnapshot document : value) {
                     String id = document.getId();

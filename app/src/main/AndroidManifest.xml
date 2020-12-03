@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.customer.CustomerSearchActivity"></activity>
+        <activity android:name=".activities.customer.CustomerRateActivity"></activity>
+        <activity android:name=".activities.customer.CustomerSearchActivity" />
         <activity android:name=".activities.customer.CustomerNewRequestActivity" />
         <activity android:name=".activities.service.ServicePickerActivity" />
         <activity android:name=".activities.employee.EmployeeLoaderActivity" />
