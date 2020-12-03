@@ -15,8 +15,18 @@ admin.initializeApp();
 exports.removeUser = functions.firestore
     .document("/users/{uid}")
     .onDelete((snapshot, context) => {
+        const deleted = snapshot.data();
+
         return admin.auth().deleteUser(context.params.uid).then(() => {
             return admin.firestore().collection("branches").doc(context.params.uid).delete().catch(err => console.log(err));
+        }).catch(err => console.log(err)).then(() => {
+            return admin.firestore().collection("requests")
+                .where('branch', '==', context.params.uid)
+                .get().then(response => {
+                    return response.docs.forEach(doc => {
+                        admin.firestore().collection("requests").doc(doc.id).delete().catch(err => console.log(err));
+                    })
+                })
         }).catch(err => console.log(err));
     });
 
@@ -104,13 +114,13 @@ exports.notifyCustomer = functions.firestore
                     if(after.approved) {
                         payload = {
                             notification: {
-                                title: "Your request has been approved."
+                                title: "Your request has been approved.",
                             }
                         }
                     } else {
                         payload = {
                             notification: {
-                                title: "Your request has been rejected."
+                                title: "Your request has been rejected.",
                             }
                         }
                     }
@@ -118,4 +128,23 @@ exports.notifyCustomer = functions.firestore
                 return admin.messaging().sendToDevice(token, payload).catch(err => console.log(err));
             }).catch(err => console.log(err));
         }).catch(err => console.log(err));
-    })
+    });
+
+exports.notifyEmployee = functions.firestore
+    .document("requests/{id}")
+    .onCreate((snap, context) => {
+        const value = snap.data();
+
+        return admin.firestore().collection("users").doc(value.branch).collection("tokens").get().then(response => {
+            return response.forEach(doc => {
+                let token = doc.id;
+
+                let payload = {
+                    notification: {
+                        title: "A new request has been made.",
+                    }
+                };
+                return admin.messaging().sendToDevice(token, payload).catch(err => console.log(err));
+            }).catch(err => console.log(err));
+        }).catch(err => console.log(err));
+    });
