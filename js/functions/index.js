@@ -153,7 +153,7 @@ exports.notifyCustomer = functions.firestore
                     }
                 }
                 return admin.messaging().sendToDevice(token, payload).catch(err => console.log(err));
-            }).catch(err => console.log(err));
+            })
         }).catch(err => console.log(err));
     });
 
@@ -173,6 +173,6 @@ exports.notifyEmployee = functions.firestore
                     }
                 };
                 return admin.messaging().sendToDevice(token, payload).catch(err => console.log(err));
-            }).catch(err => console.log(err));
+            })
         }).catch(err => console.log(err));
     });

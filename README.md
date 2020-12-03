@@ -73,7 +73,7 @@ The following functionality is implemented in deliverable 4:
 - Customer receives a notification when their request is accepted/rejected.
 - Employee receives a notification when a new request is made to their branch. (Additional feature)
 
-The Sample Customer credenntials are:
+The Sample Customer credentials are:
 ```
 email: customer@novigrad.com
 password: customer
