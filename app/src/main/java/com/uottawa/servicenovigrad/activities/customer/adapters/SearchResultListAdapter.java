@@ -92,7 +92,7 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
         notifyDataSetChanged();
     }
 
-    public void filterDayOfWeek(boolean[] selected) {
+    public void filterDayOfWeek(String day) {
         filter(searchQuery);
         CopyOnWriteArrayList<Branch> branches = new CopyOnWriteArrayList<>();
         for (int i = 0; i < getCount(); ++i) {
@@ -100,13 +100,7 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
         }
         for (Branch b : branches) {
             ArrayList<String> openDays = b.getOpenDays();
-            if ((selected[0] && !openDays.contains("Sunday"))
-                && (selected[1] && !openDays.contains("Monday"))
-                && (selected[2] && !openDays.contains("Tuesday"))
-                && (selected[3] && !openDays.contains("Wednesday"))
-                && (selected[4] && !openDays.contains("Thursday"))
-                && (selected[5] && !openDays.contains("Friday"))
-                && (selected[6] && !openDays.contains("Saturday"))) {
+            if (!openDays.contains(day)) {
                 branches.remove(b);
             }
         }
