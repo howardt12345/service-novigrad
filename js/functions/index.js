@@ -30,6 +30,7 @@ exports.removeUser = functions.firestore
         }).catch(err => console.log(err));
     });
 
+//Updates the service request with the branch, customer, and service names
 exports.updateServiceRequest = functions.firestore
     .document("/requests/{id}")
     .onWrite((change, context) => {
@@ -53,6 +54,7 @@ exports.updateServiceRequest = functions.firestore
         })
     });
 
+//Updates the service request branch name field when a branch is renamed
 exports.updateBranchInfo = functions.firestore
     .document("branches/{id}")
     .onWrite((change, context) => {
@@ -66,6 +68,7 @@ exports.updateBranchInfo = functions.firestore
         }).catch(err => console.log(err))
     });
 
+//Updates the service request service name when a service is renamed
 exports.updateServiceNameInRequest = functions.firestore
     .document("services/{id}")
     .onWrite((change, context) => {
@@ -79,6 +82,7 @@ exports.updateServiceNameInRequest = functions.firestore
         }).catch(err => console.log(err))
     })
 
+//Removes all the fields and requests that the deleted service was in
 exports.deleteServices = functions.firestore
     .document("services/{id}")
     .onDelete((snap, context) => {
@@ -99,6 +103,7 @@ exports.deleteServices = functions.firestore
         }).catch(err => console.log(err));
     });
 
+//Notifies the customer when their request is accepted/rejected.
 exports.notifyCustomer = functions.firestore
     .document("requests/{id}")
     .onUpdate((change, context) => {
@@ -130,6 +135,7 @@ exports.notifyCustomer = functions.firestore
         }).catch(err => console.log(err));
     });
 
+//Notifies the emplyoee when a request has been made to their branch
 exports.notifyEmployee = functions.firestore
     .document("requests/{id}")
     .onCreate((snap, context) => {
