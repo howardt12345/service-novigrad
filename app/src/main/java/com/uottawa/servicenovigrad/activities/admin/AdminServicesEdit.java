@@ -127,7 +127,6 @@ public class AdminServicesEdit extends AppCompatActivity {
             }
         });
 
-        //TODO: Add price parameter initialization
         //Add text change listener to the name field
         price.addTextChangedListener(new TextWatcher() {
             @Override
