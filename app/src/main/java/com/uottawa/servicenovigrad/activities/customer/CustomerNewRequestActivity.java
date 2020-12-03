@@ -206,7 +206,7 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
             intent.putExtra("branch", branch);
             startActivityForResult(intent, GET_SERVICE);
         } else {
-            Utils.showSnackbar("Select a branch first.", getCurrentFocus());
+            Utils.showSnackbar("Select a branch first.", findViewById(R.id.new_request_view));
         }
     }
 
