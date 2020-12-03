@@ -232,8 +232,23 @@ public class UserController {
                     // Get new FCM registration token
                     final String token = task.getResult();
 
-                    FirebaseFirestore.getInstance().collection("users").document(uid).collection("tokens").document(token).delete();
-                    auth.signOut();
+                    FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(uid)
+                    .collection("tokens")
+                    .document(token)
+                    .delete()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            auth.signOut();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            auth.signOut();
+                        }
+                    });
                 }
             });
         }
