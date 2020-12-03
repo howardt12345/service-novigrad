@@ -139,4 +139,8 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
         addAll(branches);
         notifyDataSetChanged();
     }
+
+    public void resetFilter() {
+        filter(searchQuery);
+    }
 }

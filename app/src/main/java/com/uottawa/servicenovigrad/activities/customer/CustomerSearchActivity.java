@@ -10,8 +10,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,12 +29,15 @@ import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.customer.adapters.SearchResultListAdapter;
 import com.uottawa.servicenovigrad.branch.Branch;
 import com.uottawa.servicenovigrad.utils.Function;
+import com.uottawa.servicenovigrad.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
+import java.util.List;
 
-public class CustomerSearchActivity extends AppCompatActivity {
+import ca.antonious.materialdaypicker.MaterialDayPicker;
+
+public class CustomerSearchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private FirebaseFirestore firestore;
     private CollectionReference branches;
@@ -39,8 +47,15 @@ public class CustomerSearchActivity extends AppCompatActivity {
     private ArrayList<String> serviceList;
     private ArrayList<String> serviceNameList;
 
-    SearchResultListAdapter adapter;
+    SearchResultListAdapter resultsListAdapter;
     ListView list;
+
+    MaterialDayPicker daysPicker;
+    LinearLayout dateAndTimeSelect;
+    Button serviceSelectButton, openingTimeButton, closingTimeButton;
+    Spinner filterSpinner;
+
+    String[] filters = {"None", "Date and Time", "Service"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +77,38 @@ public class CustomerSearchActivity extends AppCompatActivity {
         // Populate list
         list = findViewById(R.id.search_results);
 
+        //Get days picker
+        daysPicker = findViewById(R.id.customer_search_days_picker);
+        daysPicker.setDaySelectionChangedListener(new MaterialDayPicker.DaySelectionChangedListener() {
+            @Override
+            public void onDaySelectionChanged(List<MaterialDayPicker.Weekday> list) {
+
+            }
+        });
+        //Get opening and closing time buttons
+        openingTimeButton = findViewById(R.id.customer_search_opening_time);
+        closingTimeButton = findViewById(R.id.customer_search_closing_time);
+
+        //Get the date and time selection layout and hide it
+        dateAndTimeSelect = findViewById(R.id.customer_search_date_and_time);
+        dateAndTimeSelect.setVisibility(View.GONE);
+
+
+        //Get the service selection layout and hide it
+        serviceSelectButton = findViewById(R.id.customer_search_service_select);
+        serviceSelectButton.setVisibility(View.GONE);
+
+
+        //Set up the filter spinner
+        filterSpinner = findViewById(R.id.customer_search_filter);
+        filterSpinner.setOnItemSelectedListener(this);
+
+        //Give the spinner values
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, filters);
+        filterSpinner.setAdapter(spinnerAdapter);
+
         // Create and bind adapter
-        adapter = new SearchResultListAdapter(this, branchList, new Function() {
+        resultsListAdapter = new SearchResultListAdapter(this, branchList, new Function() {
             @Override
             public void f(final Object... params) {
                 final Branch b = (Branch) params[0];
@@ -99,7 +144,7 @@ public class CustomerSearchActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
-        list.setAdapter(adapter);
+        list.setAdapter(resultsListAdapter);
 
         SearchView searchView = findViewById(R.id.branch_search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -112,7 +157,7 @@ public class CustomerSearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 String query = newText;
-                adapter.filter(newText);
+                resultsListAdapter.filter(newText);
                 return false;
             }
         });
@@ -138,7 +183,7 @@ public class CustomerSearchActivity extends AppCompatActivity {
                                 (double)document.getData().get("rating")
                         );
                         branchList.add(b);
-                        adapter.notifyDataSetChanged(b);
+                        resultsListAdapter.notifyDataSetChanged(b);
                     }
                 } else {
                     Log.d("Search: ", "Error getting branch data from database");
@@ -160,14 +205,15 @@ public class CustomerSearchActivity extends AppCompatActivity {
     }
 
 
-    public void openTimeSelector(View view) {
+    public void openingTimeSelector(View view) {
         final Calendar cal = Calendar.getInstance();
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int min = cal.get(Calendar.MINUTE);
         TimePickerDialog picker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                adapter.filterTimes(hourOfDay, minute, true);
+                resultsListAdapter.filterTimes(hourOfDay, minute, true);
+                openingTimeButton.setText(Utils.formatTime(hourOfDay, minute));
             }
         }, hour, min, true);
         picker.show();
@@ -180,7 +226,8 @@ public class CustomerSearchActivity extends AppCompatActivity {
         TimePickerDialog picker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                adapter.filterTimes(hourOfDay, minute, false);
+                resultsListAdapter.filterTimes(hourOfDay, minute, false);
+                closingTimeButton.setText(Utils.formatTime(hourOfDay, minute));
             }
         }, hour, min, true);
         picker.show();
@@ -202,7 +249,7 @@ public class CustomerSearchActivity extends AppCompatActivity {
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                adapter.filterDayOfWeek(selected);
+                resultsListAdapter.filterDayOfWeek(selected);
             }
         });
         AlertDialog alert = alertDialog.create();
@@ -230,10 +277,33 @@ public class CustomerSearchActivity extends AppCompatActivity {
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                adapter.filterServices(selected);
+                resultsListAdapter.filterServices(selected);
             }
         });
         AlertDialog alert = alertDialog.create();
         alert.show();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //Reset the filters
+        dateAndTimeSelect.setVisibility(View.GONE);
+        serviceSelectButton.setVisibility(View.GONE);
+        openingTimeButton.setText("Opening Time");
+        closingTimeButton.setText("Closing Time");
+
+        resultsListAdapter.resetFilter();
+
+        if (position == 1) {
+            dateAndTimeSelect.setVisibility(View.VISIBLE);
+        } else if (position == 2) {
+            serviceSelectButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        dateAndTimeSelect.setVisibility(View.GONE);
+        serviceSelectButton.setVisibility(View.GONE);
     }
 }
