@@ -8,7 +8,10 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +36,7 @@ import com.uottawa.servicenovigrad.utils.Utils;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +46,7 @@ import java.util.List;
 
 public class CustomerNewRequestActivity extends AppCompatActivity {
 
-    private int GET_BRANCH = 0, GET_SERVICE = 1, GET_ADDRESS = 2;
+    private int GET_BRANCH = 0, GET_SERVICE = 1, GET_ADDRESS = 2, PICK_FILE = 3;
 
     Branch branch;
     Service service;
@@ -54,6 +58,7 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
     List<View> infoFields;
     List<View> docsFields;
+    int docToSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +89,7 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
         infoFields = new ArrayList<>();
         docsFields = new ArrayList<>();
+        docToSet = -1;
 
         TextView textView = new TextView(this);
         textView.setText("Select a Service first.");
@@ -136,6 +142,28 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
                         }
                     }
                 }
+            } else if (requestCode == PICK_FILE) {
+
+                Uri uri = data.getData();
+                String uriString = uri.toString();
+                File myFile = new File(uriString);
+                String path = myFile.getAbsolutePath();
+                String displayName = null;
+
+                if (uriString.startsWith("content://")) {
+                    Cursor cursor = null;
+                    try {
+                        cursor = getContentResolver().query(uri, null, null, null, null);
+                        if (cursor != null && cursor.moveToFirst()) {
+                            displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                        }
+                    } finally {
+                        cursor.close();
+                    }
+                } else if (uriString.startsWith("file://")) {
+                    displayName = myFile.getName();
+                }
+                ((Button) docsFields.get(docToSet)).setText(displayName);
             }
         }
     }
@@ -196,9 +224,20 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
             }
         }
 
-        for(String docField : service.getDocuments()) {
+        for(final String docField : service.getDocuments()) {
             Button button = new Button(this);
             button.setText("Select " + docField);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+                    chooseFile.setType("*/*");
+                    chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+                    docToSet = service.getDocuments().indexOf(docField);
+                    startActivityForResult(chooseFile, PICK_FILE);
+                }
+            });
 
             docsFields.add(button);
             docsLayout.addView(button);
@@ -368,6 +407,16 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
                 }
             } else if (v.getClass() == EditText.class) {
                 if(((EditText) v).getText().toString().isEmpty()) {
+                    Utils.showSnackbar("One or more of the required fields are empty.", findViewById(R.id.new_request_view));
+                    return false;
+                }
+            }
+        }
+
+        for(int i = 0; i < service.getDocuments().size(); i++) {
+            View v = infoFields.get(i);
+            if(v.getClass() == Button.class) {
+                if(((Button) v).getText().toString().equals("Select " + service.getDocuments().get(i))) {
                     Utils.showSnackbar("One or more of the required fields are empty.", findViewById(R.id.new_request_view));
                     return false;
                 }
