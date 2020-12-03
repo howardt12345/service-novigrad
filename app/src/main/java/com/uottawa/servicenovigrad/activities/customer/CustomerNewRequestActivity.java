@@ -9,6 +9,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -30,6 +31,9 @@ import com.uottawa.servicenovigrad.branch.ServiceRequest;
 import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.utils.Utils;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -42,8 +46,8 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
     Branch branch;
     Service service;
-
-    ServiceRequest request;
+    int year, month, day, hour, minute;
+    boolean dateSet, timeSet;
 
     Button branchButton, serviceButton, dateButton, timeButton;
     LinearLayout infoLayout, docsLayout;
@@ -80,8 +84,6 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
         infoFields = new ArrayList<>();
         docsFields = new ArrayList<>();
-
-        request = new ServiceRequest();
     }
 
     @Override
@@ -94,8 +96,6 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
                 service = null;
                 serviceButton.setText("Select Service");
 
-                request.setBranchId(branch.getId());
-                request.setServiceId("");
 
                 infoFields.clear();
                 infoLayout.removeAllViews();
@@ -116,7 +116,6 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
                 service = (Service) data.getSerializableExtra("service");
 
                 serviceButton.setText(service.getName());
-                request.setServiceId(service.getId());
                 initializeServiceFields();
             } else if (requestCode == GET_ADDRESS) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
@@ -232,8 +231,13 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
         if(!Utils.getDaysOfWeek(branch.getOpenDays()).contains(c.get(Calendar.DAY_OF_WEEK))) {
             Utils.showSnackbar("The branch is not open on the selected day of the week.", findViewById(R.id.new_request_view));
             dateButton.setText("Select Date");
+            dateSet = false;
         } else {
             dateButton.setText(year + "-" + String.format("%02d", month+1) + "-" + String.format("%02d", dayOfMonth));
+            this.year = year;
+            this.month = month;
+            this.day = dayOfMonth;
+            dateSet = true;
         }
     }
 
@@ -251,8 +255,18 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
         if(!branch.isOpenAt(hourOfDay, minute)) {
             Utils.showSnackbar("The branch is not open on the selected time.", findViewById(R.id.new_request_view));
             timeButton.setText("Select Time");
+            timeSet = false;
         } else {
-            timeButton.setText(Utils.formatTime(hourOfDay, minute));
+            try {
+                timeButton.setText(Utils.formatTime(hourOfDay, minute));
+                this.hour = hourOfDay;
+                this.minute = minute;
+                timeSet = true;
+            } catch (Exception e) {
+                Utils.showSnackbar("Failed to select time.", findViewById(R.id.new_request_view));
+                timeButton.setText("Select Time");
+                timeSet = false;
+            }
         }
     }
 
@@ -309,22 +323,68 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
     }
 
     private boolean verifyEdit() {
-        if(branch == null || request.getBranchId().isEmpty()) {
+        if(branch == null) {
             Utils.showSnackbar("A branch must be selected.", findViewById(R.id.new_request_view));
             return false;
         }
-        if(service == null || request.getServiceId().isEmpty()) {
+        if(service == null) {
             Utils.showSnackbar("A service must be selected.", findViewById(R.id.new_request_view));
             return false;
         }
+        if(!dateSet) {
+            Utils.showSnackbar("A date must be selected.", findViewById(R.id.new_request_view));
+            return false;
+        }
+        if(!timeSet) {
+            Utils.showSnackbar("A time must be selected.", findViewById(R.id.new_request_view));
+            return false;
+        }
+        for(int i = 0; i < service.getForms().size(); i++) {
+            View v = infoFields.get(i);
+            if(v.getClass() == Button.class) {
+                if(((Button) v).getText().toString().equals(service.getForms().get(i))) {
+                    Utils.showSnackbar("One or more of the required fields are empty.", findViewById(R.id.new_request_view));
+                    return false;
+                }
+            } else if (v.getClass() == EditText.class) {
+                if(((EditText) v).getText().toString().isEmpty()) {
+                    Utils.showSnackbar("One or more of the required fields are empty.", findViewById(R.id.new_request_view));
+                    return false;
+                }
+            }
+        }
+        //TODO: Verify fields
 
-        return true;
+        return false;
+    }
+
+    private ArrayList<String> parseInfo() {
+        ArrayList<String> data = new ArrayList<>();
+        for(int i = 0; i < service.getForms().size(); i++) {
+            View v = infoFields.get(i);
+            if(v.getClass() == Button.class) {
+                data.add(service.getForms().get(i) + ": " + ((Button) v).getText());
+            } else if (v.getClass() == EditText.class) {
+                data.add(service.getForms().get(i) + ": " + ((EditText) v).getText());
+            }
+        }
+        return data;
     }
 
     /**
      * Saves the edit.
      */
     private void sendRequest() {
+        ServiceRequest request = new ServiceRequest();
+        request.setBranchId(branch.getId());
+        request.setServiceId(service.getId());
+
+        Calendar date = Calendar.getInstance();
+        date.set(year, month, day, hour, minute);
+        request.setScheduledTime(date.getTime());
+
+        request.setInfo(parseInfo());
+
         Intent intent = new Intent();
         //Add the service to the intent data
         intent.putExtra("request", request);
