@@ -17,6 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.service.ServicePickerActivity;
 import com.uottawa.servicenovigrad.branch.Branch;
@@ -25,13 +31,14 @@ import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class CustomerNewRequestActivity extends AppCompatActivity {
 
-    private int GET_BRANCH = 0, GET_SERVICE = 1;
+    private int GET_BRANCH = 0, GET_SERVICE = 1, GET_ADDRESS = 2;
 
     Branch branch;
     Service service;
@@ -49,6 +56,14 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_new_request);
         getSupportActionBar().hide();
+
+        // Initialize the SDK
+        if(!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), "AIzaSyCyu0x3W3kNBMvZPfEd9v1Lna52vfFvyp4");
+        }
+
+        // Create a new PlacesClient instance
+        PlacesClient placesClient = Places.createClient(this);
 
         if(branch == null) {
             Intent intent = new Intent(CustomerNewRequestActivity.this, CustomerSearchActivity.class);
@@ -103,6 +118,15 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
                 serviceButton.setText(service.getName());
                 request.setServiceId(service.getId());
                 initializeServiceFields();
+            } else if (requestCode == GET_ADDRESS) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                for(View v : infoFields) {
+                    if(v.getClass() == Button.class) {
+                        if(((Button) v).getText().toString().contains("Address")) {
+                            ((Button) v).setText(place.getAddress());
+                        }
+                    }
+                }
             }
         }
     }
@@ -117,6 +141,7 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
             //If the info field requires a date
             if(infoField.contains("Date")) {
                 final Button dateButton = new Button(this);
+                dateButton.setText(infoField);
 
                 dateButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -133,7 +158,24 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
                 infoFields.add(dateButton);
                 infoLayout.addView(dateButton);
             } else if (infoField.contains("Address")) { //If the info field requires an address
+                final Button addressButton = new Button(this);
+                addressButton.setText(infoField);
 
+                addressButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Set the fields to specify which types of place data to
+                        // return after the user has made a selection.
+                        List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS);
+
+                        // Start the autocomplete intent.
+                        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).setCountry("CA").setTypeFilter(TypeFilter.ADDRESS).build(CustomerNewRequestActivity.this);
+                        startActivityForResult(intent, GET_ADDRESS);
+                    }
+                });
+
+                infoFields.add(addressButton);
+                infoLayout.addView(addressButton);
             } else {
                 EditText field = new EditText(this);
                 field.setHint(infoField);
