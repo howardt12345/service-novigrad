@@ -50,6 +50,16 @@
                 android:layout_height="wrap_content"
                 android:text="Working Hours" />
 
+            <ca.antonious.materialdaypicker.MaterialDayPicker
+                android:id="@+id/branch_days_open"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:scaleX="0.75"
+                android:scaleY="0.75"
+
+                />
+
             <TextView
                 android:id="@+id/branch_rating"
                 android:layout_width="match_parent"
@@ -60,7 +70,7 @@
 
         <ImageButton
             android:id="@+id/select_branch"
-            android:layout_width="144sp"
+            android:layout_width="72sp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#00FFFFFF"

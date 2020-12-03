@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import ca.antonious.materialdaypicker.MaterialDayPicker;
+
 public class SearchResultListAdapter extends ArrayAdapter<Branch> {
     ArrayList<Branch> allBranches;
     Function onSelect;
@@ -66,6 +68,10 @@ public class SearchResultListAdapter extends ArrayAdapter<Branch> {
                 onSelect.f(b);
             }
         });
+
+        MaterialDayPicker openDaysPicker = convertView.findViewById(R.id.branch_days_open);
+        Utils.selectDaysInPicker(openDaysPicker, b.getOpenDays());
+        openDaysPicker.disableAllDays();
 
         return convertView;
     }
