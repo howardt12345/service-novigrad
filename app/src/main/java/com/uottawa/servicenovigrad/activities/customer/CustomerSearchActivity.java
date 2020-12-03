@@ -4,14 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.SearchView;
+import android.widget.TimePicker;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,18 +22,21 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.customer.adapters.SearchResultListAdapter;
-import com.uottawa.servicenovigrad.activities.service.ServicePickerActivity;
 import com.uottawa.servicenovigrad.branch.Branch;
 import com.uottawa.servicenovigrad.utils.Function;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 
 public class CustomerSearchActivity extends AppCompatActivity {
 
     private FirebaseFirestore firestore;
     private CollectionReference branches;
+    private CollectionReference services;
 
     private ArrayList<Branch> branchList;
+    private ArrayList<String> serviceList;
 
     SearchResultListAdapter adapter;
     ListView list;
@@ -46,9 +50,11 @@ public class CustomerSearchActivity extends AppCompatActivity {
         // Connect to firestore
         firestore = FirebaseFirestore.getInstance();
         branches = firestore.collection("branches");
+        services = firestore.collection("services");
 
         // Get branch data
         branchList = new ArrayList<>();
+        serviceList = new ArrayList<>();
         getData();
 
         // Populate list
@@ -138,13 +144,78 @@ public class CustomerSearchActivity extends AppCompatActivity {
                 }
             }
         });
+
+        services.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        serviceList.add(doc.getString("name"));
+                    }
+
+                    Collections.sort(serviceList);
+                }
+            }
+        });
     }
 
-    /**
-     * Cancel the search and return to the main page
-     * @param view The current view
-     */
-    public void cancelSearch(View view) {
-        finish();
+
+    public void openTimeSelector(View view) {
+        final Calendar cal = Calendar.getInstance();
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int min = cal.get(Calendar.MINUTE);
+        TimePickerDialog picker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                // Nothing to do rn
+            }
+        }, hour, min, false);
+        picker.show();
+    }
+
+    public void closingTimeSelector(View view) {
+        final Calendar cal = Calendar.getInstance();
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int min = cal.get(Calendar.MINUTE);
+        TimePickerDialog picker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                // Nothing to do rn
+            }
+        }, hour, min, false);
+        picker.show();
+    }
+
+    public void selectDaysOfWeek(View view) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Select Days of Week");
+        String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        boolean[] checkedItems = new boolean[7];
+        alertDialog.setMultiChoiceItems(days, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                // Do nothing for now
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
+    }
+
+    public void selectServices(View view) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Select Services");
+        String[] services = new String[serviceList.size()];
+        serviceList.toArray(services);
+        boolean[] checkedItems = new boolean[services.length];
+        alertDialog.setMultiChoiceItems(services, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                // Do nothing for now
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
     }
 }
