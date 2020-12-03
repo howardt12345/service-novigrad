@@ -145,12 +145,14 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
                 dateButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new DatePickerDialog(CustomerNewRequestActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        DatePickerDialog dialog = new DatePickerDialog(CustomerNewRequestActivity.this, new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                                 dateButton.setText(year + "-" + String.format("%02d", month+1) + "-" + String.format("%02d", dayOfMonth));
                             }
-                        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show();
+                        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                        dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                        dialog.show();
                     }
                 });
 
@@ -353,9 +355,8 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
                 }
             }
         }
-        //TODO: Verify fields
 
-        return false;
+        return true;
     }
 
     private ArrayList<String> parseInfo() {
