@@ -221,19 +221,23 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
     }
 
     public void selectDate(View view) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(CustomerNewRequestActivity.this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                setDate(year, month, dayOfMonth);
-            }
-        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        if(branch != null) {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(CustomerNewRequestActivity.this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    setDate(year, month, dayOfMonth);
+                }
+            }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        c.add(Calendar.DATE, 1);
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.DATE, 1);
 
-        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
-        datePickerDialog.show();
+            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+            datePickerDialog.show();
+        } else {
+            Utils.showSnackbar("Select a branch first.", findViewById(R.id.new_request_view));
+        }
     }
 
     private void setDate(int year, int month, int dayOfMonth) {
@@ -254,13 +258,17 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
     }
 
     public void selectTime(View view) {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(CustomerNewRequestActivity.this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                setTime(hourOfDay, minute);
-            }
-        }, branch.getOpeningHour(), branch.getOpeningMinute(), true);
-        timePickerDialog.show();
+        if(branch != null) {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(CustomerNewRequestActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    setTime(hourOfDay, minute);
+                }
+            }, branch.getOpeningHour(), branch.getOpeningMinute(), true);
+            timePickerDialog.show();
+        } else {
+            Utils.showSnackbar("Select a branch first.", findViewById(R.id.new_request_view));
+        }
     }
 
     private void setTime(int hourOfDay, int minute) {
