@@ -43,7 +43,7 @@ exports.updateServiceRequest = functions.firestore
         })
     });
 
-exports.updateBranchNameInRequest = functions.firestore
+exports.updateBranchInfo = functions.firestore
     .document("branches/{id}")
     .onWrite((change, context) => {
         const after = change.after.data();

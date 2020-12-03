@@ -12,18 +12,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.uottawa.servicenovigrad.R;
-import com.uottawa.servicenovigrad.activities.employee.EmployeeEditActivity;
 import com.uottawa.servicenovigrad.activities.service.ServicePickerActivity;
 import com.uottawa.servicenovigrad.branch.Branch;
 import com.uottawa.servicenovigrad.branch.ServiceRequest;
 import com.uottawa.servicenovigrad.service.Service;
 import com.uottawa.servicenovigrad.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class CustomerNewRequestActivity extends AppCompatActivity {
 
@@ -35,6 +39,9 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
     ServiceRequest request;
 
     Button branchButton, serviceButton, dateButton, timeButton;
+    LinearLayout infoLayout, docsLayout;
+
+    List<EditText> infoFields;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,11 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
         dateButton = findViewById(R.id.request_select_date);
         timeButton = findViewById(R.id.request_select_time);
 
+        infoLayout = findViewById(R.id.request_service_info);
+        docsLayout = findViewById(R.id.request_service_docs);
+
+        infoFields = new ArrayList<>();
+
         request = new ServiceRequest();
     }
 
@@ -67,17 +79,36 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
                 request.setBranchId(branch.getId());
                 request.setServiceId("");
+
+                infoFields.clear();
+                infoLayout.removeAllViews();
+
+                TextView textView = new TextView(this);
+                textView.setText("Select a service first.");
+                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                infoLayout.addView(textView);
+
             } else if (requestCode == GET_SERVICE) {
                 service = (Service) data.getSerializableExtra("service");
 
                 serviceButton.setText(service.getName());
                 request.setServiceId(service.getId());
+                initializeServiceInfo();
             }
         }
     }
 
     private void initializeServiceInfo() {
+        infoFields.clear();
+        infoLayout.removeAllViews();
 
+        for(String infoField : service.getForms()) {
+            EditText field = new EditText(this);
+            field.setHint(infoField);
+
+            infoFields.add(field);
+            infoLayout.addView(field);
+        }
     }
 
     public void selectBranch(View view) {
@@ -119,7 +150,7 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
             Utils.showSnackbar("The branch is not open on the selected day of the week.", findViewById(R.id.new_request_view));
             dateButton.setText("Select Date");
         } else {
-            dateButton.setText(year + "/" + String.format("%02d", month) + "/" + String.format("%02d", dayOfMonth));
+            dateButton.setText(year + "/" + String.format("%02d", month+1) + "/" + String.format("%02d", dayOfMonth));
         }
     }
 
