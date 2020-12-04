@@ -42,7 +42,7 @@
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:onClick="rateBranch"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:srcCompat="@drawable/ic_rate_review_24px" />
 
                 <ImageButton

@@ -70,25 +70,25 @@ exports.updateBranchInfo = functions.firestore
 
 //Calculates the branch rating when a new review is made to the branch
 exports.calculateBranchRating = functions.firestore
-    .document("branches/{id}/reviews/{reviewId}")
+    .document("ratings/{id}")
     .onWrite((change, context) => {
-        let sum = 0;
-        let count = 0;
-        return admin.firestore().collection("branches").doc(context.params.id).collection("reviews")
-        .get().then(response => {
-            return response.docs.forEach(doc => {
-                return admin.firestore().collection("branches").doc(context.params.id).collection("reviews").get(doc.id)
-                .then(doc1 => {
-                    const data = doc1.data();
-                    sum = sum + data.score;
-                    count = count + 1;
-                    return null;
-                }).catch(err => console.log(err))
-            })
-        }).then(() => {
-            return admin.firestore().collection("branches").doc(context.params.id).update({"rating": sum/count}).catch(err => console.log(err))
-        }).catch(err => console.log(err))
-    });
+        const data = change.after.data();
+
+        let count = 0, sum = 0;
+
+        for (const key in data) {
+            const value = data[key];
+            sum += value;
+            count += 1;
+        }
+
+        if(count !== 0) {
+            let avg = sum / count;
+            return admin.firestore().collection("branches").doc(context.params.id).update({"rating": avg}).catch(err => console.log(err))
+        } else {
+            return admin.firestore().collection("branches").doc(context.params.id).update({"rating": 0}).catch(err => console.log(err))
+        }
+    })
 
 //Updates the service request service name when a service is renamed
 exports.updateServiceNameInRequest = functions.firestore
@@ -153,7 +153,7 @@ exports.notifyCustomer = functions.firestore
                     }
                 }
                 return admin.messaging().sendToDevice(token, payload).catch(err => console.log(err));
-            }).catch(err => console.log(err));
+            })
         }).catch(err => console.log(err));
     });
 
@@ -173,6 +173,6 @@ exports.notifyEmployee = functions.firestore
                     }
                 };
                 return admin.messaging().sendToDevice(token, payload).catch(err => console.log(err));
-            }).catch(err => console.log(err));
+            })
         }).catch(err => console.log(err));
     });
