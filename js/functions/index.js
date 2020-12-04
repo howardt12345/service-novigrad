@@ -176,3 +176,17 @@ exports.notifyEmployee = functions.firestore
             })
         }).catch(err => console.log(err));
     });
+
+exports.deleteOldServiceRequests = functions.pubsub.schedule('every 60 minutes').onRun((context) => {
+    return admin.firestore().collection("requests").get().then(response => {
+        const now = Date.now();
+        return response.forEach(doc => {
+            const data = doc.data();
+            if (now > data.scheduledTime) {
+                return admin.firestore().collection("requests").doc(doc.id).delete();
+            } else {
+                return null;
+            }
+        })
+    }).catch(err => console.log(err));
+})
