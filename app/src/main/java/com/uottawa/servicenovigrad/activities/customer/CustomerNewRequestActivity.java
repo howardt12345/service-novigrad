@@ -225,7 +225,7 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
 
         for(final String docField : service.getDocuments()) {
             Button button = new Button(this);
-            button.setText("Select " + docField);
+            button.setText(docField);
 
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -413,9 +413,9 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
         }
 
         for(int i = 0; i < service.getDocuments().size(); i++) {
-            View v = infoFields.get(i);
+            View v = docsFields.get(i);
             if(v.getClass() == Button.class) {
-                if(((Button) v).getText().toString().equals("Select " + service.getDocuments().get(i))) {
+                if(((Button) v).getText().toString().equals(service.getDocuments().get(i))) {
                     Utils.showSnackbar("One or more of the required documents are empty.", findViewById(R.id.new_request_view));
                     return false;
                 }
