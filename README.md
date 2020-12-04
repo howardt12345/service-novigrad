@@ -2,12 +2,9 @@
 This is the repository of the Service Novigrad android project, made by SEG 2105 Project Group 1. 
 
 # Group Members
-Howard Hao En Tseng (300108234)
-
-Feyi Adesanya (300120992)
-
-Ethan Plant (300109850)
-
+Howard Hao En Tseng (300108234) \
+Feyi Adesanya (300120992) \
+Ethan Plant (300109850) \
 Zayd Ghazal (300112270)
 
 [![CircleCI](https://circleci.com/gh/SEG2105-uottawa/seg2105f20-project_gr-1.svg?style=svg&circle-token=f443aec0628521b9bce8be8de86effae4cdfc489)](https://app.circleci.com/pipelines/github/SEG2105-uottawa/seg2105f20-project_gr-1)
@@ -78,4 +75,3 @@ The Sample Customer credentials are:
 email: customer@novigrad.com
 password: customer
 ```
-Do NOT use these credentials yet. 
