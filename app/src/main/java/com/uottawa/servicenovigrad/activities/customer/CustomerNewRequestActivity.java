@@ -112,7 +112,6 @@ public class CustomerNewRequestActivity extends AppCompatActivity {
                 service = null;
                 serviceButton.setText("Select Service");
 
-
                 infoFields.clear();
                 infoLayout.removeAllViews();
                 docsFields.clear();
