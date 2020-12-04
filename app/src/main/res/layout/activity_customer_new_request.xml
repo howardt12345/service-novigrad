@@ -65,7 +65,7 @@
             android:padding="16dp">
 
             <LinearLayout
-                android:id="@+id/request_branc"
+                android:id="@+id/request_branch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
