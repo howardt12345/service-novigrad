@@ -157,7 +157,7 @@ exports.notifyCustomer = functions.firestore
         }).catch(err => console.log(err));
     });
 
-//Notifies the emplyoee when a request has been made to their branch
+//Notifies the employee when a request has been made to their branch
 exports.notifyEmployee = functions.firestore
     .document("requests/{id}")
     .onCreate((snap, context) => {
