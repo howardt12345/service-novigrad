@@ -13,7 +13,7 @@ public class BranchCreationTest {
     public void BranchCreationTest(){
         ArrayList<String> services = new ArrayList<>(Arrays.asList("Driver's License'", "Health Card"));
         ArrayList<String> days = new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"));
-        Branch branch = new Branch("id", "Branch 6", "25 Peru Street", "8193286770",services, days ,9, 0, 21, 0, 8.5);
+        Branch branch = new Branch("id", "Branch 6", "25 Peru Street", "8193286770",services, days ,9, 0, 21, 0, 3.5);
         assertEquals("id", branch.getId());
         assertEquals("Branch 6", branch.getName());
         assertEquals("25 Peru Street", branch.getAddress());
@@ -24,6 +24,6 @@ public class BranchCreationTest {
         assertEquals(0, branch.getOpeningMinute());
         assertEquals(21, branch.getClosingHour());
         assertEquals(0, branch.getClosingMinute());
-        assertEquals(8.5, branch.getRating(), 0);
+        assertEquals(3.5, branch.getRating(), 0);
     }
 }
