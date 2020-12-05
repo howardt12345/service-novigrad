@@ -96,7 +96,7 @@ public class ServiceRequest implements Serializable {
         if(responded) {
             sb.append("\nApproved: " + (approved ? "yes" : "no"));
         } else {
-            sb.append("\nResponded: " + "no");
+            sb.append("\nResponded: " + (responded ? "yes" : "no"));
         }
         return sb.toString();
     }
