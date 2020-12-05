@@ -19,7 +19,11 @@ exports.removeUser = functions.firestore
 
         return admin.auth().deleteUser(context.params.uid).then(() => {
             return admin.firestore().collection("branches").doc(context.params.uid).delete().catch(err => console.log(err));
-        }).catch(err => console.log(err)).then(() => {
+        }).catch(err => console.log(err))
+        .then(() => {
+            return admin.firestore().collection("ratings").doc(context.params.uid).delete().catch(err => console.log(err));
+        })
+        .then(() => {
             return admin.firestore().collection("requests")
                 .where('branch', '==', context.params.uid)
                 .get().then(response => {
