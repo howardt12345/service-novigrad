@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.com.uottawa.servicenovigrad.customer.CustomerRateActivity">
+    tools:context=".activities.customer.CustomerRateActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/rate_branch_toolbar"

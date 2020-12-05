@@ -162,11 +162,4 @@ public class CustomerRequestTests {
         assertEquals(true, sr.isResponded());
 
     }
-
-
-
-
-
-
-
 }

@@ -137,7 +137,7 @@
                     android:id="@+id/users_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Manage employee and com.uottawa.servicenovigrad.customer accounts" />
+                    android:text="Manage employee and customer accounts" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
