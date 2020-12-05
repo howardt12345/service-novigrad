@@ -297,7 +297,7 @@ public class BranchServiceRequestsFragment extends Fragment {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder
         .setTitle("Approve Request?") //Set the title of the dialog to the service name
-        .setMessage("Are you sure you want to approve this request? \nTHIS ACTION CANNOT BE UNDONE. \nThe customer will be notified immediately.") //Set the message of the dialog to the service info
+        .setMessage("Are you sure you want to approve this request? \nTHIS ACTION CANNOT BE UNDONE. \nThe com.uottawa.servicenovigrad.customer will be notified immediately.") //Set the message of the dialog to the service info
         .setCancelable(true)
         .setPositiveButton(
                 "OK",
@@ -339,7 +339,7 @@ public class BranchServiceRequestsFragment extends Fragment {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder
         .setTitle("Request Request?") //Set the title of the dialog to the service name
-        .setMessage("Are you sure you want to reject this request? \nThe customer will be notified. \nThis can be undone until the date of the request.") //Set the message of the dialog to the service info
+        .setMessage("Are you sure you want to reject this request? \nThe com.uottawa.servicenovigrad.customer will be notified. \nThis can be undone until the date of the request.") //Set the message of the dialog to the service info
         .setCancelable(true)
         .setPositiveButton(
             "OK",

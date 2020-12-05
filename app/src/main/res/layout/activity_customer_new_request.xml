@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.customer.CustomerNewRequestActivity">
+    tools:context=".activities.com.uottawa.servicenovigrad.customer.CustomerNewRequestActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/customer_new_request_toolbar"

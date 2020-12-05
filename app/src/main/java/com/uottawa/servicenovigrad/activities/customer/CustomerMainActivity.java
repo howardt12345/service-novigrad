@@ -13,9 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
@@ -26,11 +23,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.uottawa.servicenovigrad.R;
 import com.uottawa.servicenovigrad.activities.auth.LoginActivity;
-import com.uottawa.servicenovigrad.activities.branch.adapters.ServiceRequestsAdapter;
 import com.uottawa.servicenovigrad.activities.customer.adapters.CustomerServiceRequestAdapter;
-import com.uottawa.servicenovigrad.activities.employee.EmployeeMainActivity;
 import com.uottawa.servicenovigrad.branch.ServiceRequest;
-import com.uottawa.servicenovigrad.user.UserAccount;
 import com.uottawa.servicenovigrad.user.UserController;
 
 import java.util.ArrayList;

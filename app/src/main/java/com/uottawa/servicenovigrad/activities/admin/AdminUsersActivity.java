@@ -42,10 +42,10 @@ public class AdminUsersActivity extends AppCompatActivity {
         //Set up firestore
         firestore = FirebaseFirestore.getInstance();
         usersReference = firestore.collection("users");
-        //Set up the employee and customer lists
+        //Set up the employee and com.uottawa.servicenovigrad.customer lists
         employees = new ArrayList<>();
         customers = new ArrayList<>();
-        //Set up the employee and customer list in the layout
+        //Set up the employee and com.uottawa.servicenovigrad.customer list in the layout
         employeesList = findViewById(R.id.employees_list);
         customersList = findViewById(R.id.customers_list);
     }
@@ -90,7 +90,7 @@ public class AdminUsersActivity extends AppCompatActivity {
                 setUpList(employees, employeesList);
             }
         });
-        //Add a new listener to query customer accounts
+        //Add a new listener to query com.uottawa.servicenovigrad.customer accounts
         usersReference
         .whereEqualTo("role", "customer")
         .addSnapshotListener(new EventListener<QuerySnapshot>() {

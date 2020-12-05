@@ -14,7 +14,7 @@ Zayd Ghazal (300112270)
 The following functionality is implemented in deliverable 1:
 - Logging into the application with an email and password using Firebase's Authentication API.
 - Signing up for the application with name, email and password using Firebase's Authentication API.
-- Creation of both Service Novigrad branch employee accounts and customer accounts.
+- Creation of both Service Novigrad branch employee accounts and com.uottawa.servicenovigrad.customer accounts.
 - Storing user information using Cloud Firestore.
 - Input validation on all login and sign up fields, and display of respective errors.
 - Logging in as an admin account (username: "admin", password: "admin").

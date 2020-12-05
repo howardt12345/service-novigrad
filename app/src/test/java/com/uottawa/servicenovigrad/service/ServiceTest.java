@@ -20,6 +20,15 @@ public class ServiceTest {
         assertEquals(documents, service.getDocuments());
         assertEquals(75, service.getPrice());
 
+
+    }
+    @Test
+    public void ChangingServiceTest(){
+
+        ArrayList<String> forms = new ArrayList<>(Arrays.asList("Passport renewal form"));
+        ArrayList<String> documents = new ArrayList<>(Arrays.asList("Birth Certificate", "Expired Passport", "Photo ID"));
+        Service service = new Service("01", "Passport Renewal", "Service to allow residents to renew their passports", forms, documents, 75);
+
         service.setPrice(85);
         service.setId("00");
         service.setDesc("Service to allow residents to update their passports");

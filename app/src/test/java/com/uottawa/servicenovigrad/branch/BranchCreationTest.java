@@ -25,7 +25,5 @@ public class BranchCreationTest {
         assertEquals(21, branch.getClosingHour());
         assertEquals(0, branch.getClosingMinute());
         assertEquals(8.5, branch.getRating(), 0);
-
-
     }
 }
