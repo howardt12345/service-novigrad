@@ -56,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
                             .collection("tokens")
                             .document(token)
                             .set(new HashMap<String, Object>() {{ put("signedIn", new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault()).format(new Date())); }});
+                } else {
+                    FirebaseFirestore.getInstance()
+                            .collection("users")
+                            .document("admin")
+                            .collection("tokens")
+                            .document(token)
+                            .set(new HashMap<String, Object>() {{ put("signedIn", new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault()).format(new Date())); }});
                 }
             }
         });
