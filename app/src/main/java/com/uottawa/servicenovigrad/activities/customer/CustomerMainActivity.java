@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
@@ -175,6 +176,8 @@ public class CustomerMainActivity extends AppCompatActivity {
                 requestInfo.put("responded", false);
 
                 requestsReference.add(requestInfo);
+
+                Toast.makeText(getApplicationContext(), "Request has been sent. It will show up in a bit.", Toast.LENGTH_SHORT).show();
             }
         }
     }
