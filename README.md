@@ -1,6 +1,15 @@
 # Service Novigrad Android Project
 This is the repository of the Service Novigrad android project, made by SEG 2105 Project Group 1. 
 
+The Service Novigrad application is an application designed to service a fictional province of Novigrad. This application handles three different users: the administrator, a Service Novigrad branch employee, and a customer. 
+
+The administrator login is pre-programmed into the application, while the branch employee and customer accounts are stored in Firebase Firestore and handled by Firebase Authentication. The administrator manages all the possible services that can be offered by different Service Novigrad branches, and can add, edit, or delete a service. 
+
+The branch employee account creates a branch profile for their branch, and selects the services offered by that branch, as well as the branch’s name, phone number, address, and working hours. The branch is notified when they have received a new request and can approve or reject the service request.
+
+The customer can search for a Service Novigrad branch by its name, phone number, and address, and can filter by a given date and time as well as a desired service. The customer then makes a service request to the branch, providing the information and documents required by the service. They are notified when the branch has either approved or rejected their request. The customer can rate their experience with the Service Novigrad branch. 
+
+
 # Group Members
 Howard Hao En Tseng (300108234) \
 Feyi Adesanya (300120992) \
