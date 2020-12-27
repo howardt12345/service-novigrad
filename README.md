@@ -11,10 +11,10 @@ The customer can search for a Service Novigrad branch by its name, phone number,
 
 
 # Group Members
-Howard Hao En Tseng (300108234) \
-Feyi Adesanya (300120992) \
-Ethan Plant (300109850) \
-Zayd Ghazal (300112270)
+Howard Hao En Tseng \
+Feyi Adesanya \
+Ethan Plant \
+Zayd Ghazal
 
 [![CircleCI](https://circleci.com/gh/SEG2105-uottawa/seg2105f20-project_gr-1.svg?style=svg&circle-token=f443aec0628521b9bce8be8de86effae4cdfc489)](https://app.circleci.com/pipelines/github/SEG2105-uottawa/seg2105f20-project_gr-1)
 
